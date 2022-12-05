@@ -1,0 +1,96 @@
+.bg-gray {
+    background-color: rgb(238, 238, 238);
+}
+
+.mat-row {
+    width: 100%;
+    min-width: 1120px;
+}
+
+.mat-header-row {
+    width: 100%;
+    min-width: 1120px;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+}
+
+.mat-column-Codigo {
+    min-width: 130px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: center;
+}
+
+.mat-column-Material {
+    min-width: 150px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+}
+
+.mat-column-Categoria {
+    min-width: 180px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+}
+
+.mat-column-Subcategoria {
+    min-width: 180px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+}
+
+.mat-column-Clase {
+    min-width: 150px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+}
+
+.mat-column-Marca {
+    min-width: 120px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: center;
+}
+
+.mat-column-Modelo {
+    min-width: 120px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: center;
+}
+
+.mat-column-Acciones {
+    min-width: 90px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}
+
+.bg{
+    position: relative;
+    background-color: #000000a5;
+    border: 3px solid #FFFFFF;
+}
+
+.btn-close{
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    position: absolute; 
+    width: 24px; 
+    height: 24px; 
+    right: -3.5%; 
+    top:-2.5%; 
+    background-color: #272626bb; 
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+}

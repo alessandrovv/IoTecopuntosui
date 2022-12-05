@@ -1,0 +1,26 @@
+
+<div class="modal-header">  
+  <h5>Evidencia {{cabecera.codigo}}</h5>
+</div>
+<div class="modal-body" style="height: 100%;">
+  <div class="row pb-4">
+    <div class="col-12 col-lg-6">
+      <p style="padding-bottom: 0px!important;margin-bottom: 0px!important;"><strong>TRBAJADOR: </strong> {{cabecera.trabajador}}</p>
+      <p><strong>CLIENTE: </strong> {{cabecera.cliente}}</p>
+    </div>
+    <div class="col-12 col-lg-6">
+      <p style="padding-bottom: 0px!important;margin-bottom: 0px!important;"><strong>DIRECCIÓN : </strong> {{cabecera.direccionSucursal || 'Sin procesar'}}</p>
+      <p style="padding-bottom: 0px!important;margin-bottom: 0px!important;"><strong>DIRECCIÓN INICIAL: </strong> {{cabecera.direccionOrigen || 'Sin procesar'}}</p>
+      <p style="padding-bottom: 0px!important;margin-bottom: 0px!important;"><strong>DIRECCIÓN FINAL: </strong> {{cabecera.direccionDestino || 'Sin procesar'}}</p>
+    </div>
+  </div>
+  <div id="map" style="width: 100%!important;height: 100vh!important">
+</div>
+
+<div class="modal-footer">
+  <div>
+    <button type="button" class="btn btn-light btn-elevate mr-1" (click)="modal.dismiss()">
+      Cancelar
+    </button>
+  </div>
+</div>

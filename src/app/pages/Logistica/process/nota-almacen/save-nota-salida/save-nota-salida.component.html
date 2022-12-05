@@ -1,0 +1,240 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Nueva Nota de Salida</h3>
+        </div>
+        <div class="right mt-5">
+            <a type="button" routerLink="/Logistica/process/NotaAlmacen" class="btn btn-primary">
+                <span [inlineSVG]="'./assets/media/svg/icons/Communication/Right.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-hover-primary"></span>
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-12">
+                    <div [formGroup]="formBuscar">
+                        <div class="row">
+                            <div [ngClass]="clase">
+                                <label>Tipo de operación</label>
+                                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="TipoOperacion"
+                                    (change)="changeCboTipoOperacion()" [class.is-invalid]="isFormControlInvalid(ctrlsBuscar.TipoOperacion)" 
+                                    placeholder="Seleccione un tipo de operación">
+                                    <ng-option *ngFor="let item of array_tipo_operaciones"
+                                        [value]="item.valor">
+                                        {{ item.nombre }}
+                                    </ng-option>
+                                </ng-select>
+                                <div class="invalid-feedback" *ngIf="FormControlHasError('required', ctrlsBuscar.TipoOperacion)">
+                                    El tipo de operación es obligatorio. 
+                                </div>
+                            </div>
+                            <div [ngClass]="clase">
+                                <label>Tipo de documento</label>
+                                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                    formControlName="TipoDocumento" (change) = "changeCboTipoDocumento();"
+                                    [class.is-invalid]="isFormControlInvalid(ctrlsBuscar.TipoDocumento)" placeholder="Seleccione un tipo de documento">
+                                    <ng-option *ngFor="let item of array_tipo_documento" [value]="item.valor">
+                                        {{ item.nombre }}
+                                    </ng-option>
+                                </ng-select>
+                                <div class="invalid-feedback" *ngIf="FormControlHasError('required', ctrlsBuscar.TipoDocumento)">
+                                    El tipo de documento es obligatorio. 
+                                </div>
+                            </div>
+                            <div [ngClass]="clase">
+                                <label>Periodo</label>
+                                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                    formControlName="Periodo"
+                                    [class.is-invalid]="isFormControlInvalid(ctrlsBuscar.Periodo)"
+                                    placeholder="Seleccione un periodo">
+                                    <ng-option *ngFor="let item of array_periodos"
+                                        [value]="item.anio">
+                                        {{ item.anio }}
+                                    </ng-option>
+                                </ng-select>
+                                <div class="invalid-feedback" *ngIf="FormControlHasError('required', ctrlsBuscar.TipoDocumento)">
+                                    Periodo es obligatorio. 
+                                </div>
+                            </div>
+                            <ng-container *ngIf="mostrarBuscar">
+                                <div class="col-lg-2 col-6 mb-5">
+                                    <label>Correlativo </label>
+                                    <input type="text" class="form-control form-control-lg form-control-solid"
+                                        name="Correlativo" placeholder="Correlativo" autocomplete="off" [class.is-invalid]="isFormControlInvalid(ctrlsBuscar.Correlativo)"
+                                        [class.is-valid]="isFormControlValid(ctrlsBuscar.Correlativo)" formControlName="Correlativo" />
+                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', ctrlsBuscar.Correlativo) || 
+                                        FormControlHasError('pattern', ctrlsBuscar.Correlativo)"> 
+                                        Correlativo debe ser número y obligatorio.
+                                    </div>
+                                </div>
+                                <div class="col-lg-1 mb-5">
+                                    <br>
+                                    <button title="buscar" class="btn btn-success btn-sm btn-block" [disabled]="hide_buscar" (click)="buscar(pedidoVenta);">
+                                        <span [inlineSVG]="'./assets/media/svg/icons/General/Search.svg'" title="buscar" cacheSVG="true"
+                                            class="svg-icon pl-1 svg-icon-md svg-icon-hover-primary">
+                                        </span>
+                                    </button>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="mostrarDatos">
+            <div class="form form-label-right">
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                        <div [formGroup]="formDatos">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label>Fecha de emisión </label>
+                                    <input type="date" class="form-control form-control-lg form-control-solid"
+                                        name="FechaEmision" placeholder="Fecha de emisión"
+                                        autocomplete="off" [class.is-invalid]="isFormControlInvalid(controlsDatos.FechaEmision)"
+                                        [class.is-valid]="isFormControlValid(controlsDatos.FechaEmision)" formControlName="FechaEmision" />
+                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', controlsDatos.FechaEmision)"> Fecha
+                                        de emisión es obligatorio.
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label>Fecha contable </label>
+                                    <input type="date" class="form-control form-control-lg form-control-solid"
+                                        name="FechaContable" placeholder="Fecha contable" autocomplete="off"
+                                        [class.is-invalid]="isFormControlInvalid(controlsDatos.FechaContable)"
+                                        [class.is-valid]="isFormControlValid(controlsDatos.FechaContable)" formControlName="FechaContable" />
+                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', controlsDatos.FechaContable)"> Fecha
+                                        contable es obligatorio.
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label>Establecimiento</label>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                        formControlName="Establecimiento" (change)="changeEstablecimiento(pedidoVenta)"
+                                        [class.is-invalid]="isFormControlInvalid(controlsDatos.Establecimiento)"
+                                        placeholder="Seleccione un establecimiento">
+                                        <ng-option *ngFor="let item of array_establecimientos"
+                                            [value]="item.idEstablecimiento">
+                                            {{item.nombre}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', controlsDatos.Establecimiento)">
+                                        Establecimiento es obligatorio. 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <div [hidden]="!mostrarPV">
+            <app-vista-pedido-venta 
+                [hide_load_guardar]="hide_load_guardar"
+                (onMateriales)="saveNotaPV( $event, pedidoVenta )" 
+                #pedidoVenta
+            ></app-vista-pedido-venta>
+        </div>
+        <ng-container *ngIf="mostrarOtros">
+            <div class="row">
+                <div class="col-12 mb-5" [formGroup]="formDatos">
+                    <label>Observación</label>
+                    <textarea class="form-control" rows="3" formControlName="Observacion" name="Observacion"></textarea>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="button" class="btn btn-light-primary btn-hover-primary font-weight-bold mr-2" (click)="agregarMaterial()">
+                        <span [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-primary">
+                        </span> Cargar materiales
+                    </button>
+                </div>
+            </div>
+            <br><br>
+            <div class="row" style="overflow-x: auto;">
+                <div class="col-lg-12">
+                    <table class="table">
+                        <thead>
+                            <th>OPERACIONES</th>
+                            <th>CODIGO</th>
+                            <th>CANTIDAD</th>
+                            <th>STOCK</th>
+                            <th>UNIDAD</th>
+                            <th>DESCRIPCIÓN</th>
+                            <th>OBSERVACIÓN</th>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let item of array_materiales; let i = index">
+                                <tr>
+                                    <td style="vertical-align: middle;">
+                                        <button title="Eliminar material" class="btn btn-icon btn-light btn-hover-danger btn-sm mr-3" (click)="eliminarMaterial(i,content)">
+                                            <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                                class="svg-icon svg-icon-md svg-icon-danger">
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ item.codigo }}
+                                    </td>
+                                    <td style="vertical-align: middle; min-width: 8vw;">
+                                        {{ item.cantidad }}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ item.stock }}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ item.unidadMedida }}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ item.material }}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <input type="text" class="form-control form-control-lg form-control-solid"
+                                        name="Observación" placeholder="Observación" autocomplete="off" [formControl]="deta_formObservacion[i]" />
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="card-footer" *ngIf="mostrarBotones">
+        <div class="float-right">
+            <button type="button" class="btn btn-light-danger btn-hover-danger font-weight-bold mr-2">
+                <span [inlineSVG]="'./assets/media/svg/icons/Files/Selected-file.svg'" cacheSVG="true"
+                    class="svg-icon svg-icon-md svg-icon-danger">
+                </span> PDF
+            </button>
+            <button type="button" class="btn btn-primary font-weight-bold mr-2" disabled *ngIf="!hide_load_guardar">Guardando...</button>
+            <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="hide_load_guardar" (click)="saveNotaSalida()"> 
+                <span [inlineSVG]="'./assets/media/svg/icons/General/Save.svg'" cacheSVG="true"
+                    class="svg-icon svg-icon-md svg-icon-hover-primary">
+                </span> Guardar y cerrar</button>
+            <a class="btn btn-danger font-weight-bold mr-2" routerLink="/Logistica/process/NotaAlmacen"> <span [inlineSVG]="'./assets/media/svg/icons/Code/Error-circle.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-hover-danger">
+            </span> Cancelar</a>
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Eliminar material</h4>
+        <button type="button" class="btn btn-icon" aria-label="Close" (click)="modal.dismiss(false)">
+            <span [inlineSVG]="'./assets/media/svg/icons/Code/Error-circle.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-hover-dark">
+            </span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>¿Estas seguro de que deseas eliminar el material?</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss(false)">No</button>
+        <button type="button" class="btn btn-primary btn-elevate" (click)="modal.close(true)">Sí</button>
+    </div>
+</ng-template>

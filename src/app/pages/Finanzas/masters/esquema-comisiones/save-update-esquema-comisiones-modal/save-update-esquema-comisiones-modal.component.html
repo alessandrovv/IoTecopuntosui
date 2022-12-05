@@ -1,0 +1,98 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<div class="modal-title h4" id="example-modal-sizes-title-lg">
+			<ng-container>
+				<ng-container *ngIf="idEsquemaComision > 0">Editar</ng-container>
+				<ng-container *ngIf="idEsquemaComision === 0">Nuevo</ng-container>
+				Esquema comision
+				<ng-container *ngIf="idEsquemaComision > 0"
+					>'{{ item.Codigo }}'</ng-container
+				>
+			</ng-container>
+		</div>
+	</div>
+	<div
+		class="overlay overlay-block cursor-default modal-body"
+		style="min-height: 404px"
+	>
+		<ng-container *ngIf="isLoading$ | async">
+			<div class="overlay-layer bg-transparent">
+				<div class="spinner spinner-lg spinner-success"></div>
+			</div>
+		</ng-container>
+
+		<ng-container>
+			<form action="#" class="form form-label-right" [formGroup]="formGroup"> 
+				<div class="form-group">
+					<div class="row">
+						<div class="col-lg-12">
+							<label>Nombre del esquema:</label>
+							<input type="text" class="form-control form-control-lg form-control-solid" name="NombreEsquema" placeholder="Nombre del esquema" autocomplete="off" [class.is-invalid]="isControlInvalid('NombreEsquema')" [class.is-valid]="isControlValid('NombreEsquema')" formControlName="NombreEsquema"/>             
+							<div class="feedback" *ngIf="!formGroup.controls['NombreEsquema'].value">Por favor, selecciona un <b>Nombre</b></div>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'NombreEsquema')"> Nombre es obligatorio. </div> 
+							<div class="valid-feedback" *ngIf="isControlValid('NombreEsquema')">Nombre es correcto</div>
+						</div>
+					</div>
+						<div class="row">
+							<div class="col-lg-12">
+									<label>Certificado</label>
+
+									<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Certificado" name="Certificado"
+											[searchable]="true" placeholder="Certificado" [class.is-invalid]="isControlInvalid('Certificado')">
+											<ng-option *ngFor="let item of array_certificados" [value]="item.idCertificado">
+													{{item.Nombre}}
+											</ng-option>
+									</ng-select>                
+									<div class="feedback" *ngIf="!formGroup.controls['Certificado'].value">Por favor, seleccione un <b>Certificado</b></div>
+									<div class="invalid-feedback" *ngIf="controlHasError('required', 'Certificado')"> Certificado es obligatorio. </div>      
+								</div>
+						</div>
+							<br>
+						<div class="row">
+							<div class="col-lg-12">
+									<label>Puesto de Trabajo</label>
+									<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="PuestoTrabajo" name="PuestoTrabajo"
+											[searchable]="true" placeholder="Puesto de Trabajo" [class.is-invalid]="isControlInvalid('PuestoTrabajo')">
+											<ng-option *ngFor="let item of array_puestoTrabajo" [value]="item.PuestoTrabajo">
+													{{item.NombrePuestoTrabajo}}
+											</ng-option>
+									</ng-select>                       
+									<div class="feedback" *ngIf="!formGroup.controls['PuestoTrabajo'].value">Por favor, selecciona un <b>Puesto de trabajo</b></div>
+									<div class="invalid-feedback" *ngIf="controlHasError('required', 'PuestoTrabajo')"> Puesto de trabajo es obligatorio. </div>                     
+								</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-lg-12">
+									<label class="form-label">% Comision</label>
+									<input type="number" class="form-control form-control-lg form-control-solid" name="Comision" placeholder="% Comision" autocomplete="off" [class.is-invalid]="isControlInvalid('Comision')" [class.is-valid]="isControlValid('Comision')" formControlName="Comision"/>             
+									<div class="feedback" *ngIf="!formGroup.controls['Comision'].value">Por favor, ingrese un <b>% Comision</b></div>
+									<div class="invalid-feedback" *ngIf="controlHasError('required', 'Comision')">% Comision es obligatorio. </div> 
+									<div class="valid-feedback" *ngIf="isControlValid('Comision')">% Comision es correcto</div>
+								</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-lg-12">
+									<label class="form-label">Aplica a partir de la venta nro</label>
+									<input type="number" class="form-control form-control-lg form-control-solid" name="nroVenta" placeholder="nro Venta" autocomplete="off" [class.is-invalid]="isControlInvalid('nroVenta')" [class.is-valid]="isControlValid('nroVenta')" formControlName="nroVenta"/>             
+									<div class="feedback" *ngIf="!formGroup.controls['nroVenta'].value">Por favor, ingrese un <b>nro de venta</b></div>
+									<div class="invalid-feedback" *ngIf="controlHasError('required', 'nroVenta')"> nro Venta es obligatorio. </div> 
+									<div class="valid-feedback" *ngIf="isControlValid('nroVenta')">Nro venta es correcto</div>
+								</div>
+						</div>       
+						          
+				</div>                    
+			</form>
+		</ng-container>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+		<ng-container>
+			<button type="submit" class="btn btn-primary btn-elevate" (click)="save()" [disabled]="formGroup.invalid">
+				Guardar
+			</button>
+		</ng-container>
+	</div>
+</div>
+

@@ -1,0 +1,135 @@
+
+<form [formGroup]="form" class="row">
+    <ng-container *ngFor="let control of metadata">
+
+        <div class="col-lg-6 m--margin-bottom-10" *ngIf="control.TipoDatoRespuesta == controlsEnum.TEXT">        
+            <label class="form-label">{{ control.NombreDato }}</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" [(ngModel)]="data[control.ConfigDatoContrato].value" name="{{data[control.ConfigDatoContrato].ControlName}}" [required]="isRequired(control)" placeholder="{{control.NombreDato}}" autocomplete="off" formControlName="{{data[control.ConfigDatoContrato].ControlName}}"
+            [class.is-invalid]="isControlInvalid(data[control.ConfigDatoContrato].ControlName)" [class.is-valid]="isControlValid(data[control.ConfigDatoContrato].ControlName)"/>             
+            <div class="invalid-feedback" *ngIf="controlHasError('required', data[control.ConfigDatoContrato].ControlName)"> {{ control.NombreDato }} son obligatorios. </div>
+            <br>
+
+        </div>  
+        
+        
+        <div class="col-lg-3 m--margin-bottom-10" *ngIf="control.TipoDatoRespuesta == controlsEnum.NUMBER">
+            <label class="form-label">{{ control.NombreDato }}</label>
+            <input type="number" class="form-control form-control-lg form-control-solid" [(ngModel)]="data[control.ConfigDatoContrato].value" name="{{data[control.ConfigDatoContrato].ControlName}}" [required]="isRequired(control)" placeholder="{{control.NombreDato}}" autocomplete="off" formControlName="{{data[control.ConfigDatoContrato].ControlName}}"
+            [class.is-invalid]="isControlInvalid(data[control.ConfigDatoContrato].ControlName)" [class.is-valid]="isControlValid(data[control.ConfigDatoContrato].ControlName)"/>             
+            <div class="invalid-feedback" *ngIf="controlHasError('required', data[control.ConfigDatoContrato].ControlName)"> {{ control.NombreDato }} son obligatorios. </div>
+            <br>
+        </div>
+
+
+        <div class="col-lg-3 m--margin-bottom-10" *ngIf="control.TipoDatoRespuesta == controlsEnum.DATE">
+            <label class="form-label">{{ control.NombreDato }}</label>
+            <input type="date" class="form-control form-control-lg form-control-solid" [(ngModel)]="data[control.ConfigDatoContrato].value" name="{{data[control.ConfigDatoContrato].ControlName}}" [required]="isRequired(control)" placeholder="{{control.NombreDato}}" autocomplete="off" formControlName="{{data[control.ConfigDatoContrato].ControlName}}"
+            [class.is-invalid]="isControlInvalid(data[control.ConfigDatoContrato].ControlName)" [class.is-valid]="isControlValid(data[control.ConfigDatoContrato].ControlName)"/>             
+            <div class="invalid-feedback" *ngIf="controlHasError('required', data[control.ConfigDatoContrato].ControlName)"> {{ control.NombreDato }} son obligatorios. </div>
+            <br>
+        </div>
+
+        <!-- <div class="{{classControl}} m--margin-bottom-10" *ngIf="control.TipoDatoRespuesta == controlsEnum.TIME && showIfDependency(control)">
+            <mat-form-field class="mat-form-field-fluid">
+                <input type="time" matInput [(ngModel)]="data[control.ID].value" autocomplete="off"
+                    [disabled]="control.fixedValue" placeholder="{{control.Pregunta}}"
+                    [required]="isRequired(control)" formControlName="{{data[control.ID].ControlName}}">
+                <mat-error>
+                    {{ control.Pregunta }}
+                    <strong>es obligatorio.</strong>
+                </mat-error>
+            </mat-form-field>
+        </div> -->
+
+        <div class="col-lg-3 m--margin-bottom-10" *ngIf="control.TipoDatoRespuesta == controlsEnum.CHECK">
+            <label class="form-label">{{ control.NombreDato }}</label>
+            <span class="switch">
+                <label>
+                    <input type="checkbox" name="{{data[control.ConfigDatoContrato].ControlName}}" [(ngModel)]="data[control.ConfigDatoContrato].value" formControlName="{{data[control.ConfigDatoContrato].ControlName}}">
+                    <span></span>
+                </label>
+            </span>
+        </div>
+
+        <!-- <div class="{{classControl}} m--margin-bottom-10" *ngIf="control.TipoDatoRespuesta == controlsEnum.FILE && showIfDependency(control)" class="mat-form-field-fluid">
+            <mat-form-field class="mat-form-field-fluid">
+                <input (click)="inpFile.click()" [(ngModel)]="data[control.ID].value" matInput placeholder="{{control.Pregunta}}"
+                    autocomplete="off" readonly [required]="isRequired(control)" formControlName="{{data[control.ID].ControlName}}">
+                <mat-icon matSuffix (click)="inpFile.click()">attach_file</mat-icon>
+                <input type="file" #inpFile style="display:none" (change)="onFileAdded($event,control.ID)">
+                <mat-error>
+                    {{ control.Pregunta }}
+                    <strong>es obligatorio.</strong>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <ng-container *ngIf="control.TipoDatoRespuesta == controlsEnum.LIST_MANUAL && showIfDependency(control)">
+            <div class="{{classControl}} m--margin-bottom-10">
+                <mat-form-field class="mat-form-field-fluid">
+                    <mat-select (selectionChange)="changeSelectValue($event,control.ID, control)" [(ngModel)]="data[control.ID].value" placeholder="{{control.Pregunta}}"
+                    [required]="isRequired(control)" formControlName="{{data[control.ID].ControlName}}">
+                        <mat-option *ngFor="let item of control.Datos" [value]="item[control.NombreCodigo]">{{item[control.NombreValor]}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        {{ control.Pregunta }}
+                        <strong>es obligatorio.</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="control.TipoDatoRespuesta == controlsEnum.LIST_MANUAL_DEPENDENCY && showIfDependency(control)">
+            <div class="{{classControl}} m--margin-bottom-10">
+                <mat-form-field class="mat-form-field-fluid">
+                    <mat-select (selectionChange)="changeSelectValue($event,control.ID, control)" [(ngModel)]="data[control.ID].value" placeholder="{{control.Pregunta}}"
+                    [required]="isRequired(control)" formControlName="{{data[control.ID].ControlName}}">
+                        <ng-container *ngFor="let item of control.Datos">
+                            <mat-option
+                                *ngIf="item[control.NombreIDPadre] == data[control.PreguntaDependienteLista].value"
+                                [value]="item[control.NombreCodigo]">{{item[control.NombreValor]}}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                    <mat-error>
+                        {{ control.Pregunta }}
+                        <strong>es obligatorio.</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="control.TipoDatoRespuesta == controlsEnum.LIST_WS && data[control.ID].loadedListaWS && showIfDependency(control)">
+            <div class="{{classControl}} m--margin-bottom-10">
+                <mat-form-field  class="mat-form-field-fluid">
+                    <mat-select (selectionChange)="changeSelectValue($event,control.ID, control)" [(ngModel)]="data[control.ID].value" placeholder="{{control.Pregunta}}"
+                    [required]="isRequired(control)" formControlName="{{data[control.ID].ControlName}}">
+                        <mat-option *ngFor="let item of control.Datos" [value]="item[control.NombreCodigo]">{{item[control.NombreValor]}}</mat-option>
+                    </mat-select>
+                    <mat-error>
+                        {{ control.Pregunta }}
+                        <strong>es obligatorio.</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="control.TipoDatoRespuesta == controlsEnum.LIST_WS_DEPENDENCY && data[control.ID].loadedListaWS && showIfDependency(control)">
+            <div class="{{classControl}} m--margin-bottom-10">
+                <mat-form-field  class="mat-form-field-fluid">
+                    <mat-select (selectionChange)="changeSelectValue($event,control.ID, control)" [(ngModel)]="data[control.ID].value" placeholder="{{control.Pregunta}}"
+                    [required]="isRequired(control)" formControlName="{{data[control.ID].ControlName}}">
+                        <ng-container *ngFor="let item of control.Datos">
+                            <mat-option
+                                *ngIf="item[control.NombreIDPadre] == data[control.PreguntaDependienteLista].value"
+                                [value]="item[control.NombreCodigo]">{{item[control.NombreValor]}}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                    <mat-error>
+                        {{ control.Pregunta }}
+                        <strong>es obligatorio.</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </ng-container> -->
+    </ng-container>
+</form>

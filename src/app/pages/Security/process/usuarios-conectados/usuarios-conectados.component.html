@@ -1,0 +1,95 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label">Usuarios Conectados</h3>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- begin: Filtration form -->
+      <div class="form form-label-right">
+        <div class="form-group row">
+            <div class="col-lg-4" [formGroup]="searchGroup">
+                <input type="text" class="form-control" name="searchText" placeholder="Buscar" value="" (keyup)="search()"
+                formControlName="searchTerm" /><small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+            </div>
+        </div>
+      </div>
+      <!-- end: Filtration form -->
+
+      <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+        <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+
+            <ng-container matColumnDef="Trabajador">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>TRABAJADOR</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.apeMaterno}} {{lesson.nombres}} {{lesson.apePaterno}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Estado">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">
+                    <div style="height: 100%; width: 100%; display: flex; flex-direction:column">
+                        <a title="lesson.estado" class="btn btn-light btn-sm mx-3" [style.color]="lesson.colorTexto" [style.background]="lesson.colorFondo">
+                            {{lesson.accion}}
+                        </a>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Fecha">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>FECHA</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.fechaRegistro | date : 'dd/MM/yyyy HH:mm:ss'}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Tiempo">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>TIEMPO</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.tiempo}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">                              
+
+                    <a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                        (click)="show(lesson)">
+                        <span [inlineSVG]="'./assets/media/svg/icons/General/Visible.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-primary">
+                        </span>
+                    </a>
+
+                    <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                        (click)="logout(lesson)">
+                        <span [inlineSVG]="'./assets/media/svg/icons/Navigation/Sign-out.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-danger">
+                        </span>
+                    </a>
+
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="loading">
+                <mat-footer-cell *matFooterCellDef colspan="4">
+                    Loading data...
+                </mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="4">
+                    No se encontraron registros.
+                </mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+            </mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']"
+                [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+        </mat-table>
+    </div>
+
+    <div class="mat-table__bottom">
+        <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+        <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>      
+    </div>
+  </div>

@@ -1,0 +1,435 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Ver Pedido de Venta</h3>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+            <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DATOS_DOC)">
+                <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.DATOS_DOC"
+                    [class.active]="activeTabId === tabs.DATOS_DOC">Datos Generales</a>
+            </li>
+            <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DETALLE)">
+                <a class="nav-link" data-toggle="tab" role="tab" [attr.aria-selected]="activeTabId === tabs.DETALLE"
+                    [class.active]="activeTabId === tabs.DETALLE">Detalle</a>
+            </li>
+            <li class="nav-item cursor-pointer" (click)="changeTab(tabs.PENDIENTES)">
+                <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.PENDIENTES"
+                    [class.active]="activeTabId === tabs.PENDIENTES">Pendientes</a>
+            </li>
+            <li class="nav-item cursor-pointer" (click)="changeTab(tabs.ULTIMAS_VENTAS)">
+                <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.ULTIMAS_VENTAS"
+                    [class.active]="activeTabId === tabs.ULTIMAS_VENTAS">Ultimas Ventas</a>
+            </li>
+        </ul>
+
+        <ng-container *ngIf="activeTabId === tabs.DATOS_DOC">
+            <div class="card-body">
+                <div class="form form-label-right">
+                    <div class="form-group row">
+                        <div class="col-lg-12">
+                            <div [formGroup]="formDatosGenerales">
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-6 mb-5">
+                                        <label>Código</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="Codigo" placeholder="Código" autocomplete="off" formControlName="Codigo" />
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6 mb-5" *ngIf="visitaComercial!=null">
+                                        <label>Visita comercial</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="Visita" placeholder="Visita" autocomplete="off" formControlName="Visita" />
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6 mb-5">
+                                        <label>Vendedor</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="Vendedor" placeholder="Vendedor" autocomplete="off" formControlName="Vendedor" />
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6 mb-5">
+                                        <label>Clientes</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="Cliente" placeholder="Cliente" autocomplete="off" formControlName="Cliente" />
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6 mb-5">
+                                        <label>Cliente sucursal</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="ClienteSucursal" placeholder="ClienteSucursal" autocomplete="off" formControlName="ClienteSucursal" />
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6 mb-5">
+                                        <label>Tipo Precio</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="TipoPrecio" placeholder="TipoPrecio" autocomplete="off" formControlName="TipoPrecio" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>F. Ult. Venta</label>
+                                        <input type="date" readonly class="form-control form-control-lg form-control-solid"
+                                            name="FechaUltimaVenta" placeholder="F. Ult. Compra" autocomplete="off"
+                                            formControlName="FechaUltimaVenta" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label class="form-label">Monto histórico venta</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="MontoHistorico" placeholder="Monto histórico compra" autocomplete="off"
+                                            formControlName="MontoHistorico" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Tipo Documento</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="TipoDocumento" placeholder="TipoDocumento" autocomplete="off" formControlName="TipoDocumento" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Forma de Pago</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="FormaPago" placeholder="FormaPago" autocomplete="off" formControlName="FormaPago" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Fecha de emisión </label>
+                                        <input type="date" readonly class="form-control form-control-lg form-control-solid"
+                                            name="FechaEmision" placeholder="Fecha de emisión" autocomplete="off"
+                                            formControlName="FechaEmision" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Fecha de entrega </label>
+                                        <input type="date" readonly class="form-control form-control-lg form-control-solid"
+                                            name="FechaEntrega" placeholder="Fecha de entrega" autocomplete="off"
+                                            formControlName="FechaEntrega" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Tipo de moneda</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="TipoMoneda" placeholder="Tipo de moneda" autocomplete="off" formControlName="TipoMoneda" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Establecimiento</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="Establecimiento" placeholder="Establecimiento" autocomplete="off" formControlName="Establecimiento" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label class="form-label">Tasa de cambio</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="TasaCambio" placeholder="Tasa de cambio" autocomplete="off" formControlName="TasaCambio" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Incluye IGV</label>
+                                        <span class="switch">
+                                            <label>
+                                                <input type="checkbox" name="IncluyeIgv" formControlName="IncluyeIgv">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label class="form-label">Número de decimales</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="NumeroDecimales" placeholder="Numero de decimales" autocomplete="off" formControlName="NumeroDecimales" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5" *ngIf="urlArchivo!=null">
+                                        <label class="form-label w-100">Captura de Yape o Plin</label>
+                                        <img [src]="urlArchivo" class="w-50 img-fluid cursor-pointer" (click)="openLightbox(lightbox)" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <div [hidden]="activeTabId != tabs.DETALLE">
+            <br><br>
+            <div class="row" style="overflow-x: auto;">
+                <div class="col-lg-12">
+                    <table class="table">
+                        <thead>
+                            <th>N°</th>
+                            <th>CODIGO</th>
+                            <th>CANTIDAD</th>
+                            <th>DESCRIPCIÓN</th>
+                            <th>VALOR UNITARIO</th>
+                            <th>DESCUENTO</th>
+                            <th>IGV UNIT.</th>
+                            <th>PRECIO UNITARIO</th>
+                            <th>PRECIO TOTAL</th>
+                            <th>UNIDAD MEDIDA</th>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let item of materiales.controls; let i = index">
+                                <tr [formGroup]="item">
+                                    <td style="vertical-align: middle; display: flex; align-items: center;">
+                                        {{ i + 1 }}
+                                    </td>
+                                    <td style="vertical-align: middle; text-align:center;">
+                                        {{ array_materiales[i].codigo }}
+                                    </td>
+                                    <td style="vertical-align: middle; min-width: 8vw;">
+                                        {{ array_materiales[i].cantidad }}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ array_materiales[i].nombreMaterial }}
+                                    </td>
+                                    <td style="vertical-align: middle; min-width: 8vw;">
+                                        {{ fixLabel(array_materiales[i].valorUnit?array_materiales[i].valorUnit:0) }}
+                                    </td>
+                                    <td style="vertical-align: middle; min-width: 8vw;">
+                                        {{ fixLabel(array_materiales[i].descuentoUnit?array_materiales[i].descuentoUnit:0) }}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ fixLabel(array_materiales[i].igvUnit?array_materiales[i].igvUnit:0) }}
+                                    </td>
+                                    <td style="vertical-align: middle; min-width: 8vw;">
+                                        {{ fixLabel(array_materiales[i].precioUnit?array_materiales[i].precioUnit:0) }}
+                                    </td>
+                                    <td style="vertical-align: middle; min-width: 8vw;">
+                                        {{ fixLabel(array_materiales[i].precioTotal?array_materiales[i].precioTotal:0) }}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ array_materiales[i].unidadMedida }}
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-6"></div>
+                <div class="col-lg-6">
+                    <div class="card card-custom bg-gray">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label>SUBTOTAL</label>
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    <label *ngIf="subtotal>0">{{ fixLabel(subtotal) }}</label>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-6 mt-3">
+                                    <label>DESCUENTO</label>
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    <label *ngIf="descuentoTotal>=0">{{ fixLabel(descuentoTotal) }}</label>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label>IGV</label>
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    <label *ngIf="igvTotal>0">{{ fixLabel(igvTotal) }}</label>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label><b>TOTAL</b></label>
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    <label *ngIf="total>0">{{ fixLabel(total) }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <div [hidden]="activeTabId != tabs.PENDIENTES">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h5>Lista de pendientes</h5>
+                </div>
+            </div>
+            <br>
+            <div class="row" style="overflow-x: auto;">
+                <div class="col-lg-12">
+                    <table class="table">
+                        <thead>
+                            <th>N°</th>
+                            <th>CODIGO</th>
+                            <th>CANTIDAD</th>
+                            <th>DESCRIPCIÓN</th>
+                            <th>VALOR UNITARIO</th>
+                            <th>DESCUENTO</th>
+                            <th>IGV UNIT.</th>
+                            <th>PRECIO UNITARIO</th>
+                            <th>PRECIO TOTAL</th>
+                            <th>UNIDAD MEDIDA</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of array_materiales_pendientes; let i = index">
+                                <td style="vertical-align: middle; text-align:center;">
+                                    {{ i + 1 }}
+                                </td>
+                                <td style="vertical-align: middle; min-width: 6vw;">
+                                    {{ array_materiales_pendientes[i].codigo }}
+                                </td>
+                                <td style="vertical-align: middle; min-width: 4vw;">
+                                    {{ array_materiales_pendientes[i].cantidad }}
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    {{ array_materiales_pendientes[i].nombreMaterial }}
+                                </td>
+                                <td style="vertical-align: middle; min-width: 8vw;">
+                                    {{ fixLabel(array_materiales_pendientes[i].valorUnit?array_materiales_pendientes[i].valorUnit:0) }}
+                                </td>
+                                <td style="vertical-align: middle; min-width: 8vw;">
+                                    {{ fixLabel(array_materiales_pendientes[i].descuentoUnit?array_materiales_pendientes[i].descuentoUnit:0) }}
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    {{ fixLabel(array_materiales_pendientes[i].igvUnit?array_materiales_pendientes[i].igvUnit:0) }}
+                                </td>
+                                <td style="vertical-align: middle; min-width: 8vw;">
+                                    {{ fixLabel(array_materiales_pendientes[i].precioUnit?array_materiales_pendientes[i].precioUnit:0) }}
+                                </td>
+                                <td style="vertical-align: middle; min-width: 8vw;">
+                                    {{ fixLabel(array_materiales_pendientes[i].precioTotal?array_materiales_pendientes[i].precioTotal:0) }}
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    {{ array_materiales_pendientes[i].unidadMedida }}
+                                </td>
+                                <td colspan="10" *ngIf="array_materiales_pendientes.length==0">No hay registros.</td>
+                            </tr>
+                            <!-- <tr *ngIf="array_materiales_pendientes.length==0" style="vertical-align: middle;">
+                            </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div [hidden]="activeTabId != tabs.ULTIMAS_VENTAS">
+            <div class="form form-label-right">
+                <div class="form-group row">
+                    <div class="col-lg-4 offset-lg-8" [formGroup]="filterGroupUltimas">
+                        <input type="text" class="form-control" name="searchText" placeholder="Buscar" value="" (keyup)="searchUltimasVentas()" 
+                            formControlName="searchUltimas" />
+                        <small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+                <mat-table class="lmat-elevation-z8" [dataSource]="listUltimasVentas" matSort perfectScrollbar>
+        
+                    <ng-container matColumnDef="Nro">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                        <mat-cell *matCellDef="let i = index;">{{matPaginatorUC.pageSize * matPaginatorUC.pageIndex + i + 1}}
+                        </mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="Correlativo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Codigo</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.codigo}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="TipoDocumento">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo Documento</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.tipoDocumento}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Documento">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Documento</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">-</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="Moneda">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Moneda</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.moneda}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="FechaEmision">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>F. emisión</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.fechaEmision | date : 'dd/MM/yyyy'}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="Total">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Total</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.total.toFixed(lesson.numDecimales)}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="Material">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Material</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.material}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="Cantidad">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.cantidad}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="PrecioUnitario">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Prec. Unitario</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.precioUnit.toFixed(lesson.numDecimales)}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="Descuento">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Descuento</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.descuentoUnit.toFixed(lesson.numDecimales)}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="PrecioTotal">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Prec. Total</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.precioTotal.toFixed(lesson.numDecimales)}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="Estado">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Estado</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.estado}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="loadingUltimas">
+                        <mat-footer-cell *matFooterCellDef colspan="8">
+                            Loading data...
+                        </mat-footer-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="noDataUltimas">
+                        <mat-footer-cell *matFooterCellDef colspan="8">
+                            No se encontraron registros.
+                        </mat-footer-cell>
+                    </ng-container>
+        
+                    <mat-header-row *matHeaderRowDef="displayedColumnsUlt"></mat-header-row>
+        
+                    <mat-row *matRowDef="let row; columns: displayedColumnsUlt"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['loadingUltimas']" [ngClass]="{'hide': listUltimasVentas!=null}">
+                    </mat-footer-row>
+                    <mat-footer-row *matFooterRowDef="['noDataUltimas']" [ngClass]="{'hide': !(listUltimasVentas!=null && listUltimasVentas.data.length==0)}">
+                    </mat-footer-row>
+                </mat-table>
+            </div>
+            <div class="mat-table__bottom">
+                <mat-spinner [diameter]="20" *ngIf="searchBanUltimas"></mat-spinner>
+                <mat-paginator #matPaginatorUC [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="float-right">
+            <button type="button" class="btn btn-light-danger btn-hover-danger font-weight-bold mr-2">
+                <span [inlineSVG]="'./assets/media/svg/icons/Files/Selected-file.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-danger">
+                </span> PDF</button>
+            <a class="btn btn-primary font-weight-bold mr-2" routerLink="/Sales/process/PedidoVenta"> <span [inlineSVG]="'./assets/media/svg/icons/Navigation/Angle-left.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-hover-primary">
+            </span> Volver</a>
+        </div>
+    </div>
+</div>
+<ng-template #lightbox let-modal>
+    <div class="bg">
+        <!-- <iframe [src]="urlArchivo" loading="lazy" frameborder="0"></iframe> -->
+        <img [src]="urlArchivo" id="imgPago" (load)="loadImg()" class="w-100 img-fluid d-none">
+        <div id="spinner" class="d-flex justify-content-center align-items-center my-5">
+            <div class="spinner-border spinner-border-xxl text-light" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        
+        <div class="btn-close">
+            <i class="fas fa-times fa-lg cursor-pointer" (click)="modal.close()" style="color: #FFFFFF; "></i>
+        </div>
+    </div>
+</ng-template>

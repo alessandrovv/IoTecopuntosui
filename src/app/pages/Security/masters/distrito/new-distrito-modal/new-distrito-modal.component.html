@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        <ng-container>
+          <ng-container *ngIf = "Distrito == 0">Nuevo Distrito</ng-container>
+          <!-- <ng-container *ngIf = "Distrito === 0">Nuevo Distrito</ng-container> -->
+          <!-- <ng-container *ngIf = "Distrito > 0"
+            ></ng-container
+          > -->
+        </ng-container>
+      </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+      <ng-container *ngIf = "isLoading$ | async">
+        <div class="overlay-layer bg-transparent">
+          <div class="spinner spinner-lg spinner-success"></div>
+        </div>
+      </ng-container>
+  
+      <ng-container>
+            <div class="form-group row" [formGroup] = "filterGroup"  style="margin-bottom: -10px;"> <!-- -->
+                    <div class="col-lg-12" style="margin-bottom: 5px; width: 100% !important;" >
+                      <small class="form-text text-muted"><b>Selecciona</b> un País</small>
+                          <ng-select #agreeSelect class="w-100" [clearSearchOnAdd] = "false" formControlName = "Pais" 
+                              [searchable]="true" placeholder="Selecciona Pais" (change)="getDepartamento($event)"> <!---->
+                              <ng-option *ngFor="let item of arrayPais" [value]="item.Pais">
+                                  {{item.NombrePais}}
+                              </ng-option>
+                          </ng-select>
+                          <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Pais')"> Pais es
+                            obligatorio. </div> -->
+                    </div>               
+                    <div class="col-lg-12" style="margin-bottom: 5px; width: 100% !important;">
+                        <small class="form-text text-muted"><b>Departamento</b></small>
+                            <ng-select #agreeSelect [clearSearchOnAdd] = "false" formControlName = "Departamento" 
+                                [searchable]="true" placeholder="Selecciona Departamentos" (change)="getProvincia($event); setPais($event);">  
+                                <ng-option *ngFor="let item of arrayDepartamento" [value]="item.Departamento">
+                                    {{item.NombreDepartamento}}
+                                </ng-option>
+                            </ng-select>
+                      </div>        
+                    <div class="col-lg-12" style="margin-bottom: 5px; width: 100% !important;">
+                      <small class="form-text text-muted"><b>Provincias</b></small>
+                          <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName = "Provincia"
+                              [searchable]="true" placeholder="Selecciona Provincias" (change)="setPais($event)"> 
+                              <ng-option *ngFor="let item of arrayProvincia" [value]="item.idProvincia">
+                                  {{item.NombreProvincia}}
+                              </ng-option>
+                          </ng-select>
+                    </div>  
+                     
+            </div>
+
+          <form action="#" class="form form-label-right" [formGroup]="formGroup"> 
+            <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-12">
+                      <label class="form-label">Nombre</label>
+                      <input type="text" class="form-control form-control-lg form-control-solid" name="Nombre" placeholder="Nombre" autocomplete="off" 
+                       formControlName="Nombre" [class.is-invalid]="isControlInvalid('Nombre')" [class.is-valid]="isControlValid('Nombre')" />  <!--[class.is-invalid]="isControlInvalid('Nombre')" [class.is-valid]="isControlValid('Nombre')"-->           
+                      <div class="feedback" *ngIf="!formGroup.controls['Nombre'].value">Por favor, ingresa <b>Nombre</b></div> <!--*ngIf="!formGroup.controls['Nombre'].value"-->
+                      <div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombre')"> Nombre obligatorio. </div> <!--*ngIf="controlHasError('required', 'Nombre')"-->
+                      <div class="valid-feedback" *ngIf="isControlValid('Nombre')">Nombre correcto</div> <!--*ngIf="isControlValid('Nombre')"-->
+                    </div>
+                </div>               
+                <br>
+                <div class="row">
+                  <div class="col-lg-12">
+                      <label class="form-label">Activo</label>
+                      <span class="switch">
+                          <label>
+                              <input type="checkbox" name="Activo" formControlName="Activo">
+                              <span></span>
+                          </label>
+                      </span>
+                    </div>
+                </div>                
+            </div>                    
+          </form> 
+        
+       
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+      
+      <ng-container>
+        <button type="submit" class="btn btn-primary btn-elevate" [disabled]="validoGuardar()" (click)="save()">  <!--[disabled]="validoGuardar()"-->
+          Guardar
+        </button>
+      </ng-container>
+    </div>
+  </div> 

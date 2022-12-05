@@ -1,0 +1,392 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <ng-container>
+        <ng-container *ngIf="idCliente > 0">Editar</ng-container>
+        <ng-container *ngIf="idCliente === 0">Nuevo</ng-container>
+        Cliente
+      </ng-container>
+    </div>
+
+    <div class="card-toolbar">
+    </div>
+  </div>
+  <div class="card-body">
+    <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+      <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DESCRIPCION_TAB)">
+        <a class="nav-link" data-toggle="tab" role="tab" [attr.aria-selected]="activeTabId === tabs.DESCRIPCION_TAB"
+          [class.active]="activeTabId === tabs.DESCRIPCION_TAB">DESCRIPCION CLIENTE</a>
+      </li>
+      <li class="nav-item cursor-pointer" (click)="changeTab(tabs.SUCURSALES_TAB)">
+        <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.SUCURSALES_TAB"
+          [class.active]="activeTabId === tabs.SUCURSALES_TAB">SUCURSALES</a>
+      </li>
+      <li class="nav-item cursor-pointer" (click)="changeTab(tabs.SUBCLIENTES_TAB)">
+        <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.SUBCLIENTES_TAB"
+          [class.active]="activeTabId === tabs.SUBCLIENTES_TAB">SUBCLIENTES</a>
+      </li>
+    </ul>
+
+    <ng-container *ngIf="activeTabId === tabs.DESCRIPCION_TAB">
+      <div [formGroup]="formDatosGenerales" class="pt-4">
+        <div class="row">
+          <div class="col-12 col-lg-3">
+            <label class="form-label">Código</label>
+            <input type="text" readonly="true"
+              class="custom-form-control form-control form-control-lg form-control-solid" name="Codigo"
+              placeholder="Código" autocomplete="off" formControlName="Codigo" />
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-12 col-lg-3">
+            <label>País</label>
+            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Pais"
+              [class.is-invalid]="isControlInvalid('Pais')" [class.is-valid]="isControlValid('Pais')"
+              placeholder="Seleccione un País" (change)="getListarDepartamento($event, null)">
+              <ng-option *ngFor="let item of array_pais" [value]="item.Pais">
+                {{item.NombrePais}}
+              </ng-option>
+            </ng-select>
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'Pais')"> Pais es obligatorio.
+            </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <label>Departamento</label>
+            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+              placeholder="Seleccione un Departamento" formControlName="Departamento"
+              [class.is-invalid]="isControlInvalid('Departamento')" [class.is-valid]="isControlValid('Departamento')"
+              (change)="getListarProvincia($event, null)">
+              <ng-option *ngFor="let item of array_departamento" [value]="item.Departamento">
+                {{item.NombreDepartamento}}
+              </ng-option>
+            </ng-select>
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'Departamento')"> Departamento es
+              obligatorio. </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <label>Provincia</label>
+            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Provincia"
+              formControlName="Provincia" [class.is-invalid]="isControlInvalid('Provincia')"
+              [class.is-valid]="isControlValid('Provincia')" (change)="getListarDistrito($event, null)">
+              <ng-option *ngFor="let item of array_provincia" [value]="item.Provincia">
+                {{item.NombreProvincia}}
+              </ng-option>
+            </ng-select>
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'Provincia')"> Provincia es
+              obligatorio. </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <label>Distrito</label>
+            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Distrito"
+              formControlName="Distrito" [class.is-invalid]="isControlInvalid('Distrito')"
+              [class.is-valid]="isControlValid('Distrito')">
+              <ng-option *ngFor="let item of array_distrito" [value]="item.Distrito">
+                {{item.NombreDistrito}}
+              </ng-option>
+            </ng-select>
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'Distrito')"> Distrito es
+              obligatorio. </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <label class="form-label">Razon Social</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="RazonSocial"
+              placeholder="Razon Social" autocomplete="off" formControlName="RazonSocial" />
+
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'RazonSocial')"> RazonSocial es
+              obligatorio. </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <label class="form-label">Nombre Comercial</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="NombreComercial"
+              placeholder="Nombre Comercial" autocomplete="off" formControlName="NombreComercial" />
+
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'NombreComercial')"> Nombre
+              Comercial es obligatorio. </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <label class="form-label">Direccion</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="Direccion"
+              placeholder="Direccion" autocomplete="off" formControlName="Direccion" />
+
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'Direccion')"> Direccion es
+              obligatorio. </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <label class="form-label">Referencia</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="Referencia"
+              placeholder="Referencia" autocomplete="off" formControlName="Referencia" />
+
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'Referencia')"> Referencia es
+              obligatorio. </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <label>Tipo Documento</label>
+            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="TipoDocumento"
+              [class.is-invalid]="isControlInvalid('TipoDocumento')" placeholder="Seleccione un Tipo Documento">
+              <ng-option *ngFor="let item of array_tipo_doc" [value]="item.ValorDocIdentidad">
+                {{item.NombreDocIdentidad}}
+              </ng-option>
+            </ng-select>
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'TipoDocumento')"> Tipo Documento
+              es obligatorio. </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <label>Documento</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="DocumentoIdentidad"
+              placeholder="Documento" autocomplete="off" [class.is-invalid]="isControlInvalid('DocumentoIdentidad')"
+              [class.is-valid]="isControlValid('DocumentoIdentidad')" formControlName="DocumentoIdentidad" />
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'DocumentoIdentidad')"> Documento
+              es obligatorio. </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <label class="form-label">Email</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="Email" placeholder="Email"
+              autocomplete="off" formControlName="Email" />
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'Email')"> Email es obligatorio.
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <label class="form-label">Telefono 1</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="Telefono1"
+              placeholder="Telefono 1" autocomplete="off" formControlName="Telefono1" />
+
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'Telefono1')"> Telefono 1 es
+              obligatorio. </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <label class="form-label">Telefono 2</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="Telefono2"
+              placeholder="Telefono 2" autocomplete="off" formControlName="Telefono2" />
+            <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'Telefono2')"> Telefono 2 es
+              obligatorio. </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-12">
+            <label>Activo</label>
+            <span class="switch">
+              <label>
+                <input type="checkbox" name="Activo" formControlName="Activo">
+                <span></span>
+              </label>
+            </span>
+          </div>
+        </div>
+        <br>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activeTabId === tabs.SUCURSALES_TAB">
+      <br>
+      <div class="row pt-3">
+        <div class="col-12 col-lg-6">
+          <h6>Agregar Sucursales</h6>
+        </div>
+        <div class="col-12 col-lg-6">
+          <a class="btn btn-success font-weight-bold mr-2 float-right"
+            (click)="saveUpdateClienteSucursal(null)">Agregar</a>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <table class="table">
+          <thead>
+
+              <th>Nro</th>              
+              <th>Acciones</th>
+              <th>Pais</th>
+              <th>Departamento</th>
+              <th>Provincia</th>              
+              <th>Distrito</th>
+              <th>Direccion</th>
+              <th>Referencia</th>
+          </thead>
+          <tbody>
+              <tr *ngFor="let item of array_clienteSucursal;let index = index">
+                <td>
+                  {{index + 1}}
+                </td>
+                <td>
+                  <a title="Edit" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                        (click)="saveUpdateClienteSucursal(item)"
+                          >
+                          <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                          class="svg-icon svg-icon-md svg-icon-primary">
+                          </span>
+                    </a>
+                  <a (click)="deleteClienteSucursal(index)" title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm mx-3"
+                  >
+                    <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                      class="svg-icon svg-icon-md svg-icon-danger">
+                    </span>
+                  </a> 
+                </td> 
+                <td>
+                  {{item.NombrePais }}
+                </td>
+                <td>
+                  {{item.NombreDepartamento}} 
+                </td>
+                <td>
+                  {{item.NombreProvincia}} 
+                </td>
+                <td>
+                  {{item.NombreDistrito}}
+                </td>
+                <td>
+                  {{item.Direccion}}
+                </td>
+                <td>
+                  {{item.Referencia}}
+                </td>
+                   
+              </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="activeTabId=== tabs.SUBCLIENTES_TAB">
+      <br>
+      <div class="row pt-3">
+        <div class="col-12 col-lg-6">
+          <h6>Agregar Subclientes</h6>
+        </div>
+        <div class="col-12 col-lg-6">
+          <button class="btn btn-primary font-weight-bold mr-2 float-right" (click)="addSubcliente()"><span
+              [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'" cacheSVG="true"
+              class="svg-icon svg-icon-lg svg-icon-light" style="margin-right: 0;">
+            </span> Agregar</button>
+        </div>
+      </div>
+
+      <div class="mt-5 form-group row justify-content-center">
+        <div class="col-lg-12">
+          <table class="table">
+            <thead>
+              <th class="text-center">N°</th>
+              <th class="text-center">TIPO DOCUMENTO</th>
+              <th class="text-center">DOCUMENTO</th>
+              <th class="text-center">RAZÓN SOCIAL</th>
+              <th class="text-center">DIRECCIÓN</th>
+              <th class="text-center">EMAIL</th>
+              <th class="text-center">TELÉFONO</th>
+              <th class="text-center">ACTIVO</th>
+              <th class="text-center">Operacion</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of Subclientes.controls; let index=index">
+                <ng-container [formGroup]="item">
+                  <td class="text-center my-auto">
+                    {{index+1}}
+                  </td>
+                  <td>
+                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione..."
+                      formControlName="IdTipoDocumentoIdentidad"
+                      [class.is-invalid]="isFormControlInvalid(item.controls.IdTipoDocumentoIdentidad)"
+                      [class.is-valid]="isFormControlValid(this.item.controls.IdTipoDocumentoIdentidad)">
+                      <ng-option *ngFor="let item of array_tipo_doc" [value]="item.ValorDocIdentidad">
+                        {{item.NombreDocIdentidad}}
+                      </ng-option>
+                    </ng-select>
+                    <div class="invalid-feedback"
+                      *ngIf="FormControlHasError('required',item.controls.IdTipoDocumentoIdentidad)">
+                      Tipo de Documento es obligatorio</div>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control form-control-lg form-control-solid" name="DocumentoIdentidad"
+                      placeholder="Documento de Identidad" autocomplete="off" formControlName="DocumentoIdentidad"
+                      [class.is-invalid]="isFormControlInvalid(item.controls.DocumentoIdentidad) || FormControlDocumentoRepetido(item.controls.DocumentoIdentidad,index)"
+                      [class.is-valid]="isFormControlValid(this.item.controls.DocumentoIdentidad)"
+                      (keyup)="buscarDocumentoSubcliente(item.controls.DocumentoIdentidad.value,index)" />
+                    <div class="invalid-feedback"
+                      *ngIf="FormControlHasError('required',item.controls.DocumentoIdentidad)"> Documento
+                      es
+                      obligatorio. </div>
+                    <div class="invalid-feedback"
+                      *ngIf="FormControlDocumentoRepetido(item.controls.DocumentoIdentidad,index)">
+                      No se pueden repetir Documentos</div>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control form-control-lg form-control-solid" name="RazonSocial"
+                      placeholder="Razon Social" autocomplete="off" formControlName="RazonSocial"
+                      [class.is-invalid]="isFormControlInvalid(this.item.controls.RazonSocial) || FormControlRazonSocialRepetido(this.item.controls.RazonSocial,index)"
+                      [class.is-valid]="isFormControlValid(this.item.controls.RazonSocial)"
+                      (keyup)="buscarRazonSocialSubcliente(this.item.controls.RazonSocial.value,index)" />
+                    <div class="invalid-feedback" *ngIf="FormControlHasError('required',item.controls.RazonSocial)">
+                      Razon Social
+                      es
+                      obligatorio. </div>
+                    <div class="invalid-feedback"
+                      *ngIf="FormControlRazonSocialRepetido(item.controls.RazonSocial,index)">
+                      No se pueden repetir Razon Social</div>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control form-control-lg form-control-solid" name="Direccion"
+                      placeholder="Direccion" autocomplete="off" formControlName="Direccion" />
+                  </td>
+                  <td>
+                    <input type="email" class="form-control form-control-lg form-control-solid" name="Email"
+                      placeholder="Email" autocomplete="off" formControlName="Email"
+                      [class.is-invalid]="isFormControlInvalid(item.controls.Email) "
+                       />
+                    <div class="invalid-feedback" *ngIf="FormControlHasError('email',item.controls.Email)">
+                      Debe usar formato de correo</div>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control form-control-lg form-control-solid" name="Telefono"
+                      placeholder="Telefono" autocomplete="off" formControlName="Telefono" />
+                  </td>
+                  <td class="d-flex justify-content-center">
+                    <span class="switch">
+                      <label>
+                        <input type="checkbox" name="Activo" formControlName="Activo">
+                        <span></span>
+                      </label>
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <button (click)="deleteSubcliente(index)" title="Eliminar Subcliente"
+                      class="btn btn-icon btn-light btn-hover-danger btn-sm">
+                      <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-danger">
+                      </span>
+                    </button>
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </ng-container>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="float-right">
+          <button type="button" class="btn btn-primary font-weight-bold mr-2" disabled
+            *ngIf="!hide_load">Guardando...</button>
+          <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="hide_load"
+            (click)="saveUpdateCliente()">Guardar Cliente</button>
+          <a class="btn btn-danger font-weight-bold mr-2" routerLink="/Sales/masters/Cliente">Cancelar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

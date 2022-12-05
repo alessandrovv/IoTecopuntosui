@@ -1,0 +1,188 @@
+<div class="card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">{{this.titulo}}</h3>
+		</div>
+		<div class="card-toolbar">
+			<!-- <button type="button" class="btn btn-primary" (click)="addConfiguracion()">Nueva Configuración</button> -->
+		</div>
+	</div>
+	<div class="card-body">
+		<div class="form form-label-right">
+			<div class="form-group row" [formGroup]="formGroup">
+				<div class="col-lg-2">
+					<label class="form-label">Tabla</label>
+					<input readonly type="text" formControlName="Tabla" class="form-control form-control-lg form-control-solid" name="Tabla" placeholder="Tabla" autocomplete="off"/>             
+				</div>
+				<div class="col-lg-5">
+					<label class="form-label">Nombre</label>
+					<input type="text" class="form-control form-control-lg form-control-solid" name="Nombre" placeholder="Nombre" autocomplete="off" [class.is-invalid]="isControlInvalid('Nombre')" [class.is-valid]="isControlValid('Nombre')" formControlName="Nombre"/>             
+					<div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombre')"> Nombre es obligatorio. </div> 
+				</div>
+				<div class="col-lg-5">
+					<label class="form-label">Descripción</label>
+					<input type="text" class="form-control form-control-lg form-control-solid" name="Descripcion" placeholder="Descripción" autocomplete="off" [class.is-invalid]="isControlInvalid('Descripcion')" [class.is-valid]="isControlValid('Descripcion')" formControlName="Descripcion"/>             
+					<div class="invalid-feedback" *ngIf="controlHasError('required', 'Descripcion')"> Nombres son obligatorios. </div> 
+				</div>
+			</div>
+			<div class="form-group">
+
+			</div>
+			<h3>Detalle</h3>
+			<div class="p-4" [formGroup]="detalleFormGroup" >
+				<div class="form-group row">
+					<div class="col-lg-2">
+						<label class="form-label">Valor</label>
+						<input type="text" readonly formControlName="Valor" class="form-control form-control-lg form-control-solid" name="Valor" placeholder="Valor" autocomplete="off"/>
+						
+					</div>
+					<div class="col-lg-5">
+						<label class="form-label">Nombre</label>
+						<input type="text" class="form-control form-control-lg form-control-solid" name="NombreD" placeholder="Nombre" autocomplete="off" formControlName="NombreD" [class.is-invalid]="isControlInvalid('NombreD')" [class.is-valid]="isControlValid('NombreD')"/>             
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'NombreD')"> Nombre es obligatorio. </div> 
+					</div>
+					<div class="col-lg-5">
+						<label class="form-label">Descripción</label>
+						<input type="text" class="form-control form-control-lg form-control-solid" name="DescripcionD" placeholder="Descripción" autocomplete="off" formControlName="DescripcionD"/>             
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-lg-2">
+						<label class="form-label">Valor 1</label>
+						<input type="text" class="form-control form-control-lg form-control-solid" name="Valor1" placeholder="" autocomplete="off" formControlName="Valor1"/>             
+					</div>
+					<div class="col-lg-2">
+						<label class="form-label">Valor 2</label>
+						<input type="text" class="form-control form-control-lg form-control-solid" name="Valor2" placeholder="" autocomplete="off" formControlName="Valor2"/>             
+					</div>
+					<div class="col-lg-2">
+						<label class="form-label">Valor 3</label>
+						<input type="text" class="form-control form-control-lg form-control-solid" name="Valor3" placeholder="" autocomplete="off" formControlName="Valor3"/>             
+					</div>
+					<div class="col-lg-2">
+						<label class="form-label">Valor 4</label>
+						<input type="text" class="form-control form-control-lg form-control-solid" name="Valor4" placeholder="" autocomplete="off" formControlName="Valor4"/>             
+					</div>
+					<div class="col-lg-2 d-flex align-items-end p-2">
+						<label class="form-label"> &nbsp;</label>
+						<button type="button" (click)="agregarValor()" class="btn btn-secondary font-weight-bold">
+							+ Agregar
+						</button>
+					</div>
+				</div>			
+			</div>
+
+			<div class="table-responsive angular-bootstrap-table mat-table__wrapper p-3">
+				<mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+	
+						<ng-container matColumnDef="Valor">
+								<mat-header-cell *matHeaderCellDef mat-sort-header>VALOR</mat-header-cell>
+								<mat-cell *matCellDef="let lesson">{{lesson.valor}}</mat-cell>
+						</ng-container>
+	
+						<ng-container matColumnDef="Nombre">
+								<mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRE</mat-header-cell>
+								<mat-cell *matCellDef="let lesson">{{lesson.nombre}}</mat-cell>
+						</ng-container>
+	
+						<ng-container matColumnDef="Descripcion">
+								<mat-header-cell *matHeaderCellDef mat-sort-header>DESCRIPCION</mat-header-cell>
+								<mat-cell *matCellDef="let lesson">{{lesson.descripcion}}</mat-cell>
+						</ng-container>
+	
+						<ng-container matColumnDef="Valor1">
+								<mat-header-cell *matHeaderCellDef mat-sort-header>VALOR 1</mat-header-cell>
+								<mat-cell *matCellDef="let lesson">{{lesson.valor1}}</mat-cell>
+						</ng-container>
+	
+						<ng-container matColumnDef="Valor2">
+								<mat-header-cell *matHeaderCellDef mat-sort-header>VALOR 2</mat-header-cell>
+								<mat-cell *matCellDef="let lesson">{{lesson.valor2}}</mat-cell>
+						</ng-container>
+	
+						<ng-container matColumnDef="Valor3">
+								<mat-header-cell *matHeaderCellDef mat-sort-header>VALOR 3</mat-header-cell>
+								<mat-cell *matCellDef="let lesson">{{lesson.valor3}}</mat-cell>
+						</ng-container>
+	
+						<ng-container matColumnDef="Valor4">
+								<mat-header-cell *matHeaderCellDef mat-sort-header>VALOR 4</mat-header-cell>
+								<mat-cell *matCellDef="let lesson">{{lesson.valor4}}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="Estado">
+								<mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+								<mat-cell *matCellDef="let lesson">
+										
+										<span class="switch">
+												<label>
+														<input type="checkbox" name="Activo" [(ngModel)]="lesson.activo" (click)="toggleActivo(lesson)">
+														<span></span>
+												</label>
+										</span>
+								</mat-cell>
+						</ng-container>
+	
+						<ng-container matColumnDef="actions">
+								<mat-header-cell *matHeaderCellDef>OPERACIONES</mat-header-cell>
+								<mat-cell *matCellDef="let lesson">                              
+	
+										<a title="Editar Detalle" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+												(click)="editarValor(lesson)">
+												<span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+												class="svg-icon svg-icon-md svg-icon-primary">
+												</span>
+										</a>
+	
+										<a *ngIf="banEliminado" title="Borrar Detalle" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+												(click)="eliminarValor(lesson)">
+												<span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+												class="svg-icon svg-icon-md svg-icon-danger">
+												</span>
+										</a>
+	
+										<!-- <button mat-icon-button style="color: #00A09D !important" type="button" 
+										[routerLink]="['/Ventas/Configuracion/Banco/edit']" [queryParams]="{id: lesson.Banco}" matTooltip="Editar Banco">
+											<mat-icon>create</mat-icon>
+										</button>
+	
+										<button mat-icon-button style="color: #b7343d !important" type="button" 
+										(click)="eliminarActivar(lesson.Banco, false)" matTooltip="Eliminar Banco">
+												<mat-icon>delete</mat-icon>
+										</button> -->
+	
+								</mat-cell>
+						</ng-container>
+	
+						<ng-container matColumnDef="loading">
+								<mat-footer-cell *matFooterCellDef colspan="5">
+										Loading data...
+								</mat-footer-cell>
+						</ng-container>
+						<ng-container matColumnDef="noData">
+								<mat-footer-cell *matFooterCellDef colspan="5">
+										No se encontraron registros.
+								</mat-footer-cell>
+						</ng-container>
+	
+						<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+	
+						<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+						<mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+						</mat-footer-row>
+						<mat-footer-row *matFooterRowDef="['noData']"
+								[ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+				</mat-table>
+			</div>
+
+			<div class="float-right mt-4">
+				<a class="btn btn-default font-weight-bold mr-2" routerLink="/Security/masters/Multitabla">Cancelar</a>
+				<button type="button" class="btn btn-primary font-weight-bold mr-2" disabled *ngIf="!hide_load">Registrando...</button>
+				<button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="!hide_save" (click)="saveUpdateMultitabla();">Guardar</button>
+			</div>
+		 
+		</div>
+
+	 
+	</div>
+</div>

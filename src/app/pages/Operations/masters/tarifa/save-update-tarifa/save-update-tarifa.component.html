@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        <ng-container>
+          <ng-container>{{tipoTarifa}} Tarifa</ng-container>
+        </ng-container>
+      </div>
+    </div>
+    <div
+      class="overlay overlay-block cursor-default modal-body"
+      style="min-height: 404px"
+    >
+      <ng-container *ngIf = "isLoading$ | async">
+        <div class="overlay-layer bg-transparent">
+          <div class="spinner spinner-lg spinner-success"></div>
+        </div>
+      </ng-container>
+  
+      <ng-container>        
+            <div class="form-group" style="margin-bottom: -10px;">
+                <div class="row" [formGroup] = "formDataTarifa" >
+                    <div class="col-lg-12" style="margin-bottom: 5px;">
+                      <small class="form-text text-muted"><b>Selecciona</b> la Ruta</small>
+                          <ng-select #agreeSelect [clearSearchOnAdd] = "false" formControlName = "Ruta" 
+                              [searchable]="true" placeholder="Ruta" >
+                              <ng-option *ngFor="let ruta of arrayRutas" [value]="ruta.idRuta" >
+                                <b>{{ruta.nombreOrigen}}</b>&nbsp;{{ruta.distritoOrigen}} -&nbsp;<b>{{ruta.nombreDestino}}</b>&nbsp;{{ruta.distritoDestino}}
+                              </ng-option>
+                          </ng-select>
+                    </div>
+                    <div class="col-lg-12">
+                      <small class="form-text text-muted"><b>Selecciona</b> el Cliente</small>
+                          <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName = "Cliente"
+                              [searchable]="true" placeholder="Cliente">
+                              <ng-option *ngFor="let cli of arrayClientes" [value]="cli.idCliente">
+                                  {{cli.razonSocial}}
+                              </ng-option>
+                          </ng-select>
+                    </div>    
+                    <div class="col-lg-12" style="margin-bottom: 5px;">
+                        <small class="form-text text-muted"><b>Selecciona</b> la Moneda</small>
+                            <ng-select #agreeSelect [clearSearchOnAdd] = "false" formControlName = "Moneda" 
+                                [searchable]="true" placeholder="Moneda">
+                                <ng-option *ngFor="let mo of arrayMonedas" [value]="mo.idMoneda">
+                                    {{mo.nombreMoneda}}
+                                </ng-option>
+                            </ng-select>
+                      </div>
+                  </div>     
+            </div>
+
+        <form action="#" class="form form-label-right" [formGroup]="formDataTarifa"> 
+            <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-12">
+                      <label class="form-label">Costo</label>
+                      <input type="number" class="form-control form-control-lg form-control-solid" name="Costo" placeholder="Costo" autocomplete="off" [class.is-invalid]="isControlInvalid('Costo')" [class.is-valid]="isControlValid('Costo')" formControlName="Costo"/>             
+                      <div class="invalid-feedback" *ngIf="controlHasError('required', 'Costo')"> Costo obligatorio. </div> 
+                      <div class="valid-feedback" *ngIf="isControlValid('Costo')">Costo correcto</div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col-lg-6">
+                        <label class="form-label">Fecha de Inicio Vigencia</label>
+                        <input type="date" class="form-control form-control-lg form-control-solid" name="fechaInicio" placeholder="fechaInicio" autocomplete="off" [class.is-invalid]="isControlInvalid('fechaInicio')" [class.is-valid]="isControlValid('fechaInicio')" formControlName="fechaInicio"/>             
+                        <div class="invalid-feedback" *ngIf="controlHasError('required', 'fechaInicio')"> Fecha obligatoria. </div> 
+                        <div class="valid-feedback" *ngIf="isControlValid('fechaInicio')">Fecha correcta</div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">Fecha de Fin Vigencia</label>
+                        <input type="date" min="{{formDataTarifa.controls.fechaInicio.value}}" class="form-control form-control-lg form-control-solid" name="fechaFin" placeholder="fechaFin" autocomplete="off" [class.is-invalid]="isControlInvalid('fechaFin')" [class.is-valid]="isControlValid('fechaFin')" formControlName="fechaFin"/>             
+                    </div>
+                </div>               
+                <br>
+                <div class="row">
+                  <div class="col-lg-12">
+                      <label class="form-label">Activo</label>
+                      <span class="switch">
+                          <label>
+                              <input type="checkbox" name="Activo" formControlName="Activo">
+                              <span></span>
+                          </label>
+                      </span>
+                    </div>
+                </div>                
+            </div>                    
+          </form> 
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+      
+      <ng-container>
+        <button type="submit" class="btn btn-primary btn-elevate" [disabled]="validoGuardar()" (click)="save()">
+          Guardar
+        </button>
+      </ng-container>
+    </div>
+  </div>
+  
+

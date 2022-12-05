@@ -1,0 +1,23 @@
+.bg-gray {
+    background-color: rgb(238, 238, 238);
+}
+
+.bg{
+    position: relative;
+    background-color: #000000a5;
+    border: 3px solid #FFFFFF;
+}
+
+.btn-close{
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    position: absolute; 
+    width: 24px; 
+    height: 24px; 
+    right: -3.5%; 
+    top:-2.5%; 
+    background-color: #272626bb; 
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+}

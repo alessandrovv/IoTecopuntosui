@@ -1,0 +1,128 @@
+<div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        <ng-container>
+          <ng-container *ngIf="idPlanContrato > 0">Editar</ng-container>
+          <ng-container *ngIf="idPlanContrato === 0">Nuevo</ng-container>
+          Plan Contrato
+          <ng-container *ngIf="idPlanContrato > 0"
+            >'{{ item.nombre }}'</ng-container
+          >
+        </ng-container>
+      </div>
+    </div>
+    <div
+      class="overlay overlay-block cursor-default modal-body"
+      style="min-height: 404px"
+    >
+      <ng-container *ngIf="isLoading$ | async">
+        <div class="overlay-layer bg-transparent">
+          <div class="spinner spinner-lg spinner-success"></div>
+        </div>
+      </ng-container>
+  
+      <ng-container>
+        <form action="#" class="form form-label-right" [formGroup]="formGroup"> 
+          <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label>Empresa</label>
+
+                        <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Empresa" name="Empresa"
+                            [searchable]="true" placeholder="Empresa" [class.is-invalid]="isControlInvalid('Empresa')"
+                            (change)="getCienteInterno($event,null)">
+                            <ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+                                {{item.razonSocial}}
+                            </ng-option>
+                        </ng-select>                
+                        <div class="feedback" *ngIf="!formGroup.controls['Empresa'].value">Por favor, selecciona una <b>Empresa</b></div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div>      
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label>Cliente</label>
+                        <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Cliente" name="Cliente"
+                            [searchable]="true" placeholder="Cliente" [class.is-invalid]="isControlInvalid('Cliente')">
+                            <ng-option *ngIf="!array_cliente_externo || !formGroup.controls['Empresa'].value" [value]="-1" ng-model="selected" disabled>
+                              Selecciona una Empresa
+                          </ng-option>
+                            <ng-option *ngFor="let item of array_cliente_externo" [value]="item.ClienteExterno">
+                                {{item.NombreCliente}}
+                            </ng-option>
+                        </ng-select>                       
+                        <div class="feedback" *ngIf="!formGroup.controls['Cliente'].value">Por favor, selecciona un <b>Cliente</b></div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('required', 'Cliente')"> Cliente es obligatorio. </div>                     
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="form-label">Nombre </label>
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="NombrePlanContrato" placeholder="Nombre Plan Contrato" autocomplete="off" [class.is-invalid]="isControlInvalid('NombrePlanContrato')" [class.is-valid]="isControlValid('NombrePlanContrato')" formControlName="NombrePlanContrato"/>             
+                        <div class="feedback" *ngIf="!formGroup.controls['NombrePlanContrato'].value">Por favor, selecciona un <b>Nombre</b></div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('required', 'NombrePlanContrato')"> Nombre es obligatorio. </div> 
+                        <div class="valid-feedback" *ngIf="isControlValid('NombrePlanContrato')">Nombre es correcto</div>
+                    </div>
+                </div>    
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="form-label">Descripcion </label>
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="Descripcion" placeholder="Descripcion Plan Contrato" autocomplete="off" [class.is-invalid]="isControlInvalid('Descripcion')" [class.is-valid]="isControlValid('Descripcion')" formControlName="Descripcion"/>             
+                        <div class="feedback" *ngIf="!formGroup.controls['Descripcion'].value">Por favor, ingresa una <b>Descripcion</b></div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('required', 'Descripcion')"> Descripcion obligatoria. </div> 
+                        <div class="valid-feedback" *ngIf="isControlValid('Descripcion')">Descripcion es correcto</div>
+                    </div>
+                </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-lg-6"> 
+                      <label>Moneda</label>
+
+                        <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Moneda" name="Moneda"
+                            [searchable]="true" placeholder="Moneda" [class.is-invalid]="isControlInvalid('Moneda')">
+                            <ng-option *ngFor="let item of array_monedas" [value]="item.ValorMoneda">
+                                {{item.NombreMoneda}}
+                            </ng-option>
+                        </ng-select>                
+                        <div class="feedback" *ngIf="!formGroup.controls['Moneda'].value">Por favor, selecciona una <b>Moneda</b></div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('required', 'Moneda')"> Moneda es obligatorio. </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">Monto </label>
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="Monto" placeholder="Monto" autocomplete="off" [class.is-invalid]="isControlInvalid('Monto')" [class.is-valid]="isControlValid('Monto')" formControlName="Monto"/>             
+                        <div class="feedback" *ngIf="!formGroup.controls['Monto'].value">Por favor, ingresa una <b>Monto</b></div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('required', 'Monto')"> Monto obligatoria. </div> 
+                        <div class="valid-feedback" *ngIf="isControlValid('Monto')">Monto es correcto</div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="form-label">Activo</label>
+                        <span class="switch">
+                            <label>
+                                <input type="checkbox" name="Activo" formControlName="Activo">
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>                
+          </div>                    
+        </form>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+      
+      <ng-container>
+        <button type="submit" class="btn btn-primary btn-elevate" (click)="save()" [disabled]="formGroup.invalid">
+          Guardar
+        </button>
+      </ng-container>
+    </div>
+  </div>
+  
+

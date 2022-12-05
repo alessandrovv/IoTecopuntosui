@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            <ng-container>
+                <ng-container *ngIf = "Banco > 0">Editar Banco</ng-container>
+                <ng-container *ngIf = "Banco === 0">Nueva Banco</ng-container>
+                <!-- <ng-container *ngIf="Provincia > 0">'{{ item.idProvincia }}'</ng-container> -->
+            </ng-container>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="form form-label-right">
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                        <div [formGroup]="formDataBanco">
+                            <div class="row">                            
+                                <div class="col-lg-6"> 
+                                    <label class="form-label">Codigo</label>
+                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Codigo" placeholder="Codigo" autocomplete="off" formControlName="Codigo" [class.is-invalid]="isControlInvalid('Codigo')" [class.is-valid]="isControlValid('Codigo')"/><!-- -->
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Codigo')"> Codigo es obligatorio. </div>  
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label">Nombre</label>
+                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Nombre" placeholder="Nombre" autocomplete="off" formControlName="Nombre"  [class.is-invalid]="isControlInvalid('Nombre')" [class.is-valid]="isControlValid('Nombre')"/><!--          -->
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombre')"> Nombre es obligatorio. </div>  
+                                </div>
+                            </div>
+                            <div class="row">      
+                                <div class="col-lg-3">
+                                    <label>Activo</label>
+                                    <span class="switch">
+                                        <label>
+                                            <input type="checkbox" name="Activo" formControlName="Activo" >
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </div>                                                          
+                            </div>
+                        </div>
+                   </div>
+                   <br>
+             </div>
+       </div>
+        <div>
+            <div class="card-toolbar">
+            <button type="button" class="btn btn-primary" (click)="agregarFila()">Agregar cuenta bancaria</button>
+            </div>
+        </div>
+        <!-- begin:Table -->
+        <div class="table-responsive angular-bootstrap-table mat-table__wrapper" >
+            <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+                <ng-container matColumnDef="Nro">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                    <mat-cell *matCellDef="let i = index;">{{i + 1}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="TipoCuenta">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TIPO DE CUENTA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson" >
+                        <ng-select placeholder="Tipo de Cuenta" [(ngModel)]="lesson.idTipoCuenta" style="width:90%">
+                                <ng-option *ngFor="let cuenta of array_cuenta" [value]="cuenta.Valor" name="TipoCuenta">
+                                    {{cuenta.Nombre}}
+                                </ng-option>
+                        </ng-select>
+                    </mat-cell>
+
+                </ng-container>
+                <ng-container matColumnDef="Moneda">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MONEDA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">
+                        <ng-select placeholder="Tipo de Moneda" [(ngModel)]="lesson.idMoneda" style="width:90%">
+                            <ng-option *ngFor="let moneda of array_moneda" [value]="moneda.Valor" name="Moneda">
+                                {{moneda.nombre}}
+                            </ng-option>
+                      </ng-select>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="NroCuenta">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N° DE CUENTA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="nroCuenta" placeholder="Numero de cuenta" autocomplete="off"  [(ngModel)]="lesson.nroCuenta" style="width: 90%;"/>             
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="NroCuentaInterbancaria">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N° DE CUENTA INTERBANCARIA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">
+                        <input type="text" class="form-control form-control-lg form-control-solid w-80" name="nroCuenta" placeholder="Numero de cuenta interbancaria" autocomplete="off"  [(ngModel)]="lesson.nroCCI"  style="width: 90%;"/>             
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Activo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ACTIVO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">
+                        
+                        <span class="switch">
+                            <label>
+                                <input type="checkbox" name="Activo" [(ngModel)]="lesson.activo" >
+                                <span></span>
+                            </label>
+                        </span>
+                    </mat-cell>
+                </ng-container>
+    
+    
+                <ng-container matColumnDef="Operaciones">
+                <mat-header-cell *matHeaderCellDef >ACCIONES</mat-header-cell>
+                <mat-cell *matCellDef="let lesson;let i=index">                                  
+                    <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm" (click)="deleteCuenta(lesson.idCuentaBancaria,i)">
+                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-danger">
+                        <!--  -->
+                        </span>
+                    </a>
+                </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="loading">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        Loading data...
+                    </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        No se encontraron registros.
+                    </mat-footer-cell>
+                </ng-container>
+    
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+            </mat-table>
+        </div>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button><!-- --><!---->
+
+    <ng-container>
+        <button type="submit" class="btn btn-primary btn-elevate" (click)="saveUpdate()" [disabled]="formDataBanco.invalid"><!---->
+            Guardar
+        </button>
+    </ng-container>
+    
+    </div>
+</div>

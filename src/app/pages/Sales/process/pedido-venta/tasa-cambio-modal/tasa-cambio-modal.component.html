@@ -1,0 +1,95 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            Registrar Tasa de Cambio
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+        <ng-container>
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Fecha</label>
+                            <input type="date" class="form-control form-control-lg form-control-solid"
+                                name="Fecha" placeholder="Fecha" autocomplete="off"
+                                [class.is-invalid]="isControlInvalid('Fecha')" [class.is-valid]="isControlValid('Fecha')"
+                                formControlName="Fecha" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Fecha')"> Fecha es
+                                obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Moneda origen</label>
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                formControlName="MonedaOrigen" [class.is-invalid]="isControlInvalid('MonedaOrigen')"
+                                placeholder="Seleccione un tipo de moneda">
+                                <ng-option *ngFor="let item of array_tiposMoneda" [value]="item.ValorMoneda">
+                                    {{item.NombreMoneda}}
+                                </ng-option>
+                            </ng-select>
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'MonedaOrigen')">
+                                Moneda origen es obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Moneda destino</label>
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="MonedaDestino"
+                                [class.is-invalid]="isControlInvalid('MonedaDestino')" placeholder="Seleccione un tipo de moneda">
+                                <ng-option *ngFor="let item of array_tiposMoneda" [value]="item.ValorMoneda">
+                                    {{item.NombreMoneda}}
+                                </ng-option>
+                            </ng-select>
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'MonedaDestino')">
+                                Moneda destino es obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Valor de compra</label>
+                            <input type="number" class="form-control form-control-lg form-control-solid" name="Compra"
+                                placeholder="Compra" autocomplete="off"
+                                [class.is-invalid]="isControlInvalid('Compra')"
+                                [class.is-valid]="isControlValid('Compra')" formControlName="Compra" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Compra')"> Valor de compra es
+                                obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Valor de venta</label>
+                            <input type="number" class="form-control form-control-lg form-control-solid"
+                                name="Venta" placeholder="Valor de venta"
+                                autocomplete="off" [class.is-invalid]="isControlInvalid('Venta')" step="0.01"
+                                min="0.01" [class.is-valid]="isControlValid('Venta')"
+                                formControlName="Venta" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Venta')"> Valor
+                                de venta es obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </ng-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+
+        <ng-container>
+            <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+                [disabled]="formGroup.invalid">
+                Registrar
+            </button>
+        </ng-container>
+    </div>
+</div>

@@ -1,0 +1,153 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label">Configuración de Documentos</h3>
+      </div>
+      <div class="card-toolbar">
+        <!-- <button type="button" class="btn btn-primary" (click)="addConfiguracion()">Nueva Configuración</button> -->
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form form-label-right">
+        <div class="form-group row">
+          <div class="col-lg-12">
+            <div class="row" [formGroup]="formGroup">
+              <div class="col-lg-4">
+                <label>Empresa</label>
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Empresa"
+                    [searchable]="true" placeholder="Seleccione una Empresa" [class.is-invalid]="isControlInvalid('Empresa')" (change)="getPuestoTrabajo($event,null)">
+                    <ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+                        {{item.razonSocial}}
+                    </ng-option>
+                </ng-select>
+                <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div>  
+              </div>
+              <div class="col-lg-4">
+                <label>Modalidad de Contratación</label>
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Modalidad" [class.is-invalid]="isControlInvalid('Modalidad')" placeholder="Seleccione una Modalidad">
+                    <ng-option *ngFor="let item of array_modalidad" [value]="item.Valor">
+                        {{item.Nombre}}
+                    </ng-option>
+                </ng-select>
+                <div class="invalid-feedback" *ngIf="controlHasError('required', 'Modalidad')"> Modalidad es obligatorio. </div>  
+              </div>
+  
+              <div class="col-lg-4">
+                <label>Puesto de Trabajo</label>
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Puesto de Trabajo" formControlName="PuestoTrabajo" [class.is-invalid]="isControlInvalid('PuestoTrabajo')">
+                    <ng-option *ngIf="!array_puestos || !formGroup.controls['Empresa'].value" [value]="-1" ng-model="selected" disabled>
+                      Selecciona una Empresa
+                    </ng-option>
+                    <ng-option *ngFor="let item of array_puestos" [value]="item.PuestoTrabajo">
+                        {{item.NombrePuestoTrabajo}}
+                    </ng-option>
+                </ng-select>
+                <div class="invalid-feedback" *ngIf="controlHasError('required', 'PuestoTrabajo')"> Puesto de Trabajo es obligatorio. </div>  
+              </div>
+            </div>
+          </div>  
+        </div>
+
+
+        <div class="card-body">
+            <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+              <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DATOS_TAB)">
+                <a class="nav-link" data-toggle="tab" role="tab" [attr.aria-selected]="activeTabId === tabs.DATOS_TAB" [class.active]="activeTabId === tabs.DATOS_TAB">Datos de Contrato</a>
+              </li>
+              <li class="nav-item cursor-pointer" (click)="changeTab(tabs.EXPEDIENTE_TAB)">
+                <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.EXPEDIENTE_TAB" [class.active]="activeTabId === tabs.EXPEDIENTE_TAB">Expediente</a>
+              </li>         
+            </ul>
+        
+            <ng-container *ngIf="activeTabId === tabs.DATOS_TAB">
+              <div class="mt-5">
+
+                <table class="table">
+                    <thead>
+                        <th>Dato</th>
+                        <th>Habilidato</th>
+                        <th>Obligatorio</th>
+                        <th>Tipo de Dato</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of array_datos_contrato">
+                            <td>
+                                {{ item.NombreDato }}
+                            </td>
+                            <td>
+                                <span class="switch">
+                                    <label>
+                                        <input type="checkbox" name="datoContratoHabilitado" [(ngModel)]="item.DatoContratoHabilitado">
+                                        <span></span>
+                                    </label>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="switch">
+                                    <label>
+                                        <input type="checkbox" name="datoContratoObligatorio" [(ngModel)]="item.DatoContratoObligatorio">
+                                        <span></span>
+                                    </label>
+                                </span>
+                            </td>
+                            <td>
+                                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Tipo" [formControl]="deta_formTipoDato[array_datos_contrato.indexOf(item)]">
+                                    <ng-option *ngFor="let item2 of array_tipo_dato" [value]="item2.Valor">
+                                        {{item2.Nombre}}
+                                    </ng-option>
+                                </ng-select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+            </ng-container>
+        
+            <ng-container *ngIf="activeTabId === tabs.EXPEDIENTE_TAB">
+                <div class="mt-5">
+
+                    <table class="table">
+                        <thead>
+                            <th>Documento</th>
+                            <th>Aplica</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of array_expediente">
+                                <td>
+                                    {{ item.Nombre }}
+                                </td>
+                                <td>
+                                    <span class="switch" *ngIf="item.Obligatorio">
+                                        <label>
+                                            <input name="expedienteAplica" type="checkbox" disabled [(ngModel)]="item.Aplica">
+                                            <span></span>
+                                        </label>
+                                    </span>
+
+                                    <span class="switch" *ngIf="!item.Obligatorio">
+                                        <label>
+                                            <input name="expedienteAplica" type="checkbox" [(ngModel)]="item.Aplica">
+                                            <span></span>
+                                        </label>
+                                    </span>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </div>
+            </ng-container>
+                    
+          </div>
+
+          <div class="float-right">
+            <a class="btn btn-default font-weight-bold mr-2" routerLink="/Talento/masters/ConfiguracionDocumento">Cancelar</a>
+            <button type="button" class="btn btn-primary font-weight-bold mr-2" disabled *ngIf="!hide_load">Registrando...</button>
+            <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="!hide_save" (click)="saveUpdateConfiguracion();">Registrar</button>
+          </div>
+       
+      </div>
+  
+     
+    </div>
+  </div>

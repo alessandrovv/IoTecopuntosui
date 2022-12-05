@@ -1,0 +1,35 @@
+<div class="w-100 d-flex" style="gap: 1.2em;" [formGroup]="filterGroupTiempo">
+    <select *ngIf="b_showTipo" class="form-control" (change)="sendFilters()"
+        style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+        formControlName="Tipo">
+        <option [value]="1">Anual</option>
+        <option [value]="2">Mensual</option>
+        <option [value]="3">Semanal</option>
+        <option [value]="4">Diario</option>
+    </select>
+
+    <select class="form-control" (change)="sendFilters()" *ngIf="tipoFiltro!==4"
+        style="flex-grow: 1; min-width: 170px; font-weight: bolder;  display: inline; width: auto;"
+        formControlName="Anio">
+        <option *ngFor="let anio of this.arrayAnios" [value]="anio">{{anio}}</option>
+    </select>
+
+    <select class="form-control" (change)="sendFilters()" *ngIf="tipoFiltro==2"
+        style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+        formControlName="Mes">
+        <option *ngFor="let mes of this.arrayMeses" [value]="mes.value">{{mes.name}}</option>
+    </select>
+
+    <select class="form-control" (change)="sendFilters()" *ngIf="tipoFiltro==3"
+        style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+        formControlName="Semana">
+        <option *ngFor="let semana of arraySemanas" [value]="semana.value">{{semana.name}}</option>
+    </select>
+
+    <input class="form-control" (change)="sendFilters()" *ngIf="tipoFiltro==4" type="date"
+        style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+        formControlName="FechaDesde">
+    <input class="form-control" (change)="sendFilters()" *ngIf="tipoFiltro==4" type="date"
+        style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+        formControlName="FechaHasta">
+</div>

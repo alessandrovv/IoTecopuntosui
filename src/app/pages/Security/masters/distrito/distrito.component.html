@@ -1,0 +1,163 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label">DISTRITOS</h3>
+      </div>
+      <div class="card-toolbar">
+        <button type="button" class="btn btn-primary" (click)="newmodal(null)">Nuevo Distrito</button>
+
+      </div>
+    </div>
+        
+      <!-- begin: Filtration form -->
+      <div class="card-body">
+        <div class="form-group row">
+          
+          <div class="col-lg-12">
+            <div class="row"  > <!-- -->
+                
+                <div class="col-lg-3"  [formGroup]="filterGroup">
+                    <small class="form-text text-muted"><b>Filtrar</b> por Pais</small>
+                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Pais" 
+                    formControlName="Pais" (change)="getDepartamentos($event); searchPaises()"> <!-- (change)="getPaises($event)"-->
+                        <ng-option *ngFor="let item of array_paises" [value]="item.Pais">
+                                {{item.NombrePais}}
+                        </ng-option>
+                    </ng-select>
+                </div>
+              
+                <div class="col-lg-3"  [formGroup]="filterGroup">
+                    <small class="form-text text-muted"><b>Filtrar</b> por Departamentos</small>
+                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Departamento" 
+                    formControlName="Departamento" (change)="getProvincias($event); searchDepartamentos()"> <!--(change)="getDepartamentos()"-->
+                        <ng-option *ngFor="let item of array_departamentos" [value]="item.Departamento">
+                            {{item.NombreDepartamento}}
+                        </ng-option>
+                    </ng-select>
+                </div>
+                <div class="col-lg-3"  [formGroup]="filterGroup">
+                    <small class="form-text text-muted"><b>Filtrar</b> por Provincias</small>
+                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione una Provincia" 
+                    formControlName="Provincia" (change)="searchProvincia()"> <!---->
+                        <ng-option *ngFor="let item of array_provincias" [value]="item.Provincia">
+                            {{item.NombreProvincia}}
+                        </ng-option>
+                    </ng-select>              
+                </div>
+                <div class="col-lg-3" [formGroup]="searchGroup"> <!---->
+                    <small class="form-text text-muted"><b>Filtrar</b> todos los campos</small>
+                  <input type="text" class="form-control" name="searchText" placeholder="Buscar" value="" (keyup)="search()"
+                    formControlName="searchTerm" />
+                </div> 
+            </div>
+          </div>          
+        </div>
+      </div>
+
+      <div class="row">
+
+        
+
+       
+
+
+        <div class="col-md-4">
+
+
+        </div>
+
+    </div>
+
+    
+      <!-- end: Filtration form -->
+
+    
+
+      <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+        <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+
+            <ng-container matColumnDef="Nro">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                <mat-cell *matCellDef="let i = index;">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}</mat-cell>
+            </ng-container> 
+
+            <ng-container matColumnDef="DISTRITOS">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRES</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.distrito}}</mat-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="PROVINCIA">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>PROVINCIA</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.provincia}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="DEPARTAMENTO">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>DEPARTAMENTO</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.departamento}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="PAIS">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>PAIS</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.pais}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="ACTIVO">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>ACTIVO</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">
+                    <span class="switch">
+                        <label>
+                            <input type="checkbox" name="Activo" [(ngModel)]="lesson.activo" (click)="EnableDisableDistrito(lesson.idDistrito, lesson.activo)"><!---->
+                            <span></span>
+                        </label>
+                    </span>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="OPCIONES">
+                <mat-header-cell *matHeaderCellDef>OPCIONES</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">                              
+
+                    <a title="Editar Material" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3" (click)="saveUpdate(lesson)"> <!---->
+                        <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-primary">
+                        </span>
+                    </a> 
+
+                    <a title="Eliminar Material" class="btn btn-icon btn-light btn-hover-danger btn-sm" (click)="deleteDistrito(lesson.idDistrito)"> <!---->
+                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-danger">
+                        </span>
+                    </a>                 
+
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="loading">
+                <mat-footer-cell *matFooterCellDef colspan="5">
+                    Loading data...
+                </mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="5">
+                    No se encontraron registros.
+                </mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+            </mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']"
+                [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+        </mat-table> 
+
+    </div>
+    
+
+    <div class="mat-table__bottom">
+        <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+        
+        <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>     
+  </div>

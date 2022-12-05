@@ -1,0 +1,80 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <ng-container>
+        <ng-container *ngIf="idMetaComercial > 0">Editar</ng-container>
+        <ng-container *ngIf="idMetaComercial === 0">Nueva</ng-container>
+        Meta Comercial
+      </ng-container>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="form form-label-right">
+      <div class="form-group row">
+        <div class="col-lg-8">
+          <div class="row" [formGroup]="formGroup">
+            <div class="col-lg-4">
+              <label>Empresa</label>
+              <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Empresa"
+                  [searchable]="true" placeholder="Empresa" [class.is-invalid]="isControlInvalid('Empresa')">
+                  <ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+                      {{item.razonSocial}}
+                  </ng-option>                             
+              </ng-select>              
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div>
+            </div>
+            <div class="col-lg-4">
+              <label>Año</label>
+              <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Anio"  
+              [searchable]="true" placeholder="Año" [class.is-invalid]="isControlInvalid('Anio')">
+                  <ng-option *ngFor="let item of array_anios" [value]="item.ValorAnio">
+                      {{item.NombreAnio}}
+                  </ng-option>                            
+              </ng-select>              
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'Anio')">Año es obligatorio. </div> 
+            </div>  
+            <div class="col-lg-4">
+              <label>Mes</label>
+              <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Mes"  
+              [searchable]="true" placeholder="Mes" [class.is-invalid]="isControlInvalid('Mes')">
+                  <ng-option *ngFor="let item of array_meses" [value]="item.ValorMes">
+                      {{item.NombreMes}}
+                  </ng-option>                  
+              </ng-select>              
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'Mes')">Mes es obligatorio. </div> 
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-5">
+      <table class="table">
+          <thead>
+              <th>Nro</th>
+              <th>Asociado Comercial</th>
+              <th class="text-center">Meta</th>
+          </thead>
+          <tbody>
+              <tr *ngFor="let item of array_trabajadores;let indexOfelement=index;">
+                  <td>
+                    {{indexOfelement+1}}
+                  </td>
+                  <td>
+                    {{ item.NombresApellidos }}
+                  </td>
+                  <td>
+                    <input type="number" class="form-control form-control-lg form-control-solid" name="Meta" placeholder="Meta" autocomplete="off" [formControl]="data_formMeta[array_trabajadores.indexOf(item)]" [class.is-invalid]="isFormControlInvalid(data_formMeta[array_trabajadores.indexOf(item)])" [class.is-valid]="isFormControlValid(data_formMeta[array_trabajadores.indexOf(item)])"/>   
+                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', data_formMeta[array_trabajadores.indexOf(item)])"> Meta es obligatoria</div>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+    <div class="float-right">            
+      <button type="button" class="btn btn-primary font-weight-bold mr-2" disabled *ngIf="!hide_load">Registrando...</button>
+      <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="hide_load" (click)="saveUpdateMetaComercial()">Registrar Meta Comercial</button>
+      <a class="btn btn-danger font-weight-bold mr-2" routerLink="/Comercial/masters/MetasComerciales">Cancelar</a>
+    </div>     
+  </div>
+</div>
+

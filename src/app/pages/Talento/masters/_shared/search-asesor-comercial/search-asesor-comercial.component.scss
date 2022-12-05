@@ -1,0 +1,21 @@
+.mat-column-Codigo,
+.mat-column-Select,
+.mat-column-DocIdentidad,
+.mat-column-Sexo,
+.mat-column-Edad {
+  min-width: 110px;
+  width: 100%;
+  font-size: 11.5px;
+  flex: 0 0 110px;
+  justify-content: center;
+}
+
+
+.mat-column-NombresTrabajador,
+.mat-column-Direccion {
+  min-width: 250px;
+  width: 100%;
+  font-size: 11.5px;
+  flex: 0 0 250px;
+  justify-content: left;
+}

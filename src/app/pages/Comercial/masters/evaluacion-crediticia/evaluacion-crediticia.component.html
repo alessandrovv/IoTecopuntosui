@@ -1,0 +1,185 @@
+<div class="card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Evaluaciones Crediticias</h3>
+		</div>
+	</div>
+	<div class="card-body">
+		<!-- begin: Filtration form -->
+		<div class="form form-label-right">
+			<div class="form-group row">
+				<div class="col-lg-12">
+					<div class="row" [formGroup]="filterGroup">
+						
+						<div class="col-lg-2">
+							
+							<input class="form-control" formControlName="Desde" type="date">
+
+							<!-- <ng-select formControlName="Cliente" [items]="array_empresas" bindLabel="razonSocial" bindValue="idEmpresa"></ng-select> -->
+							<small class="form-text text-muted"><b>Filtrar</b> por Desde</small>
+						</div>
+
+						<div class="col-lg-2">
+
+							<input class="form-control" formControlName="Hasta" type="date">
+
+							<small class="form-text text-muted"><b>Filtrar</b> por Hasta</small>
+						</div>
+
+						<div class="col-lg-2">
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Empresa"
+									[searchable]="true" placeholder="Empresa">
+									<ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+											{{item.razonSocial}}
+									</ng-option>
+							</ng-select>
+
+							<!-- <ng-select formControlName="Cliente" [items]="array_empresas" bindLabel="razonSocial" bindValue="idEmpresa"></ng-select> -->
+							<small class="form-text text-muted"><b>Filtrar</b> por Empresa</small>
+						</div>
+
+						<div class="col-lg-3">
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Asesor"
+									[searchable]="true" placeholder="Asesor">
+									<ng-option *ngFor="let item of array_asesores" [value]="item.Asesor">
+											{{item.NombreAsesor}}
+									</ng-option>
+							</ng-select>
+
+							<!-- <ng-select formControlName="Cliente" [items]="array_empresas" bindLabel="razonSocial" bindValue="idEmpresa"></ng-select> -->
+							<small class="form-text text-muted"><b>Filtrar</b> por Asesor</small>
+						</div>
+
+						
+
+						<div class="col-lg-2">
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Estado" >
+									<ng-option *ngFor="let item of array_estado" [value]="item.Valor">
+											{{item.Nombre}}
+									</ng-option>
+							</ng-select>
+							<small class="form-text text-muted"><b>Filtrar</b> por Estado</small>
+						</div>
+
+						<div class="col-lg-1" style="padding-top: 5px;">
+							<button type="button" class="btn btn-primary font-weight-bold mr-2" title="Buscar" (click)="GetEvaluacionesCrediticias(filterGroup.controls.Empresa.value, filterGroup.controls.Desde.value, filterGroup.controls.Hasta.value, filterGroup.controls.Estado.value, filterGroup.controls.Asesor.value)">Buscar</button>
+						</div>
+
+					</div>
+				</div>
+				<div class="col-lg-8"></div>
+				<div class="col-lg-4" style="padding-top: 11px;" [formGroup]="searchGroup">
+					<input type="text" class="form-control" name="searchText" placeholder="Buscar" value="" (keyup)="search()"
+						formControlName="searchTerm" /><small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+				</div>
+			</div>
+		</div>
+
+		<div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+
+					<ng-container matColumnDef="Nro">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+							<!-- <mat-cell *matCellDef="let i=index">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}</mat-cell> -->
+							<mat-cell *matCellDef="let i=index">{{ i + 1}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="Acctions">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>ACCIONES</mat-header-cell>
+						<mat-cell *matCellDef="let lesson">
+							<a title="Modificar Estado" *ngIf="lesson.codEstado === '0001' || lesson.codEstado === '0004'" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3" (click)="revisionEvaluacionCrediticio(lesson.idEvaluacionCrediticia, lesson);">
+								<span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+								class="svg-icon svg-icon-md svg-icon-primary">
+								</span>
+							</a>
+						</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="Estado">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+						<mat-cell *matCellDef="let lesson">
+							<a title="lesson.estado" class="btn btn-light btn-sm mx-3" [style.color]="lesson.colorTexto" [style.background]="lesson.colorFondo">
+								{{lesson.estado}}
+							</a>
+						</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="Fecha">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>FECHA</mat-header-cell>
+						<mat-cell *matCellDef="let lesson">{{lesson.fecha}}</mat-cell>
+					</ng-container>
+					
+					<!-- <ng-container matColumnDef="Empresa">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>EMPRESA</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.nombreEmpresa || '-'}}</mat-cell>
+					</ng-container> -->
+
+					<ng-container matColumnDef="NombreSupervisor">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>SUPERVISOR</mat-header-cell>
+						<mat-cell *matCellDef="let lesson">{{lesson.NombreSupervisor || '-'}}</mat-cell>
+					</ng-container>	
+
+					<ng-container matColumnDef="NombreAsesor">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>ASESOR</mat-header-cell>
+						<mat-cell *matCellDef="let lesson">{{lesson.NombreAsesor || '-'}}</mat-cell>
+					</ng-container>					
+
+					
+					<!-- <ng-container matColumnDef="TipoDocIdentidad">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>TIPO DOC. IDENT</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.tipoDocumentoIdentidad}}</mat-cell>
+					</ng-container> -->
+
+					<ng-container matColumnDef="documentoIdentidad">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>DOC. IDENT</mat-header-cell>
+						<mat-cell *matCellDef="let lesson">{{lesson.documentoIdentidad}}</mat-cell>
+					</ng-container>
+					
+					<ng-container matColumnDef="BackOffice">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>BACK OFFICE</mat-header-cell>
+						<mat-cell *matCellDef="let lesson">{{lesson.BackOffice}}</mat-cell>
+					</ng-container>
+
+					<!-- <ng-container matColumnDef="Provincia">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>PROVINCIA</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.provincia}}</mat-cell>
+					</ng-container> -->
+
+					<!-- <ng-container matColumnDef="Distrito">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>DISTRITO</mat-header-cell>
+						<mat-cell *matCellDef="let lesson">{{lesson.distrito}}</mat-cell>
+					</ng-container> -->
+
+					<!-- <ng-container matColumnDef="Direccion">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>Direccion</mat-header-cell>
+						<mat-cell *matCellDef="let lesson">{{lesson.direccion}}</mat-cell>
+					</ng-container> -->
+
+					<ng-container matColumnDef="loading">
+							<mat-footer-cell *matFooterCellDef colspan="6">
+									Loading data...
+							</mat-footer-cell>
+					</ng-container>
+					<ng-container matColumnDef="noData">
+							<mat-footer-cell *matFooterCellDef colspan="6">
+									No tenemos evaluaciones pendientes.
+							</mat-footer-cell>
+					</ng-container>
+
+					<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+					<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+					<mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+					</mat-footer-row>
+					<mat-footer-row *matFooterRowDef="['noData']"
+							[ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+			</mat-table>
+	</div>
+
+	<div class="mat-table__bottom">
+			<mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+			<!-- <mat-paginator #matPaginator [pageSizeOptions]="[5, 50, 100]"></mat-paginator> -->
+			
+	</div>      
+	</div>
+</div>

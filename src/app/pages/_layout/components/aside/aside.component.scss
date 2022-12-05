@@ -1,0 +1,63 @@
+$bg-wcapital : #5262BC;
+
+:host {
+  .aside {
+    height: 100%;
+
+    .aside-menu {
+      margin: 0;
+    }
+  }
+
+  // fixed text line break issue on minimized aside hover
+  .menu-text {
+    white-space: nowrap;    
+    color: white!important;
+  }
+}
+
+.bg-wcapital{
+  background-color: $bg-wcapital!important;
+  color: white!important;
+  a{
+    color: white!important;
+  }
+}
+.bg-wcapital-img{
+    height: 100%;
+    /* background-image: url('../../../../../assets/wcapital/img/bg-movil-wcapital.png');
+    background-size: cover;*/
+    background-color: $bg-wcapital;
+}
+.li-wcapital{
+  color: white!important;
+  h4{
+    color: white!important;
+  }
+  a{
+    color: white!important;
+  }
+}
+//Hover Item
+.aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-heading, .aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-link {
+  background-color: #3F51B5!important;
+  
+}
+//Active Item
+.aside-menu .menu-nav > .menu-item.menu-item-open > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link {
+  background-color: #3F51B5!important;
+}
+
+//Hover Subitem
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-text, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-link >.menu-text{
+  text-decoration: underline;
+}
+
+//Active Sub Item
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-link>.menu-text {
+ 
+  text-decoration: underline;
+}
+//#3F51B5
+
+//Cambiar el color del brand sv en brand dark.scss

@@ -1,0 +1,168 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Registrar Stock Ecommerce</h3>
+        </div>
+        <div class="card-toolbar">
+            <small class="form-text text-muted"><b>Fecha: </b></small>
+            <!-- <input type="date" class="form-control" name="currentDate" disabled
+            value="{{currentDate | date : 'yyyy/MM/dd'}}"
+            /> -->
+
+            <div class="form-control form-control-lg form-control-solid">
+                {{this.date | date : 'yyyy/MM/dd'}}
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <div class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-4 col-6 mb-5">
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [formControl]="formEstablecimiento"
+                                [searchable]="true" placeholder="Seleccione Establecimiento"
+                                (change)="validateIfChange($event)">
+                                <ng-option *ngFor="let item of array_establecimiento" [value]="item.idEstablecimiento">
+                                    {{item.nombre}}
+                                </ng-option>
+
+                            </ng-select>
+                            <small class="form-text text-muted"><b>Establecimientos</b></small>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- begin:Table -->
+            <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+                <div class="mt-5">
+                    <div class="form-group row">
+                        <div class="col-lg-12">
+
+                            <br>
+                            <div class="row">
+                                <div class="col-lg-9 col-md-9 mb-5">
+                                    <button type="button" class="btn btn-outline-primary font-weight-bold mr-2"
+                                        (click)="addDetalle()"><i class="fa fa-plus-circle">&nbsp; Agregar
+                                            material</i></button>
+                                </div>
+                                <!-- 
+                                <div class="col-lg-3 col-md-3 mb-5 mr-2">
+                                    <ng-container *ngIf="idStockEcommerce>0">
+                                        <button type="button" id="btn-cerrar"
+                                            class="btn btn-outline-warning font-weight-bold mr-2" *ngIf="hide_load"
+                                            (click)="cerrarStock()"><i class="fa fa-plus-square">&nbsp;
+                                                Cerrar</i></button>
+                                    </ng-container>
+
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                            <th>MATERIAL</th>
+                            <th></th>
+                            <th>STOCK INICIAL</th>
+                            <th></th>
+                            <th>VENDIDO</th>
+                            <th>STOCK ACTUAL</th>
+                            <th>OPERACIONES</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of array_stockDetalle">
+                                <td>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                        placeholder="Seleccione un Material"
+                                        (change)="validateIfExits($event,array_stockDetalle.indexOf(item))"
+                                        [formControl]="deta_formMaterial[array_stockDetalle.indexOf(item)]"
+                                        [class.is-invalid]="isFormControlInvalid(deta_formMaterial[array_stockDetalle.indexOf(item)])">
+                                        <ng-option *ngFor=" let item2 of array_material" [value]="item2.idMaterial">
+                                            {{item2.nombre}}
+                                        </ng-option>
+                                    </ng-select>
+
+                                    <div class="invalid-feedback"
+                                        *ngIf="FormControlHasError('required', deta_formMaterial[array_stockDetalle.indexOf(item)])">
+                                        Debe seleccionar un material.
+                                    </div>
+                                </td>
+                                <td><button (click)="decrease(item)" class="btn btn-dark"> - </button></td>
+                                <td>
+                                    <!-- (keypress)="numberOnly($event)" -->
+                                    <input type="text" class="form-control form-control-lg border border-dark"
+                                        style="text-align: right;" name="stock" placeholder="stock incial" maxlength="2"
+                                        autocomplete="off"
+                                        (keyup)="calcularStockActual(deta_formStock[array_stockDetalle.indexOf(item)].value, deta_formVendido[array_stockDetalle.indexOf(item)].value,array_stockDetalle.indexOf(item))"
+                                        (keypress)="numberOnly($event)"
+                                        [formControl]="deta_formStock[array_stockDetalle.indexOf(item)]"
+                                        [class.is-invalid]="isFormControlInvalid(deta_formStock[array_stockDetalle.indexOf(item)])" />
+
+                                    <div class="invalid-feedback"
+                                        *ngIf="FormControlHasError('required', deta_formStock[array_stockDetalle.indexOf(item)]) || 
+                                        FormControlHasError('pattern', deta_formStock[array_stockDetalle.indexOf(item)])">
+                                        Stock Inicial debe ser un número.
+                                    </div>
+
+                                    <div class="invalid-feedback"
+                                        *ngIf="FormControlHasError('incorrect', deta_formStock[array_stockDetalle.indexOf(item)])">
+                                        El stock inicial es menor al vendido
+                                    </div>
+
+                                </td>
+                                <td><button (click)="increase(item)" class="btn btn-dark"> + </button></td>
+                                <td>
+                                    <fieldset disabled>
+                                        <input type="text" class="form-control form-control-lg form-control-solid"
+                                            style="text-align: right;" name="vendido" placeholder="vendido"
+                                            autocomplete="off"
+                                            [formControl]="deta_formVendido[array_stockDetalle.indexOf(item)]" />
+                                    </fieldset>
+                                </td>
+
+                                <td>
+                                    <fieldset disabled>
+                                        <input type="text" class="form-control form-control-lg form-control-solid"
+                                            style="text-align: right;" name="stockActual" placeholder="Stock Actual"
+                                            autocomplete="off"
+                                            [formControl]="deta_formStockActual[array_stockDetalle.indexOf(item)]" />
+                                    </fieldset>
+                                </td>
+
+
+                                <td class="text-center">
+                                    <a title="Delete detalle" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                        (click)="deleteDetalle(item)">
+                                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                            class="svg-icon svg-icon-md svg-icon-danger">
+                                        </span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="float-right">
+                <button type="button" class="btn btn-primary font-weight-bold mr-2" disabled
+                    *ngIf="!hide_load">Registrando...</button>
+                <button type="button" class="btn btn-light-success btn-hover-success font-weight-bold mr-2"
+                    id="btn-cerrar" *ngIf="hide_load" (click)="cerrarStock()"><span
+                        [inlineSVG]="'./assets/media/svg/icons/General/Lock.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-success">
+                    </span> Cerrar</button>
+
+                <button type="button" class="btn btn-info font-weight-bold mr-2" *ngIf="hide_load"
+                    (click)="saveUpdateStock()">Guardar</button>
+
+                <a class="btn btn-danger font-weight-bold mr-2" routerLink="/Sales/process/stockEcommerce">Cancelar</a>
+            </div>
+
+        </div>
+    </div>

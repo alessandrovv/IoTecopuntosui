@@ -1,0 +1,71 @@
+.mat-row {
+    width: 100%;
+    min-width: 1050px;
+}
+
+.mat-header-row {
+    width: 100%;
+    min-width: 1050px;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+}
+
+.mat-column-Nro {
+    min-width: 50px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: center;
+}
+
+.mat-column-Nombre {
+    min-width: 180px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: center;
+}
+
+.mat-column-TipoEstablecimiento {
+    min-width: 180px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: center;
+}
+
+.mat-column-Ubicacion {
+    min-width: 300px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+}
+
+.mat-column-Direccion {
+    min-width: 250px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+}
+
+.mat-column-Activo {
+    min-width: 90px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 90px;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-Actions {
+    min-width: 150px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 150px;
+    justify-content: center;
+    text-align: center;
+}

@@ -1,0 +1,49 @@
+
+<ng-container *ngIf="extrasUserDisplay">
+  <ng-container *ngIf="extrasUserLayout === 'offcanvas'">
+    <ng-container *ngIf="jwtUser">
+      <!--begin::User-->
+      <div class="topbar-item">
+        <div class="w-auto cursor-pointer d-flex align-items-center btn-lg px-2"
+          id="kt_quick_user_toggle">
+          <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hola,</span>
+          <span
+            class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ jwtUser.Nombres }}</span>
+          <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
+            <span class="symbol-label font-size-h5 font-weight-bold">{{jwtUser.Nombres | firstLetter}}</span>
+          </span>
+        </div>
+      </div>
+      <!--end::User-->
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="extrasUserLayout === 'dropdown'">
+    <!--begin::User-->
+    <ng-container *ngIf="jwtUser">
+      <div class="dropdown" ngbDropdown placement="bottom-right">
+        <div class="topbar-item" data-toggle="dropdown" data-offset="0px,0px" ngbDropdownToggle>
+          <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2">
+            <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hola,</span>
+            <span
+              class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ jwtUser.Nombres }}</span>
+            <span class="symbol symbol-35 symbol-light-success">
+              <span class="symbol-label font-size-h5 font-weight-bold">{{
+                jwtUser.Nombres | firstLetter
+              }}</span>
+            </span>
+          </div>
+        </div>
+        <!--end::Toggle-->
+        <!--begin::Dropdown-->
+        <div ngbDropdownMenu
+          class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg p-0">
+          <app-user-dropdown-inner></app-user-dropdown-inner>
+        </div>
+      </div>
+      <!--end::Dropdown-->
+    </ng-container>
+    <!--end::User-->
+  </ng-container>
+</ng-container>
+<!--end::Topbar-->

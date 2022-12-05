@@ -1,0 +1,126 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            Añadir material a la compra
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+        <ng-container>
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Material</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid" name="Material" 
+                                placeholder="Material" autocomplete="off" formControlName="Material" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Presentación</label>
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Presentacion"
+                                [class.is-invalid]="isControlInvalid('Presentacion')" placeholder="Seleccione una presentación">
+                                <ng-option *ngFor="let item of array_presentaciones" [value]="item.IdPresentacion">
+                                    {{item.Presentacion}}
+                                </ng-option>
+                            </ng-select>
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Presentacion')">
+                                Presentacion es obligatorio. 
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Cantidad</label>
+                            <input type="number" class="form-control form-control-lg form-control-solid" name="Cantidad"
+                                placeholder="Cantidad" autocomplete="off" (keyup)="multiplicar()"
+                                [class.is-invalid]="isControlInvalid('Cantidad')"
+                                [class.is-valid]="isControlValid('Cantidad')" formControlName="Cantidad" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Cantidad')"> Cantidad es
+                                obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Valor Unitario (Sin IGV) </label>
+                            <input type="number" class="form-control form-control-lg form-control-solid" name="ValorUnitario" (keyup)="keyUpValorUnit()"
+                            placeholder="ValorUnitario" autocomplete="off" [class.is-invalid]="isControlInvalid('ValorUnitario')"
+                            step="0.01" min="0.01" [class.is-valid]="isControlValid('ValorUnitario')" formControlName="ValorUnitario" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'ValorUnitario')"> Valor Unitario (Sin IGV) es
+                                obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Descuento Unitario (Sin IGV) </label>
+                            <input type="number" class="form-control form-control-lg form-control-solid" name="DescuentoUnitario" (keyup)="keyUpDescUnit()"
+                                placeholder="DescuentoUnitario" autocomplete="off" [class.is-invalid]="isControlInvalid('DescuentoUnitario')"
+                                step="0.01" min="0.01" [class.is-valid]="isControlValid('DescuentoUnitario')" formControlName="DescuentoUnitario" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'DescuentoUnitario')"> Descuento Unitario (Sin IGV) es
+                                obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Precio Unitario (Con IGV) </label>
+                            <input type="number" class="form-control form-control-lg form-control-solid" name="PrecioUnitario" (keyup)="keyUpPrecioUnitario()"
+                                placeholder="PrecioUnitario" autocomplete="off" [class.is-invalid]="isControlInvalid('PrecioUnitario')"
+                                step="0.01" min="0.01" [class.is-valid]="isControlValid('PrecioUnitario')" formControlName="PrecioUnitario" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'PrecioUnitario')"> Precio unitario (Con IGV) es
+                                obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Precio Total (Con IGV) </label>
+                            <input type="number" class="form-control form-control-lg form-control-solid" name="PrecioTotal"
+                                placeholder="PrecioTotal" autocomplete="off" [class.is-invalid]="isControlInvalid('PrecioTotal')"
+                                step="0.01" min="0.01" [class.is-valid]="isControlValid('PrecioTotal')" formControlName="PrecioTotal" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'PrecioTotal')"> Precio total (Con IGV) es
+                                obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" *ngIf="mostrar==true">
+                        <div class="col-lg-12">
+                            <label class="form-label">Código del material en Proveedor </label>
+                            <input type="text" class="form-control form-control-lg form-control-solid" name="CodigoProdProveedor"
+                                placeholder="Código" autocomplete="off" formControlName="CodigoProdProveedor" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" *ngIf="mostrar==true">
+                        <div class="col-lg-12">
+                            <label class="form-label">Descripción del material en Proveedor </label>
+                            <input type="text" class="form-control form-control-lg form-control-solid" name="DescripcionProdProveedor"
+                                placeholder="Descripción" autocomplete="off" formControlName="DescripcionProdProveedor" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </ng-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+
+        <ng-container>
+            <button type="submit" *ngIf="item.opcion==='A'" class="btn btn-primary btn-elevate" (click)="save()" [disabled]="formGroup.invalid">
+                Añadir
+            </button>
+            <button type="submit" *ngIf="item.opcion==='E'" class="btn btn-primary btn-elevate" (click)="save()" [disabled]="formGroup.invalid">
+                Editar
+            </button>
+        </ng-container>
+    </div>
+</div>

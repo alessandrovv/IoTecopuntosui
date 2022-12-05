@@ -1,0 +1,152 @@
+<div class="card card-custom m-0">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">¿Está seguro que desea anular este pedido de venta?</h3>
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" data-scroll="true" style="max-height: 650px; overflow-y: auto; overflow-x: hidden;">
+        
+        <div class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-8 d-flex">
+                    <span [inlineSVG]="'./assets/media/svg/icons/General/Folder.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-xl svg-icon-primary">
+                    </span>
+                    <h4 class="card-label">
+                        &nbsp; &nbsp; Documentos de venta
+                    </h4>
+                </div>
+                <div class="col-lg-4" [formGroup]="searchDocVenta">
+                    <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
+                        formControlName="searchDoc" (keyup)="searchTableDocVenta()" /><small
+                        class="form-text text-muted"><b>Buscar</b> en
+                        todos los campos</small>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+            <mat-table class="lmat-elevation-z8" [dataSource]="listDocVenta" matSort perfectScrollbar>
+        
+                <ng-container matColumnDef="Nro">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                    <mat-cell *matCellDef="let i = index;">{{matPaginatorDV.pageSize * matPaginatorDV.pageIndex + i + 1}}
+                    </mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="Codigo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CÓDIGO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.codigo}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="Estado">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.estado}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="loadingDocVenta">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        Loading data...
+                    </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noDataDocVenta">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        No se encontraron registros.
+                    </mat-footer-cell>
+                </ng-container>
+        
+                <mat-header-row *matHeaderRowDef="columnasDocVenta"></mat-header-row>
+        
+                <mat-row *matRowDef="let row; columns: columnasDocVenta"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loadingDocVenta']" [ngClass]="{'hide': listDocVenta!=null}">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noDataDocVenta']"
+                    [ngClass]="{'hide': !(listDocVenta!=null && listDocVenta.data.length==0)}">
+                </mat-footer-row>
+            </mat-table>
+        </div>
+        <div class="mat-table__bottom">
+            <mat-spinner [diameter]="20" *ngIf="searchBanDocVenta"></mat-spinner>
+            <mat-paginator #matPaginatorDV [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+        
+        <br>
+        
+        <div class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-8 d-flex">
+                    <span [inlineSVG]="'./assets/media/svg/icons/Files/File.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-xl svg-icon-primary">
+                    </span>
+                    <h4 class="card-label">
+                        &nbsp; &nbsp; Notas de salida
+                    </h4>
+                </div>
+                <div class="col-lg-4" [formGroup]="searchNotaSalida">
+                    <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
+                        formControlName="searchNota" (keyup)="searchTableNotas()" /><small
+                        class="form-text text-muted"><b>Buscar</b> en
+                        todos los campos</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+            <mat-table class="lmat-elevation-z8" [dataSource]="listNotasSalida" matSort perfectScrollbar>
+        
+                <ng-container matColumnDef="Nro">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                    <mat-cell *matCellDef="let i = index;">{{matPaginatorNS.pageSize * matPaginatorNS.pageIndex + i + 1}}
+                    </mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="Codigo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CÓDIGO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.codigo}}</mat-cell>
+                </ng-container>
+                        
+                <ng-container matColumnDef="FechaContable">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>FECHA CONTABLE</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.fechaContable | date : 'dd/MM/yyyy'}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="Estado">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.estado}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="loadingNotas">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        Loading data...
+                    </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noDataNotas">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        No se encontraron registros.
+                    </mat-footer-cell>
+                </ng-container>
+        
+                <mat-header-row *matHeaderRowDef="columnasNotas"></mat-header-row>
+        
+                <mat-row *matRowDef="let row; columns: columnasNotas"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loadingNotas']" [ngClass]="{'hide': listNotasSalida!=null}">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noDataNotas']"
+                    [ngClass]="{'hide': !(listNotasSalida!=null && listNotasSalida.data.length==0)}">
+                </mat-footer-row>
+            </mat-table>
+        </div>
+        <div class="mat-table__bottom">
+            <mat-spinner [diameter]="20" *ngIf="searchBanNotaSalida"></mat-spinner>
+            <mat-paginator #matPaginatorNS [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+        
+        <br>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+        <button type="submit" class="btn btn-danger btn-elevate" (click)="anularPedidoVenta()">
+            Anular
+        </button>
+    </div>
+</div>

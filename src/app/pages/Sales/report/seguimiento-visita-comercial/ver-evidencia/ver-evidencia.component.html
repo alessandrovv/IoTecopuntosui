@@ -1,0 +1,30 @@
+<div class="modal-header">  
+  <h5>Evidencia {{cabecera.codigo}}</h5>
+</div>
+<div class="p-6">  
+  <p style="padding-bottom: 0px!important;margin-bottom: 0px!important;"><strong>TRBAJADOR: </strong> {{cabecera.trabajador}}</p>
+  <p><strong>CLIENTE: </strong> {{cabecera.cliente}}</p>
+  <div class="text-center">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+          <div class="swiper-slide" *ngFor="let item of array_evidenciaVisitComercial">
+            <img [src]="item.rutaArchivo" [alt]="item.nombreArchivo">
+          </div>
+      </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+  <div *ngIf="array_evidenciaVisitComercial == null" class="text-center">
+    <h5>Evidencias sin procesar</h5>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <div>
+    <button type="button" class="btn btn-light btn-elevate mr-1" (click)="modal.dismiss()">
+      Cancelar
+    </button>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+.mat-row {
+    min-width: 750px;
+    width: 100%;
+}
+
+.mat-header-row {
+    min-width: 750px;
+    width: 100%;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+}
+
+.mat-column-Nro {
+    min-width: 50px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 50px;
+    justify-content: center;
+}
+
+.mat-column-Codigo {
+    min-width: 110px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 110px;
+    justify-content: center;
+}
+
+.mat-column-Cliente,
+.mat-column-FechaEmision,
+.mat-column-Documento,
+.mat-column-FechaContable {
+    min-width: 125px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 125px;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-TipoDocumento,
+.mat-column-Moneda {
+    min-width: 100px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 100px;
+    justify-content: center;
+}
+
+.mat-column-Total,
+.mat-column-Estado {
+    min-width: 90px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 90px;
+    justify-content: center;
+}
+
+.mat-column-Material {
+    min-width: 240px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 240px;
+    justify-content: center;
+}
+
+.mat-column-Cantidad,
+.mat-column-CostoTotal,
+.mat-column-CostoUnit {
+    min-width: 80px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 80px;
+    justify-content: left;
+}

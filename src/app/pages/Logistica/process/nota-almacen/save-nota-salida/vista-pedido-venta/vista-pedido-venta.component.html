@@ -1,0 +1,152 @@
+<div class="form form-label-right">
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <div [formGroup]="formPedidoVenta">
+                <div class="row">
+                    <div class="col-lg-4 col-6 mb-5">
+                        <label>Código</label>
+                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                            name="Codigo" placeholder="Código" autocomplete="off" formControlName="Codigo" />
+                    </div>
+                    <div class="col-lg-4 col-6 mb-5">
+                        <label>Cliente</label>
+                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                            name="Cliente" placeholder="Cliente" autocomplete="off" formControlName="Cliente" />
+                    </div>
+                    <div class="col-lg-4 col-6 mb-5">
+                        <label>Tipo de documento</label>
+                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                            name="TipoDocumento" placeholder="Tipo de documento" autocomplete="off" formControlName="TipoDocumento" />
+                    </div>
+                    <div class="col-lg-4 col-6 mb-5">
+                        <label>Fecha de emisión </label>
+                        <input type="date" class="form-control form-control-lg form-control-solid"
+                            name="FechaEmision" placeholder="Fecha de emisión" autocomplete="off" formControlName="FechaEmision" />
+                    </div>
+                    <div class="col-lg-4 col-6 mb-5">
+                        <label>Fecha de entrega </label>
+                        <input type="date" class="form-control form-control-lg form-control-solid"
+                            name="FechaEntrega" placeholder="Fecha de entrega" autocomplete="off"formControlName="FechaEntrega" />
+                    </div>
+                    <div class="col-lg-4 col-6 mb-5">
+                        <label>Tipo de moneda</label>
+                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                            name="TipoMoneda" placeholder="Tipo de moneda" autocomplete="off" formControlName="TipoMoneda" />
+                    </div>
+                    <div class="col-12 mb-5">
+                        <label>Observación</label>
+                        <textarea class="form-control" rows="3" formControlName="Observacion" name="Observacion"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <button type="button" class="btn btn-light-primary btn-hover-primary font-weight-bold mr-4" (click)="agregarMaterial()">
+            <span [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'" cacheSVG="true"
+                class="svg-icon svg-icon-md svg-icon-primary">
+            </span> Agregar material
+        </button>
+        <button type="button" class="btn btn-light-info btn-hover-info font-weight-bold mr-2" (click)="regresarDatos()">
+            <span [inlineSVG]="'./assets/media/svg/icons/General/Update.svg'" cacheSVG="true"
+                class="svg-icon svg-icon-md svg-icon-info">
+            </span> Regresar datos originales
+        </button>
+    </div>
+</div>
+<div class="row mt-5" style="overflow-x: auto;">
+    <div class="col-lg-12">
+        <table class="table">
+            <thead>
+                <th>OPERACIONES</th>
+                <th>CODIGO</th>
+                <th>DESCRIPCIÓN</th>
+                <th>CANTIDAD</th>
+                <th>CANTIDAD DESPACHADA</th>
+                <th>CANTIDAD X DESPACHAR</th>
+                <th>CANTIDAD A DESPACHAR</th>
+                <th>STOCK ALMACEN</th>
+                <th>UNIDAD MEDIDA</th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of array_materiales; let i = index">
+                    <tr>
+                        <td style="vertical-align: middle;">
+                            <button title="Eliminar material" class="btn btn-icon btn-light btn-hover-danger btn-sm mr-3" (click)="eliminarMaterial(i,content)">
+                                <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                    class="svg-icon svg-icon-md svg-icon-danger">
+                                </span>
+                            </button>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            {{ array_materiales[i].codigo }}
+                        </td>
+                        <td style="vertical-align: middle; min-width: 8vw;">
+                            {{ array_materiales[i].material }}
+                        </td>
+                        <td style="vertical-align: middle;">
+                            {{ fixedValor(array_materiales[i].cantidad) }}
+                        </td>
+                        <td style="vertical-align: middle;">
+                            {{ fixedValor(array_materiales[i].cantDespachada) }}
+                        </td>
+                        <td style="vertical-align: middle;">
+                            {{ fixedValor(array_materiales[i].cantxDespachar) }}
+                        </td>
+                        <td style="vertical-align: middle; min-width: 100px;">
+                            <input type="number" class="form-control form-control-lg form-control-solid" name="Cantidad despachar" [min]="1" step="1"
+                            placeholder="Cantidad despachar" autocomplete="off"  [class.is-invalid]="isFormControlInvalid(deta_formCatidadDespachar[i])" 
+                            [class.is-valid]="isFormControlValid(deta_formCatidadDespachar[i])" [formControl]="deta_formCatidadDespachar[i]" (keyup)="actualizarCantidad(i);" />
+                            <div class="invalid-feedback" *ngIf="FormControlHasError('required', deta_formCatidadDespachar[i]) || FormControlHasError('pattern', deta_formCatidadDespachar[i])">
+                                La cantidad es obligatoria y mayor que 0.
+                            </div>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            {{ fixedValor(array_materiales[i].stock) }}
+                        </td>
+                        <td style="vertical-align: middle; min-width: 8vw;">
+                            {{ array_materiales[i].unidadMedida }}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card-footer" *ngIf="mostrarBotones">
+    <div class="float-right">
+        <button type="button" class="btn btn-light-danger btn-hover-danger font-weight-bold mr-2">
+            <span [inlineSVG]="'./assets/media/svg/icons/Files/Selected-file.svg'" cacheSVG="true"
+                class="svg-icon svg-icon-md svg-icon-danger">
+            </span> PDF
+        </button>
+        <button type="button" class="btn btn-primary font-weight-bold mr-2" disabled *ngIf="!hide_load_guardar">Guardando...</button>
+        <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="hide_load_guardar" (click)="saveUpdateNotaSalida()"> 
+            <span [inlineSVG]="'./assets/media/svg/icons/General/Save.svg'" cacheSVG="true"
+                class="svg-icon svg-icon-md svg-icon-hover-primary">
+            </span> Guardar y cerrar</button>
+        <a class="btn btn-danger font-weight-bold mr-2" routerLink="/Logistica/process/NotaAlmacen"> <span [inlineSVG]="'./assets/media/svg/icons/Code/Error-circle.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-hover-danger">
+        </span> Cancelar</a>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Eliminar material</h4>
+        <button type="button" class="btn btn-icon" aria-label="Close" (click)="modal.dismiss(false)">
+            <span [inlineSVG]="'./assets/media/svg/icons/Code/Error-circle.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-hover-dark">
+            </span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>¿Estas seguro de que deseas eliminar el material?</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss(false)">No</button>
+        <button type="button" class="btn btn-primary btn-elevate" (click)="modal.close(true)">Sí</button>
+    </div>
+</ng-template>

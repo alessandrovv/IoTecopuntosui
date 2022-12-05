@@ -1,0 +1,114 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            <ng-container>
+                <ng-container *ngIf="idTasaCambio > 0">Editar</ng-container>
+                <ng-container *ngIf="idTasaCambio === 0">Nueva</ng-container>
+                Tasa de Cambio
+            </ng-container>
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container>
+
+        <ng-container>
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label class="form-label">Fecha</label>
+                            <input type="date" class="form-control form-control-lg form-control-solid" name="Fecha"
+                                placeholder="Fecha" autocomplete="off"
+                                [class.is-invalid]="isControlInvalid('Fecha')"
+                                [class.is-valid]="isControlValid('Fecha')" formControlName="Fecha" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Fecha')"> Fecha es
+                                obligatorio. </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Moneda Origen</label>
+
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="IdMonedaOrigen" name="IdMonedaOrigen"
+                                [searchable]="true" placeholder="Moneda Origen"
+                                [class.is-invalid]="isControlInvalid('IdMonedaOrigen')" [class.is-valid]="isControlValid('IdMonedaOrigen')" (change)="changeMoneda(formGroup.controls.IdMonedaOrigen.value,1)">
+                                <ng-option *ngFor="let item of array_monedas" [value]="item.ValorMoneda">
+                                    {{item.NombreMoneda}}
+                                </ng-option>
+                            </ng-select>
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'IdMonedaOrigen')"> Moneda Origen es
+                                obligatorio. </div>
+                            <div class="invalid-feedback" *ngIf="controlHasError('repeat', 'IdMonedaOrigen')"> No se puede repetir moneda. </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Moneda Destino</label>
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="IdMonedaDestino" name="IdMonedaDestino"
+                                [searchable]="true" placeholder="Moneda Destino"
+                                [class.is-invalid]="isControlInvalid('IdMonedaDestino')" [class.is-valid]="isControlValid('IdMonedaDestino')" (change)="changeMoneda(formGroup.controls.IdMonedaDestino.value,2)">
+                                <ng-option *ngFor="let item of array_monedas" [value]="item.ValorMoneda">
+                                    {{item.NombreMoneda}}
+                                </ng-option>
+                            </ng-select>
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'IdMonedaDestino')"> Moneda Destino es
+                                obligatorio. </div>
+                            <div class="invalid-feedback" *ngIf="controlHasError('repeat', 'IdMonedaDestino')"> No se puede repetir moneda. </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label class="form-label">Valor de Compra</label>
+                            <input type="number" class="form-control form-control-lg form-control-solid" name="ValorCompra"
+                                placeholder="Valor de Compra" autocomplete="off"
+                                [class.is-invalid]="isControlInvalid('ValorCompra')"
+                                [class.is-valid]="isControlValid('ValorCompra')" formControlName="ValorCompra" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'ValorCompra')"> Valor de Compra es
+                                obligatorio. </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label class="form-label">Valor de Venta</label>
+                            <input type="number" class="form-control form-control-lg form-control-solid" name="ValorVenta"
+                                placeholder="Valor de Venta" autocomplete="off"
+                                [class.is-invalid]="isControlInvalid('ValorVenta')"
+                                [class.is-valid]="isControlValid('ValorVenta')" formControlName="ValorVenta" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'ValorVenta')"> Valor de Venta es
+                                obligatorio. </div>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label class="form-label">Activo</label>
+                            <span class="switch">
+                                <label>
+                                    <input type="checkbox" name="Activo" formControlName="Activo">
+                                    <span></span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </ng-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+
+        <ng-container>
+            <button type="submit" class="btn btn-primary btn-elevate" (click)="save()" [disabled]="formGroup.invalid">
+                Guardar
+            </button>
+        </ng-container>
+    </div>
+</div>

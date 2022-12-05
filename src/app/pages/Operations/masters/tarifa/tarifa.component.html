@@ -1,0 +1,157 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label">Tarifas</h3>
+      </div>
+      <div class="card-toolbar">
+        <button type="button" class="btn btn-primary" (click)="saveUpdate(null,0)">Nueva Tarifa</button>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="container">
+                <div class="form form-label-right">
+                    <div class="form-group">
+                        <div class="row" [formGroup]="filterGroup">
+                            <div class="col-lg-6">
+                                  <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Vigencia"
+                                      [searchable]="true" placeholder="Ubicacion" (change)="searchByVigencia();">
+                                      <ng-option *ngFor="let item of arrayVigencia" [value]="item">
+                                          {{item}}
+                                      </ng-option>
+                                  </ng-select>
+                                  <small class="form-text text-muted"><b>Vigente</b></small>
+                            </div>     
+                            <div class="col-lg-6">
+                              <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Actividad"
+                                  [searchable]="true" placeholder="Todos" (change)="searchByActividad();">
+                                  <ng-option *ngFor="let act of arrayActividad" [value]="act.clave">
+                                      {{act.valor}}
+                                  </ng-option>
+                              </ng-select>
+                              <small class="form-text text-muted"><b>Activo</b></small>
+                            </div>           
+                          </div>     
+                    </div>
+                </div>
+            </div>        
+        </div>
+        <div class="col-md-5">
+            <div class="container">
+                <div class="form-group row justify-content-center">            
+                    <div [formGroup]="searchGroup" style="width: 80%; margin-right: 15%;">
+                        <input type="text" class="form-control" name="searchText" placeholder="Buscar" style="margin-top: 15px;" value="" 
+                            formControlName="searchTerm" (keyup)="search()"/>
+                        <small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <div class="card-body">
+  
+  
+    <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+        <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+  
+            <ng-container matColumnDef="Nro">
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 5%;">N°</mat-header-cell>
+                <mat-cell *matCellDef="let i = index;" style="max-width: 5%;">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}</mat-cell>
+            </ng-container> 
+  
+            <ng-container matColumnDef="RUTA">
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 20%;">Ruta</mat-header-cell>
+                <mat-cell *matCellDef="let lesson" style="min-width: 20%;">{{lesson.distritoOrigen + ' - ' + lesson.distritoDestino}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="CLIENTE">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.nombreCliente}}</mat-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="INICIO">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Inicio Vigencia</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{ (lesson.fechaInicio == null)? '-' : (lesson.fechaInicio | date : 'dd/MM/yyyy') }}</mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="FIN">
+                <mat-header-cell *matHeaderCellDef mat-sort-header >Fin Vigencia</mat-header-cell>
+                <mat-cell *matCellDef="let lesson" >{{ (lesson.fechaFin == null)? '-' : (lesson.fechaFin | date : 'dd/MM/yyyy') }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="COSTO">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Costo</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.costo}}</mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="MONEDA">
+                <mat-header-cell *matHeaderCellDef mat-sort-header >Moneda</mat-header-cell>
+                <mat-cell *matCellDef="let lesson" >{{lesson.nombreMoneda}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="VIGENCIA">
+                <mat-header-cell *matHeaderCellDef mat-sort-header >Vigencia</mat-header-cell>
+                <mat-cell *matCellDef="let lesson" >{{lesson.vigente}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="ACTIVO">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>ACTIVO</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">
+                    <span class="switch">
+                        <label>
+                            <input type="checkbox" name="Activo" [(ngModel)]="lesson.activo" (click)="enableDisable(lesson.idTarifa, lesson.activo)">
+                            <span></span>
+                        </label>
+                    </span>
+                </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="OPCIONES">
+                <mat-header-cell *matHeaderCellDef>OPCIONES</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">                              
+                    <a title="Editar tarifa" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-sm" (click)="saveUpdate(lesson, lesson.idTarifa)">
+                        <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-primary">
+                        </span>
+                    </a>   
+                    <a title="Copiar tarifa" class="btn btn-icon btn-light btn-hover-warning btn-sm mx-3" (click)="saveUpdate(lesson, 0)">
+                        <span [inlineSVG]="'./assets/media/svg/icons/Communication/Archive.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-warning">
+                        </span>
+                    </a> 
+                    <a title="Eliminar tarifa" class="btn btn-icon btn-light btn-hover-danger btn-sm" (click)="deletePuntoTransporte(lesson.idTarifa)">
+                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-danger">
+                        </span>
+                    </a>                 
+  
+                </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="loading">
+                <mat-footer-cell *matFooterCellDef colspan="5">
+                    Loading data...
+                </mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="5">
+                    No se encontraron registros.
+                </mat-footer-cell>
+            </ng-container>
+  
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+            </mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']"
+                [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+        </mat-table> 
+    </div>
+        <div class="mat-table__bottom">
+            <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+            <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>      
+    </div>
+  </div>

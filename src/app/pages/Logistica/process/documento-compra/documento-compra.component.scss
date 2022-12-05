@@ -1,0 +1,111 @@
+.mat-row {
+    width: 100%;
+}
+
+.mat-header-row {
+    width: 100%;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+    text-align: center;
+}
+
+.mat-column-Nro {
+    min-width: 40px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 40px;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-Proveedor,
+.mat-column-Empleado {
+    min-width: 130px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 130px;
+    justify-content: left;
+}
+
+.mat-column-FechaEmision {
+    min-width: 100px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 100px;
+    justify-content: left;
+}
+
+.mat-column-Documento {
+    min-width: 100px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 100px;
+    justify-content: left;
+}
+
+.mat-column-TipoDocumento {
+    min-width: 100px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 100px;
+    justify-content: left;
+}
+
+.mat-column-Moneda {
+    min-width: 85px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 85px;
+    justify-content: left;
+}
+
+.mat-column-OrdenCompra,
+.mat-column-Codigo {
+    min-width: 110px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 110px;
+    justify-content: left;
+}
+
+.mat-column-Total {
+    min-width: 85px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 85px;
+    justify-content: left;
+}
+
+.mat-column-Estado {
+    min-width: 100px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 100px;
+    justify-content: center;
+}
+
+.mat-column-Anticipo {
+    min-width: 70px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 70px;
+    justify-content: center;
+}
+
+.mat-column-actions {
+    min-width: 70px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 70px;
+    justify-content: center;
+}
+
+.dropdown-item {
+    cursor: pointer;
+}
+
+.estado:hover {
+    cursor: default;
+}

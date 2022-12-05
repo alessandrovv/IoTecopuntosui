@@ -1,0 +1,127 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label">Metas Comerciales</h3>
+      </div>
+      <div class="card-toolbar">
+        <button type="button" class="btn btn-primary" (click)="addMetaComercial()">Nueva Meta Comercial</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- begin: Filtration form -->
+      <div class="form form-label-right">
+        <div class="form-group row">
+          <div class="col-lg-8">
+            <div class="row" [formGroup]="filterGroup">
+              <div class="col-lg-4"> 
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Empresa"
+                    [searchable]="true" placeholder="Empresa" (change)="getMetasComerciales($event,filterGroup.controls.Anio.value,filterGroup.controls.Mes.value)">
+                    <ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa" >
+                        {{item.razonSocial}}
+                    </ng-option>
+                </ng-select>
+                <small class="form-text text-muted"><b>Filtrar</b> por Empresa</small>
+              </div>
+              <div class="col-lg-4">
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Anio"  
+                [searchable]="true" placeholder="Año" (change)="getMetasComerciales(filterGroup.controls.Empresa.value,$event,filterGroup.controls.Mes.value)">
+                    <ng-option *ngFor="let item of array_anios" [value]="item.ValorAnio" >
+                        {{item.NombreAnio}}
+                    </ng-option>
+                </ng-select>
+                <small class="form-text text-muted"><b>Filtrar</b> por Año</small>
+              </div>  
+              <div class="col-lg-4">
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Mes"  
+                [searchable]="true" placeholder="Mes" (change)="getMetasComerciales(filterGroup.controls.Empresa.value,filterGroup.controls.Anio.value,$event)">
+                    <ng-option *ngFor="let item of array_meses" [value]="item.ValorMes" >
+                        {{item.NombreMes}}
+                    </ng-option>
+                </ng-select>
+                <small class="form-text text-muted"><b>Filtrar</b> por Mes</small>
+              </div> 
+  
+            </div>
+          </div>          
+          <div class="col-lg-4" [formGroup]="searchGroup">
+            <input type="text" class="form-control" name="searchText" placeholder="Buscar" value="" (keyup)="search()"
+              formControlName="searchTerm" /><small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+          </div>
+        </div>
+
+      </div>
+      <!-- end: Filtration form -->
+  
+      <!-- begin:Table -->
+
+      <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+        <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+
+            <ng-container matColumnDef="Nro">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                <mat-cell *matCellDef="let i = index;">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Empresa">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>EMPRESA</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.razonSocial}}</mat-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="Año">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>AÑO</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.NombreAnio}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Mes">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>MES</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.NombreMes}}</mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">                              
+
+                    <a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                        (click)="editMetaComercial(lesson.idMetaComercial)">
+                        <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-primary">
+                        </span>
+                    </a>
+
+                    <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                        (click)="delete(lesson.idMetaComercial)">
+                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-danger">
+                        </span>
+                    </a>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="loading">
+                <mat-footer-cell *matFooterCellDef colspan="5">
+                    Loading data...
+                </mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="5">
+                    No se encontraron registros.
+                </mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+            </mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']"
+                [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+        </mat-table>
+    </div>
+
+    <div class="mat-table__bottom">
+        <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+        <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>      
+    </div>
+  </div>

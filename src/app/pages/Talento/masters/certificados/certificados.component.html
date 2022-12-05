@@ -1,0 +1,227 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label">Certificados</h3>
+      </div>
+      <div class="card-toolbar">
+        <button type="button" class="btn btn-primary" (click)="create(null)">Nuevo Certificado</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- begin: Filtration form -->
+      <div class="form form-label-right">
+        <div class="form-group row">
+          <div class="col-lg-8">
+            <div class="row" [formGroup]="filterGroup">
+              <div class="col-lg-4">
+ 
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Empresa"
+                    [searchable]="true" placeholder="Empresa" (change)="getCienteInterno($event);">
+                    <ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+                        {{item.razonSocial}}
+                    </ng-option>
+                </ng-select>
+
+                <!-- <ng-select formControlName="Cliente" [items]="array_empresas" bindLabel="razonSocial" bindValue="idEmpresa"></ng-select> -->
+                <small class="form-text text-muted"><b>Filtrar</b> por Empresa</small>
+              </div>
+              <div class="col-lg-4">
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Cliente" (change)="getCetificados(filterGroup.controls.Empresa.value, $event, filterGroup.controls.Estado.value)">
+                    <ng-option *ngFor="let item of array_cliente_externo" [value]="item.ClienteExterno">
+                        {{item.NombreCliente}}
+                    </ng-option>
+                </ng-select>
+                <small class="form-text text-muted"><b>Filtrar</b> por Cliente</small>
+              </div>
+  
+              <div class="col-lg-4">
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Estado" (change)="getCetificados(filterGroup.controls.Empresa.value, filterGroup.controls.Cliente.value, $event)">
+                    <ng-option *ngFor="let item of array_estado" [value]="item.value">
+                        {{item.descripcion}}
+                    </ng-option>
+                </ng-select>
+                <small class="form-text text-muted"><b>Filtrar</b> por Estado</small>
+              </div>
+  
+            </div>
+          </div>
+          <div class="col-lg-4" [formGroup]="searchGroup">
+            <input type="text" class="form-control" name="searchText" placeholder="Buscar" value="" (keyup)="search()"
+              formControlName="searchTerm" /><small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+          </div>
+        </div>
+      </div>
+      <!-- end: Filtration form -->
+  
+      <!-- begin:Table -->
+      <!-- <div class="table-responsive angular-bootstrap-table">
+        <table class="table table-head-custom table-vertical-center overflow-hidden">
+          <thead>
+            <th>
+              N°
+              <app-sort-icon column="idCertificado" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                (sort)="sort($event)"></app-sort-icon>
+            </th>
+            <th>
+              Empresa
+              <app-sort-icon column="nombreEmpresa" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                (sort)="sort($event)"></app-sort-icon>
+            </th>
+            <th>
+              Código
+              <app-sort-icon column="codigo" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                (sort)="sort($event)"></app-sort-icon>
+            </th>
+            <th>
+              Nombre
+              <app-sort-icon column="nombreCertificado" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                (sort)="sort($event)"></app-sort-icon>
+            </th>
+            <th>
+              Cliente
+              <app-sort-icon column="nombreCliente" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                (sort)="sort($event)"></app-sort-icon>
+            </th>
+            <th>
+              STATUS
+              <app-sort-icon column="activo" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                (sort)="sort($event)"></app-sort-icon>
+            </th>
+            <th>ACTIONS</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of certificado_s.items$ | async">              
+              <td>{{ item.idCertificado }}</td>
+              <td>{{ item.nombreEmpresa }}</td>
+              <td>{{ item.codigo }}</td>
+              <td>{{ item.nombreCertificado }}</td>
+              <td>{{ item.nombreCliente }}</td>
+              <td>
+                <span class="label label-lg label-inline" [class.label-light-danger]="item.activo === 0"
+                  [class.label-light-success]="item.activo === 1" [class.label-light-primary]="item.activo === 3">
+                  <ng-container *ngIf="item.activo === 0">Inactivo</ng-container>
+                  <ng-container *ngIf="item.activo === 1">Activo</ng-container>
+                </span>
+              </td>              
+              <td>
+  
+                <a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                  >
+                  <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                    class="svg-icon svg-icon-md svg-icon-primary">
+                  </span>
+                </a>
+  
+                <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                  >
+                  <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                    class="svg-icon svg-icon-md svg-icon-danger">
+                  </span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div> -->
+
+
+
+      <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+        <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+
+            <ng-container matColumnDef="Nro">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                <mat-cell *matCellDef="let i=index">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Empresa">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>EMPRESA</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.NombreEmpresa}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Codigo">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>CÓDIGO</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.Codigo}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Nombre">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRE</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.Nombre}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Cliente">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>CLIENTE</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">{{lesson.NombreCliente}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Estado">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">
+                    
+                    <span class="switch">
+                        <label>
+                            <input type="checkbox" name="Activo" [(ngModel)]="lesson.Activo" (click)="disabledCertificado(lesson)">
+                            <span></span>
+                        </label>
+                    </span>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
+                <mat-cell *matCellDef="let lesson">                              
+
+                    <a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                        (click)="edit(lesson)">
+                        <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-primary">
+                        </span>
+                    </a>
+
+                    <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                        (click)="delete(lesson.idCertificado)">
+                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-md svg-icon-danger">
+                        </span>
+                    </a>
+
+                    <!-- <button mat-icon-button style="color: #00A09D !important" type="button" 
+                    [routerLink]="['/Ventas/Configuracion/Banco/edit']" [queryParams]="{id: lesson.Banco}" matTooltip="Editar Banco">
+                      <mat-icon>create</mat-icon>
+                    </button>
+
+                    <button mat-icon-button style="color: #b7343d !important" type="button" 
+                    (click)="eliminarActivar(lesson.Banco, false)" matTooltip="Eliminar Banco">
+                        <mat-icon>delete</mat-icon>
+                    </button> -->
+
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="loading">
+                <mat-footer-cell *matFooterCellDef colspan="5">
+                    Loading data...
+                </mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="5">
+                    No se encontraron registros.
+                </mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+            </mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']"
+                [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+        </mat-table>
+    </div>
+
+    <div class="mat-table__bottom">
+        <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+        <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>      
+    </div>
+  </div>

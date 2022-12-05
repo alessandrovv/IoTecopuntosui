@@ -1,0 +1,11 @@
+.img-product {
+    height: 200px;
+    width: 300px;
+    box-shadow: 5px 5px 20px black;
+    // overflow: hidden;
+}
+
+img {
+    object-fit: fill;
+    border-radius: 10px;
+}

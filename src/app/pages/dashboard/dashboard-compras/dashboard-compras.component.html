@@ -1,0 +1,267 @@
+<div class="row">
+    <div class="col-12 px-3 h-100">
+        <div class="card card-custom gutter-b  h-100">
+            <div class="card-body">
+                <div class="row" [formGroup]="this.formFiltroReporteComprasPorFecha">
+                    <div class="col-12">
+                        <label>Categoria Proveedor</label>
+                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                            formControlName="CategoriaProveedor" placeholder="Seleccione una Categoria"
+                            (change)="
+                            getProveedores($event);
+                            getReporteLinealComprasPorFecha($event,formFiltroReporteComprasPorFecha.controls.Proveedor.value)">
+                            <ng-option *ngFor="let item of array_categoriasProveedor"
+                                [value]="item.idCategoriaProveedor">
+                                {{item.nombre}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Proveedor</label>
+                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                            formControlName="Proveedor" placeholder="Seleccione un Proveedor"
+                            (change)="getReporteLinealComprasPorFecha(formFiltroReporteComprasPorFecha.controls.CategoriaProveedor.value,$event)">
+                            <ng-option *ngFor="let item of array_proveedores" [value]="item.idProveedor">
+                                {{item.razonSocial}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+
+                    <!-- div with divider styles -->
+                    <div class="col-12">
+                        <div>
+                            <span>Año</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <app-filtros-temporales #filtrosTiempoReporteComprasPorFecha [b_showTipo]="false"
+                            [tipoFiltro]="1" (filterChangeEvent)="
+                            getReporteLinealComprasPorFecha(formFiltroReporteComprasPorFecha.controls.CategoriaProveedor.value
+                            ,formFiltroReporteComprasPorFecha.controls.Proveedor.value, $event)">
+                        </app-filtros-temporales>
+                    </div>
+                </div>
+
+
+                <div id="graficoT1">
+                    <app-grafico [tipo]="'line'" [titulo]="tituloGrafico1" [container]="'graficoT1'"
+                        [updateEvent]="actualizargraficoComprasPorFecha.asObservable()" #graficoComprasPorFecha>
+                    </app-grafico>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-lg-6 px-3 h-100">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <div class="row" [formGroup]="this.formFiltroReporteComprasPorCategoriaSubClase">
+                    <div class="col-12">
+                        <label for="">Tipo de Busqueda</label>
+                        <div class="col-12">
+                            <app-filtros-temporales #filtroReporteComprasPorCategoriaSubClase [b_showTipo]="true"
+                                [tipoFiltro]="1" (filterChangeEvent)="getReporteBarComprasByCategoriaBySubByClase(
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Categoria.value,
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Subcategoria.value,
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Clase.value,
+                                    radioCatSubClass,$event)">
+                            </app-filtros-temporales>
+                        </div>
+
+                        <label>Categoria</label>
+                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Categoria"
+                            formControlName="Categoria" (change)="
+                            getReporteBarComprasByCategoriaBySubByClase(
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Categoria.value,
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Subcategoria.value,
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Clase.value,
+                                    radioCatSubClass);
+                            getSubcategorias($event)">
+                            <ng-option *ngFor="let item of array_categorias" [value]="item.Categoria">
+                                {{item.NombreCategoria}}
+                            </ng-option>
+                        </ng-select>
+                        <label>Subcategoria</label>
+                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                            placeholder="Subcategoria" formControlName="Subcategoria" (change)="
+                            getReporteBarComprasByCategoriaBySubByClase(
+                                formFiltroReporteComprasPorCategoriaSubClase.controls.Categoria.value,
+                                formFiltroReporteComprasPorCategoriaSubClase.controls.Subcategoria.value,
+                                formFiltroReporteComprasPorCategoriaSubClase.controls.Clase.value,
+                                radioCatSubClass);
+                            getClases($event)">
+                            <ng-option *ngFor="let item of array_subcategorias" [value]="item.idSubcategoria">
+                                {{item.nombreSubcategoria}}
+                            </ng-option>
+                        </ng-select>
+                        <label>Clase</label>
+                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Clase"
+                            formControlName="Clase" (change)="
+                            getReporteBarComprasByCategoriaBySubByClase(
+                                formFiltroReporteComprasPorCategoriaSubClase.controls.Categoria.value,
+                                formFiltroReporteComprasPorCategoriaSubClase.controls.Subcategoria.value,
+                                formFiltroReporteComprasPorCategoriaSubClase.controls.Clase.value,
+                                radioCatSubClass);">
+                            <ng-option *ngFor="let item of array_clases" [value]="item.Clase">
+                                {{item.NombreClase}}
+                            </ng-option>
+                        </ng-select>
+
+
+
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-between">
+                        <label for="">
+                            <input type="radio" [(ngModel)]="radioCatSubClass"
+                                class="form-control form-control-sm form-control-solid " value="1"
+                                name="radioCatSubClass" autocomplete="off" (change)="getReporteBarComprasByCategoriaBySubByClase(
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Categoria.value,
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Subcategoria.value,
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Clase.value,
+                                    radioCatSubClass);disableRadioSubClass()" />
+                            <span>Categoria</span>
+                        </label>
+
+                        <label for="">
+                            <input type="radio" [(ngModel)]="radioCatSubClass"
+                                class="form-control form-control-sm form-control-solid " value="2"
+                                name="radioCatSubClass" autocomplete="off" (change)="getReporteBarComprasByCategoriaBySubByClase(
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Categoria.value,
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Subcategoria.value,
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Clase.value,
+                                    radioCatSubClass);disableRadioSubClass()" />
+                            <span>Subcategoria</span>
+                        </label>
+
+                        <label for="">
+                            <input type="radio" [(ngModel)]="radioCatSubClass"
+                                class="form-control form-control-sm form-control-solid " name="radioCatSubClass"
+                                value="3" autocomplete="off" (change)="getReporteBarComprasByCategoriaBySubByClase(
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Categoria.value,
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Subcategoria.value,
+                                    formFiltroReporteComprasPorCategoriaSubClase.controls.Clase.value,
+                                    radioCatSubClass);disableRadioSubClass()" />
+                            <span>Clase</span>
+                        </label>
+                    </div>
+                </div>
+                <div id="graficoT2">
+                    <app-grafico [tipo]="'bar'" [titulo]="tituloGrafico2" [container]="'graficoT2'"
+                        [updateEvent]="actualizarGraficoCompras.asObservable()" #graficoCompras></app-grafico>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-lg-6 px-3">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <div class="card-body">
+                    <div class="row" [formGroup]="this.formFiltroReporteComprasPorProveedor">
+                        <div class="col-12">
+
+                            <label for="">Tipo de Busqueda</label>
+                            <div class="col-12">
+                                <app-filtros-temporales #filtroReporteComprasPorProveedor [b_showTipo]="true"
+                                    [tipoFiltro]="1" (filterChangeEvent)="getReporteComprasByProveedor(
+                                        formFiltroReporteComprasPorProveedor.controls.Tipo.value,
+                                        formFiltroReporteComprasPorProveedor.controls.CategoriaProveedor.value,
+                                        $event)">
+                                </app-filtros-temporales>
+                            </div>
+
+
+                            <label>Categoria Proveedor</label>
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                formControlName="CategoriaProveedor" placeholder="Seleccione una Categoria" (change)="getReporteComprasByProveedor(
+                                   formFiltroReporteComprasPorProveedor.controls.Tipo.value,
+                                   $event)">
+                                <ng-option *ngFor="let item of array_categoriasProveedor"
+                                    [value]="item.idCategoriaProveedor">
+                                    {{item.nombre}}
+                                </ng-option>
+                            </ng-select>
+
+                            <label>Top proveedores</label>
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                formControlName="Tipo" placeholder="Selecciona una opcion" (change)="getReporteComprasByProveedor(
+                                   $event,
+                                   formFiltroReporteComprasPorProveedor.controls.CategoriaProveedor.value)">
+                                <ng-option *ngFor="let item of array_topProveedores" [value]="item.value">
+                                    {{item.name}}
+                                </ng-option>
+                            </ng-select>
+
+                            <div class="col-12">
+                                <div>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div style="max-height: 470px; overflow-y: auto; overflow-x: hidden;">
+                                <div class="card" name="array_DataTopProveedores"
+                                    *ngFor="let item of array_DataTopProveedores">
+                                    <h5 class="card-header bg-primary mb-3">{{item.razonSocial}}</h5>
+
+                                    <div class="row card-body">
+                                        <div class="col-sm-6">
+                                            <h5 class="card-title">{{item.Ubicacion}}</h5>
+                                            <p class="card-text"><span>Total Compra: S/.</span>{{item.montoTotal}}
+                                            </p>
+                                            <p class="card-text">{{item.fecha | date: 'dd/MM/yyyy' }}</p>
+                                            <span>{{item.categoriaProveedor}}</span>
+                                            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                                        </div>
+                                        <img class="col-sm-6" src="./assets/media/users/default.jpg"
+                                            alt="Card image cap">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                formControlName="Top" >
+                                <ng-option *ngFor="let item of array_DataTopProveedores" [value]="item.idProveedor">
+                                    {{item.razonSocial}}
+                                    <div class="card" style="width: 18rem;">
+                                        <img class="card-img-top" src="..." alt="Card image cap">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Card title</h5>
+                                            <p class="card-text">Some quick example text to build on the card title and make
+                                                up the bulk of the card's content.</p>
+                                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                                        </div>
+                                    </div>
+                                </ng-option>
+                            </ng-select> -->
+
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="row">
+                        <div style="max-height: 300px; overflow-y: auto;">
+                            <div class="card" *ngFor="let item of array_DataTopProveedores">
+                                <h5 class="card-header">Featured</h5>
+                                <div class="card-body">
+                                    <h5 class="card-title">Special title treatment</h5>
+                                    <p class="card-text">With supporting text below as a natural lead-in to
+                                        additional content.</p>
+                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <app-grafico [tipo]="'column'" [titulo]="'Estado Ventas Departamento'" [container]="'grafico2'" [updateEvent]="actualizarGraf2.asObservable()" #grafico2></app-grafico> -->

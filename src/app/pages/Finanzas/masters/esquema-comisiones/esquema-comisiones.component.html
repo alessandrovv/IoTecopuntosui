@@ -1,0 +1,158 @@
+<div class="card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Esquema de comisiones</h3>
+		</div>
+		<div class="card-toolbar">
+			<button type="button" class="btn btn-primary" (click)="create(null)">Nuevo esquema de comisiones</button>
+		</div>
+	</div>
+	<div class="card-body">
+		<!-- begin: Filtration form -->
+		<div class="form form-label-right">
+			<div class="form-group row">
+				<div class="col-lg-8">
+					<div class="row" [formGroup]="filterGroup">
+						<div class="col-lg-4">
+
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Empresa"
+									[searchable]="true" placeholder="Empresa" (change)="getPuestoTrabajo($event);">
+									<ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+											{{item.razonSocial}}
+									</ng-option>
+							</ng-select>
+
+							<!-- <ng-select formControlName="Cliente" [items]="array_empresas" bindLabel="razonSocial" bindValue="idEmpresa"></ng-select> -->
+							<small class="form-text text-muted"><b>Filtrar</b> por Empresa</small>
+						</div>
+						<div class="col-lg-4">
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Certificado" (change)="getEsquemaComision(filterGroup.controls.Empresa.value, $event, filterGroup.controls.PuestoTrabajo.value)">
+									<ng-option *ngFor="let item of array_certificados" [value]="item.idCertificado">
+											{{item.Nombre}}
+									</ng-option>
+							</ng-select>
+							<small class="form-text text-muted"><b>Filtrar</b> por Certificado</small>
+						</div>
+
+						<div class="col-lg-4">
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="PuestoTrabajo" (change)="getEsquemaComision(filterGroup.controls.Empresa.value, filterGroup.controls.Certificado.value, $event)">
+									<ng-option *ngFor="let item of array_puestoTrabajo" [value]="item.PuestoTrabajo">
+											{{item.NombrePuestoTrabajo}}
+									</ng-option>
+							</ng-select>
+							<small class="form-text text-muted"><b>Filtrar</b> por Puesto de Trabajo</small>
+						</div>
+
+					</div>
+				</div>
+				<div class="col-lg-4" [formGroup]="searchGroup">
+					<input type="text" class="form-control" name="searchText" placeholder="Buscar" value="" (keyup)="search()"
+						formControlName="searchTerm" /><small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+				</div>
+			</div>
+		</div>
+		
+		<div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+
+					<ng-container matColumnDef="Nro">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+							<mat-cell *matCellDef="let i=index">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="Empresa">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>EMPRESA</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.nombreEmpresa}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="NombreEsquema">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRE ESQUEMA</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.nombreEsquema}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="Certificado">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>CERTIFICADO</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.nombreCertificado}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="PuestoTrabajo">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>PUESTO DE TRABAJO</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.nombrePuestoTrabajo}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="Comision">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>% COMISION</mat-header-cell>
+						<mat-cell *matCellDef="let lesson">{{lesson.porcentajeComision}}%</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="Estado">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">
+									
+									<span class="switch">
+											<label>
+													<input type="checkbox" name="Activo" [(ngModel)]="lesson.activo" (click)="enableEsquemaComision(lesson)">
+													<span></span>
+											</label>
+									</span>
+							</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="actions">
+							<mat-header-cell *matHeaderCellDef>OPERACIONES</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">                              
+
+									<a title="Editar Esquema Comision" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+											(click)="edit(lesson)">
+											<span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+											class="svg-icon svg-icon-md svg-icon-primary">
+											</span>
+									</a>
+
+									<a title="Borrar Esquema Comision" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+											(click)="delete(lesson.idEsquemaComision)">
+											<span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+											class="svg-icon svg-icon-md svg-icon-danger">
+											</span>
+									</a>
+
+									<!-- <button mat-icon-button style="color: #00A09D !important" type="button" 
+									[routerLink]="['/Ventas/Configuracion/Banco/edit']" [queryParams]="{id: lesson.Banco}" matTooltip="Editar Banco">
+										<mat-icon>create</mat-icon>
+									</button>
+
+									<button mat-icon-button style="color: #b7343d !important" type="button" 
+									(click)="eliminarActivar(lesson.Banco, false)" matTooltip="Eliminar Banco">
+											<mat-icon>delete</mat-icon>
+									</button> -->
+
+							</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="loading">
+							<mat-footer-cell *matFooterCellDef colspan="6">
+									Loading data...
+							</mat-footer-cell>
+					</ng-container>
+					<ng-container matColumnDef="noData">
+							<mat-footer-cell *matFooterCellDef colspan="6">
+									No se encontraron registros.
+							</mat-footer-cell>
+					</ng-container>
+
+					<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+					<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+					<mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+					</mat-footer-row>
+					<mat-footer-row *matFooterRowDef="['noData']"
+							[ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+			</mat-table>
+	</div>
+
+	<div class="mat-table__bottom">
+			<mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+			<mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+	</div>      
+	</div>
+</div>

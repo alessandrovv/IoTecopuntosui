@@ -1,0 +1,292 @@
+<div class="card card-custom m-0">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">¿Está seguro que desea cerrar esta orden de compra?</h3>
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" data-scroll="true" style="max-height: 650px; overflow-y: auto; overflow-x: hidden;">
+        <!----------------- INICIO DOCUMENTOS DE COMPRA ------------------>
+        <div class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-8 d-flex">
+                    <span [inlineSVG]="'./assets/media/svg/icons/General/Folder.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-xl svg-icon-primary">
+                    </span>
+                    <h4 class="card-label">
+                        &nbsp; &nbsp; Documentos de compra
+                    </h4>
+                </div>
+                <div class="col-lg-4" [formGroup]="searchDC">
+                    <input type="text" class="form-control" name="txtSearchDC" placeholder="Buscar" value=""
+                        formControlName="txtSearchDC" (keyup)="searchTableDC()" />
+                    <small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+            <mat-table class="lmat-elevation-z8" [dataSource]="listaDataDC" matSort perfectScrollbar>
+        
+                <ng-container matColumnDef="Nro">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                    <mat-cell *matCellDef="let i = index;">{{matPaginatorDC.pageSize * matPaginatorDC.pageIndex + i + 1}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="EstadoDC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.estado}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="AnticipoDC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ANTICIPO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.anticipo?'SI':'NO'}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="CodigoDC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CÓDIGO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.codigo}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="ProveedorDC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>PROVEEDOR</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.Proveedor}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="FechaEmisionDC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>FECHA EMISIÓN</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.fechaEmision | date : 'dd/MM/yyyy'}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="TipoDocumentoDC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TIPO DOCUMENTO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.tipoDocumento}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="DocumentoDC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>DOCUMENTO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.documento}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="MonedaDC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MONEDA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.moneda}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="TotalDC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TOTAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.total.toFixed(lesson.numDecimales)}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="loadingDC">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        Loading data...
+                    </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noDataDC">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        No se encontraron registros.
+                    </mat-footer-cell>
+                </ng-container>
+        
+                <mat-header-row *matHeaderRowDef="columnasDC"></mat-header-row>
+        
+                <mat-row *matRowDef="let row; columns: columnasDC"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loadingDC']" [ngClass]="{'hide': listaDataDC!=null}">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noDataDC']"
+                    [ngClass]="{'hide': !(listaDataDC!=null && listaDataDC.data.length==0)}">
+                </mat-footer-row>
+            </mat-table>
+        </div>
+        <div class="mat-table__bottom">
+            <mat-spinner [diameter]="20" *ngIf="searchBanDC"></mat-spinner>
+            <mat-paginator #matPaginatorDC [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+
+        <!------------------ FIN DOCUMENTOS DE COMPRA ------------------->
+        <br>
+        <!------------------- INICIO NOTAS DE ENTRADA ------------------->
+        <div class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-8 d-flex">
+                    <span [inlineSVG]="'./assets/media/svg/icons/Files/File.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-xl svg-icon-primary">
+                    </span>
+                    <h4 class="card-label">
+                        &nbsp; &nbsp; Notas de entrada
+                    </h4>
+                </div>
+                <div class="col-lg-4" [formGroup]="searchNE">
+                    <input type="text" class="form-control" name="txtSearchNE" placeholder="Buscar" value=""
+                        formControlName="txtSearchNE" (keyup)="searchTableNE()" />
+                    <small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+            <mat-table class="lmat-elevation-z8" [dataSource]="listaDataNE" matSort perfectScrollbar>
+        
+                <ng-container matColumnDef="Nro">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                    <mat-cell *matCellDef="let i = index;">{{matPaginatorNE.pageSize * matPaginatorNE.pageIndex + i + 1}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="EstadoNE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.estado}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="CodigoNE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CÓDIGO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.codigo}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="FechaContableNE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>FECHA CONTABLE</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.fechaContable | date : 'dd/MM/yyyy'}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="MaterialNE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MATERIAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.material}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="CantidadNE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CANTIDAD</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.cantidad.toFixed(2)}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="CostoUnitNE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>COSTO UNITARIO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.costoUnitario.toFixed(2)}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="CostoTotalNE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>COSTO TOTAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.costoTotal.toFixed(2)}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="UnidadMedidaNE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>UNIDAD MEDIDA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.unidadMedida}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="loadingNE">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        Loading data...
+                    </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noDataNE">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        No se encontraron registros.
+                    </mat-footer-cell>
+                </ng-container>
+        
+                <mat-header-row *matHeaderRowDef="columnasNE"></mat-header-row>
+        
+                <mat-row *matRowDef="let row; columns: columnasNE"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loadingNE']" [ngClass]="{'hide': listaDataNE!=null}">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noDataNE']"
+                    [ngClass]="{'hide': !(listaDataNE!=null && listaDataNE.data.length==0)}">
+                </mat-footer-row>
+            </mat-table>
+        </div>
+        <div class="mat-table__bottom">
+            <mat-spinner [diameter]="20" *ngIf="searchBanNE"></mat-spinner>
+            <mat-paginator #matPaginatorNE [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+        <!-------------------- FIN NOTAS DE ENTRADA -------------------->
+        <br>
+        <!-------------------- INICIO RESUMEN -------------------->
+        <div class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-8 d-flex">
+                    <span [inlineSVG]="'./assets/media/svg/icons/General/Clipboard.svg'" cacheSVG="true"
+                        class="svg-icon svg-icon-xl svg-icon-primary">
+                    </span>
+                    <h4 class="card-label">
+                        &nbsp; &nbsp; Resumen
+                    </h4>
+                </div>
+                <div class="col-lg-4" [formGroup]="searchRC">
+                    <input type="text" class="form-control" name="txtSearchRC" placeholder="Buscar" value=""
+                        formControlName="txtSearchRC" (keyup)="searchTableRC()" />
+                    <small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+            <mat-table class="lmat-elevation-z8" [dataSource]="listaDataRC" matSort perfectScrollbar>
+        
+                <ng-container matColumnDef="Nro">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                    <mat-cell *matCellDef="let i = index;">{{matPaginatorRC.pageSize * matPaginatorRC.pageIndex + i + 1}}
+                    </mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="Material">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MATERIAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.material}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="CantidadOC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CANTIDAD OC</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.cantidadOC.toFixed(2)}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="CantidadDC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CANTIDAD DC</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.cantidadDC?lesson.cantidadDC.toFixed(2):'-'}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="CantidadIngresada">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CANTIDAD INGRESADA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.cantidadNA?lesson.cantidadNA.toFixed(2):'-'}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="CantidadPorIngresar">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CANTIDAD POR INGRESAR</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.cantidadPorIngresar.toFixed(2)}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="UnidadMedida">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>UNIDAD MEDIDA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.unidadMedida}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="loadingRC">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        Loading data...
+                    </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noDataRC">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        No se encontraron registros.
+                    </mat-footer-cell>
+                </ng-container>
+        
+                <mat-header-row *matHeaderRowDef="columnasRC"></mat-header-row>
+        
+                <mat-row *matRowDef="let row; columns: columnasRC"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loadingRC']" [ngClass]="{'hide': listaDataRC!=null}">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noDataRC']"
+                    [ngClass]="{'hide': !(listaDataRC!=null && listaDataRC.data.length==0)}">
+                </mat-footer-row>
+            </mat-table>
+        </div>
+        <div class="mat-table__bottom">
+            <mat-spinner [diameter]="20" *ngIf="searchBanRC"></mat-spinner>
+            <mat-paginator #matPaginatorRC [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+        <!-------------------- FIN RESUMEN -------------------->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+        <button type="submit" class="btn btn-danger btn-elevate" [disabled]="estadoOrden=='0003' || hide_load" (click)="cerrarOrdenCompra()">
+            Cerrar
+        </button>
+    </div>
+</div>

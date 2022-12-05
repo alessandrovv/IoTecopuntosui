@@ -1,0 +1,57 @@
+.ng-select ::ng-deep .ng-dropdown-panel,
+.ng-select ::ng-deep .ng-dropdown-panel-items, 
+.ng-select ::ng-deep .ng-option{
+	word-wrap: normal !important;
+	white-space: normal !important;
+}
+
+.mat-column-DesModalidad,
+.mat-column-DesPuestoTrabajo,
+.mat-column-DesFondoPensionario,
+.mat-column-InicioContrato,
+.mat-column-FinContrato,
+.mat-column-FormatoContrato,
+.mat-column-CargarContrato,
+.mat-column-DescargarContrato,
+.mat-column-Vigente,
+.mat-column-Acciones {
+    font-size: 11.5px;    
+}
+
+.mat-column-Acciones {
+	min-width: 150px;
+	width: 100%;
+	font-size: 11.5px;
+	flex: 0 0 150px;
+	justify-content: center;
+}
+
+.mat-column-DesModalidad,
+.mat-column-DesPuestoTrabajo {
+    min-width: 180px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 180px;
+    justify-content: left;
+}
+
+
+.mat-column-actions,
+.mat-column-DesEsquema,
+.mat-column-Vigente,
+.mat-column-FormatoContrato,
+.mat-column-CargarContrato,
+.mat-column-DescargarContrato,
+.mat-column-InicioContrato,
+.mat-column-FinContrato {
+    min-width: 130px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 130px;
+    justify-content: center;
+}
+
+
+#File {
+    display: none;
+}

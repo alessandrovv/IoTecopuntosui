@@ -1,0 +1,258 @@
+<div class="card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Seguimiento de Visitas Comerciales</h3>
+		</div>
+		<div class="card-toolbar">
+			<button type="button" class="btn btn-primary" (click)="descargarReporte()">Reporte de Visitas Comerciales</button>
+		</div>
+	</div>
+	<div class="card-body">
+		<!-- begin: Filtration form -->
+		<div class="form form-label-right">
+			<div class="form-group row">
+				<div class="col-lg-12">
+					<div class="row" [formGroup]="filterGroup">
+						<div class="col-lg-2 pb-2">
+							<label>Cliente</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Cliente"
+								[searchable]="true" placeholder="Cliente">
+								<ng-option *ngFor="let item of array_clientes" [value]="item.idCliente">
+									{{item.razonSocial}}
+								</ng-option>
+							</ng-select>
+						</div>
+						<div class="col-lg-2 pb-2">
+							<label>Trabajador</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Trabajador"
+								[searchable]="true" placeholder="Trabajador">
+								<ng-option *ngFor="let item of array_trabajadores" [value]="item.idTrabajador">
+									{{item.NombresApellidos}}
+								</ng-option>
+							</ng-select>
+						</div>
+						<div class="col-lg-2 pb-2">
+							<label>Estado Visita</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="EstadoVisita"
+								[searchable]="true" placeholder="Estado Visita">
+								<ng-option *ngFor="let item of array_estadoVisita" [value]="item.valor">
+									{{item.nombre}}
+								</ng-option>
+							</ng-select>
+						</div>
+						<div class="col-lg-2 pb-2">
+							<label>Motivo Visita</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="MotivoVisita"
+								[searchable]="true" placeholder="Motivo Visita">
+								<ng-option *ngFor="let item of array_motivoVisita" [value]="item.valor">
+									{{item.nombre}}
+								</ng-option>
+							</ng-select>
+						</div>
+						<div class="col-lg-2 pb-2">
+							<label>Transporte</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Transporte"
+								[searchable]="true" placeholder="Transporte">
+								<ng-option *ngFor="let item of array_transporte" [value]="item.valor">
+									{{item.nombre}}
+								</ng-option>
+							</ng-select>
+						</div>
+						<div class="col-lg-2 pb-2">
+							<label>Condicion Cliente</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="CondicionCliente"
+								[searchable]="true" placeholder="Condicion Cliente">
+								<ng-option *ngFor="let item of array_condicionCliente" [value]="item.valor">
+									{{item.nombre}}
+								</ng-option>
+							</ng-select>
+						</div>
+
+						<div class="col-lg-2 pb-2">
+							<label>Resultado Visita</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="ResultadoVisita"
+								[searchable]="true" placeholder="Resultado Visita">
+								<ng-option *ngFor="let item of array_resultadoVisita" [value]="item.valor">
+									{{item.nombre}}
+								</ng-option>
+							</ng-select>
+						</div>
+
+						<div class="col-lg-2 pb-2">
+							<label>F. Desde</label>
+							<input class="form-control" formControlName="FechaInicio" type="date">
+						</div>
+
+						<div class="col-lg-2 pb-2">
+							<label>F. Hasta</label>
+							<input class="form-control" formControlName="FechaFin" type="date">
+						</div>
+
+						<div class="col-lg-1 pb-2" style="padding-top: 20px;">
+							<button type="button" class="btn btn-primary font-weight-bold mr-2" title="Buscar"
+								(click)="getSeguimientoVisitasComercialList();">Buscar</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end: Filtration form -->
+		<div class="w-100 pt-2 border" style="background-color: #6A7DE5; border-radius: 5px 5px 0px 0px;">
+			<div class="form-group row pb-1 mb-0 px-3">
+				<div class="col-lg-2  d-flex align-items-center">
+					<div style="width: 35px;height: 35px; float: left;">
+						<div class="circulo" style="background-color: #FFFFFF; border-color: black;border: solid;border-width: 1px;"></div>
+					</div>
+					<label class="text-light font-weight-bold">Pendiente</label>
+				</div>
+				<div class="col-lg-2 d-flex align-items-center">
+					<div style="width: 35px;height: 35px; float: left;">
+						<div class="circulo" style="background-color: #FFBF00;"></div>
+					</div>
+					<label class="text-light font-weight-bold">Iniciado</label>
+				</div>
+				<div class="col-lg-2 d-flex align-items-center">
+					<div style="width: 35px;height: 35px; float: left;">
+						<div class="circulo" style="background-color: #ff0000;"></div>
+					</div>
+					<label class="text-light font-weight-bold">Anulado</label>
+				</div>
+				<div class="col-lg-2 d-flex align-items-center">
+					<div style="width: 35px;height: 35px; float: left;">
+						<div class="circulo" style="background-color: #008000;"></div>
+					</div>
+					<label class="text-light font-weight-bold">Finalizado</label>
+				</div>
+				<div class="col-lg-4" [formGroup]="searchGroup">
+					<input type="text" class="form-control" name="searchText" placeholder="Buscar" value="" (keyup)="search()"
+						formControlName="searchTerm" /><small class="form-text text-light"><b>Buscar</b> en todos los campos</small>
+				</div>
+			</div>
+		</div>
+		<div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+				<ng-container matColumnDef="Nro">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+					<mat-cell *matCellDef="let i=index">{{ i + 1}}</mat-cell>
+				</ng-container>
+        		<ng-container matColumnDef="actions">
+					<mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">
+						<a title="Ver Evidencia" class="btn btn-icon btn-light btn-hover-warning btn-sm mx-3 px-1">
+						<span [inlineSVG]="'./assets/media/svg/icons/General/Visible.svg'" cacheSVG="true" (click)="getEvidenciaVisitaComercial(lesson)"
+						class="svg-icon svg-icon-md svg-icon-warning">
+						</span>
+						</a>
+						<a title="Ver Mapa" class="btn btn-icon btn-light btn-hover-info btn-sm mx-3 px-1" (click)="getMapaVisitaComercial(lesson)"
+							>
+							<span [inlineSVG]="'./assets/media/svg/icons/Map/Marker1.svg'" cacheSVG="true"
+							class="svg-icon svg-icon-md svg-icon-info">
+							</span>
+						</a>
+
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="Estado">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">
+						<div style="height: 100%; width: 100%; display: flex; flex-direction:column; align-items: center;">
+							<div class="circulo" *ngIf="lesson.estadoColorFondo != '#FFFFFF'" [style.background]="lesson.estadoColorFondo"></div>
+							<div class="circulo" style="border-color: black;border: solid;border-width: 1px;" *ngIf="lesson.estadoColorFondo == '#FFFFFF'" [style.background]="lesson.estadoColorFondo"></div>
+						</div>
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="Codigo">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>CODIGO</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">{{(lesson.codigo) || '-'}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="Fecha">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>FECHA</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">{{(lesson.fechaRutaComercial | date : 'dd/MM/yyyy') || '-'}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="HoraInicio">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>HORA INICIO</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">{{(lesson.fechaHoraInicio | date : 'h:mm:ss a' ) || '-'}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="HoraFin">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>HORA FIN</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">{{(lesson.fechaHoraFin | date : 'h:mm:ss a') || '-'}}</mat-cell>
+				</ng-container>
+
+        <ng-container matColumnDef="Trabajador">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>TRABAJADOR</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">{{lesson.NombresApellidos || '-'}}</mat-cell>
+				</ng-container>
+
+        <ng-container matColumnDef="RazonSocial">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>RAZON SOCIAL</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">{{lesson.razonSocial || '-'}}</mat-cell>
+				</ng-container>
+
+        <ng-container matColumnDef="NombreComercial">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRE COMERCIAL</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">{{lesson.nombreComercial || '-'}}</mat-cell>
+				</ng-container>
+
+		<ng-container matColumnDef="Sucursal">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>SUCURSAL</mat-header-cell>
+			<mat-cell *matCellDef="let lesson">{{lesson.direccionSucursal || '-'}}</mat-cell>
+		</ng-container>
+
+        <ng-container matColumnDef="Motivo">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Motivo</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">{{lesson.nombreMotivo || '-'}}</mat-cell>
+				</ng-container>
+
+        <ng-container matColumnDef="Transporte">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Transporte</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">{{lesson.nombreTransporte || '-'}}</mat-cell>
+				</ng-container>
+
+        <ng-container matColumnDef="CondicionCliente">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>CondicionCliente</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">{{lesson.nombreCondicionCliente || '-'}}</mat-cell>
+				</ng-container>
+
+        <ng-container matColumnDef="ResultadoVisita">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>RESULTADO VISITA</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">{{lesson.nombreResultado || '-'}}</mat-cell>
+				</ng-container>
+
+        <ng-container matColumnDef="Observacion">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Observacion</mat-header-cell>
+					<mat-cell *matCellDef="let lesson">{{lesson.observaciones || '-'}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="loading">
+					<mat-footer-cell *matFooterCellDef colspan="13">
+						Loading data...
+					</mat-footer-cell>
+				</ng-container>
+        
+				<ng-container matColumnDef="noData">
+					<mat-footer-cell *matFooterCellDef colspan="13">
+						No se encontraron registros.
+					</mat-footer-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+				<mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+				</mat-footer-row>
+				<mat-footer-row *matFooterRowDef="['noData']"
+					[ngClass]="{'hide': !(listData!=null && listData.data.length==0)}">
+				</mat-footer-row>
+			</mat-table>
+		</div>
+
+		<div class="mat-table__bottom">
+			<mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+			<!-- <mat-paginator #matPaginator [pageSizeOptions]="[25, 50, 100]"></mat-paginator> -->
+		</div>
+	</div>
+</div>

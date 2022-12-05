@@ -1,0 +1,36 @@
+.mat-column-Numero,
+.mat-column-CantidadAsesores,
+.mat-column-Ventas,
+.mat-column-actions,
+.mat-column-Activo {
+  min-width: 100px;
+  width: 100%;
+  font-size: 11.5px;
+  flex: 0 0 100px;
+  justify-content: center;
+}
+
+.mat-column-Celular {
+  min-width: 100px;
+  width: 100%;
+  font-size: 11.5px;
+  flex: 0 0 100px;
+  justify-content: center;
+}
+
+.mat-column-Certificado,
+.mat-column-Email {
+  min-width: 180px;
+  width: 100%;
+  font-size: 11.5px;
+  flex: 0 0 180px;
+  justify-content: left;
+}
+
+.mat-column-Asociado {
+  min-width: 230px;
+  width: 100%;
+  font-size: 11.5px;
+  flex: 0 0 230px;
+  justify-content: left;
+}

@@ -1,0 +1,307 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <ng-container *ngIf="idVacante > 0">Editar Vacante</ng-container>
+            <ng-container *ngIf="idVacante === 0">Nueva Vacante</ng-container>
+        </div>
+        <div class="card-toolbar">
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="form form-label-right">
+            <div class="card-body">
+                <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+                    <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DATOS_TAB)">
+                        <a class="nav-link" data-toggle="tab" role="tab" [attr.aria-selected]="activeTabId === tabs.DATOS_TAB" [class.active]="activeTabId === tabs.DATOS_TAB">Datos Generales</a>
+                    </li>
+                    <li class="nav-item cursor-pointer" (click)="changeTab(tabs.FUNCIONES_TAB)">
+                        <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.FUNCIONES_TAB" [class.active]="activeTabId === tabs.FUNCIONES_TAB">Funciones</a>
+                    </li>
+                    <li class="nav-item cursor-pointer" (click)="changeTab(tabs.REQUISITOS_TAB)">
+                        <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.REQUISITOS_TAB" [class.active]="activeTabId === tabs.REQUISITOS_TAB">Requisitos</a>
+                    </li>
+                    <li class="nav-item cursor-pointer" (click)="changeTab(tabs.ESPECIFICACIONES_TAB)">
+                        <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.ESPECIFICACIONES_TAB" [class.active]="activeTabId === tabs.ESPECIFICACIONES_TAB">Especificaciones</a>
+                    </li>
+                </ul>
+                <!-- DATOS GENERALES -->
+                <ng-container *ngIf="activeTabId === tabs.DATOS_TAB">
+                    <div class="mt-5">
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <div [formGroup]="formDatosGenerales">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <label>Código</label>
+                                            <input type="text" readonly class="form-control form-control-lg form-control-solid" name="Codigo" placeholder="Código" autocomplete="off"
+                                            formControlName="Codigo"/>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label>Empresa</label>
+                                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Empresa" placeholder="Empresa" (change)="getAreas($event,null)"
+                                            [class.is-invalid]="isControlInvalid('Empresa')" [class.is-valid]="isControlValid('Empresa')" >
+                                                <ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+                                                    {{item.razonSocial}}
+                                                </ng-option>
+                                            </ng-select>
+                                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div> 
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label>Area</label>
+                                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Area" name="Area" placeholder="Area" (change)="getPuestoTrabajos(this.formDatosGenerales.controls.Empresa.value,$event,null)"
+                                            [class.is-invalid]="isControlInvalid('Area')" [class.is-valid]="isControlValid('Area')">
+                                                <ng-option *ngIf="!array_areas || !formDatosGenerales.controls['Empresa'].value" [value]="-1" ng-model="selected" disabled>
+                                                    Selecciona una Empresa
+                                                </ng-option>
+                                                <ng-option *ngFor="let item of array_areas" [value]="item.Area">
+                                                    {{item.NombreArea}}
+                                                </ng-option>
+                                            </ng-select>
+                                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Area')"> Area es obligatorio. </div> 
+                                        </div> 
+                                        <div class="col-lg-3">
+                                            <label>Puesto Trabajo</label>
+                                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="PuestoTrabajo" placeholder="PuestoTrabajo" name="PuestoTrabajo"
+                                            [class.is-invalid]="isControlInvalid('PuestoTrabajo')" [class.is-valid]="isControlValid('PuestoTrabajo')">
+                                                <ng-option *ngIf="!array_puestos || !formDatosGenerales.controls['Area'].value" [value]="-1" ng-model="selected" disabled>
+                                                    Selecciona un Area
+                                                </ng-option>
+                                                <ng-option *ngFor="let item of array_puestos" [value]="item.PuestoTrabajo">
+                                                    {{item.NombrePuestoTrabajo}}
+                                                </ng-option>
+                                            </ng-select>
+                                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'PuestoTrabajo')"> Puesto de Trabajo es obligatorio. </div>  
+                                        </div>  
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <label>F. Inicio Vigencia</label>
+                                            <input type="date" class="form-control form-control-lg form-control-solid" name="FechaInicioVigencia" placeholder="F. Inicio Vigencia" autocomplete="off" [class.is-invalid]="isControlInvalid('FechaInicioVigencia')" [class.is-valid]="isControlValid('FechaInicioVigencia')" formControlName="FechaInicioVigencia"/>             
+                                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'FechaInicioVigencia')"> F. Inicio Vigencia es obligatorio. </div> 
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <label>F. Fin Vigencia</label>
+                                            <input type="date" class="form-control form-control-lg form-control-solid" [min]="formDatosGenerales.controls.FechaInicioVigencia.value" name="FechaFinVigencia" placeholder="F. Fin Vigencia" autocomplete="off" [class.is-invalid]="isControlInvalid('FechaFinVigencia')" [class.is-valid]="isControlValid('FechaFinVigencia')" formControlName="FechaFinVigencia"/>             
+                                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'FechaFinVigencia')"> F. Fin Vigencia es obligatorio. </div> 
+                                        </div>     
+
+                                        <div class="col-lg-6">
+                                            <label class="form-label">Nombre</label>
+                                            <input type="text" class="form-control form-control-lg form-control-solid" name="Nombre" placeholder="Nombre" autocomplete="off" 
+                                            [class.is-invalid]="isControlInvalid('Nombre')" [class.is-valid]="isControlValid('Nombre')"
+                                            formControlName="Nombre"
+                                            />                                                                                             
+                                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombre')"> Nombre es obligatorio. </div>                                              
+                                        </div>
+
+                                    </div>                                
+                                    <br>
+                                    <div class="row">    
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="form-label">Descripcion</label>
+                                            <textarea style="resize:none" type="text" class="form-control form-control-lg form-control-solid" name="Descripcion" placeholder="Descripcion" autocomplete="off"  formControlName="Descripcion"
+                                            [class.is-invalid]="isControlInvalid('Descripcion')" [class.is-valid]="isControlValid('Descripcion')"></textarea>
+                                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Descripcion')"> Descripcion es obligatoria. </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <label class="form-label">Activo</label>
+                                            <span class="switch">
+                                                <label>
+                                                    <input type="checkbox" name="Activo" formControlName="Activo">
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>  
+                        </div>              
+                    </div>
+                </ng-container>
+                <!-- FUNCIONES -->
+                <ng-container *ngIf="activeTabId === tabs.FUNCIONES_TAB">
+                    <div class="mt-5">
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label><span style="font-weight: bold;">VACANTE:</span> {{nombreVacante}}</label>                                    
+                                    </div>         
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <button (click)="addFuncion();" type="button" class="btn btn-primary font-weight-bold mr-2" >Agregar</button> 
+                                    </div>                        
+                                </div>
+                            </div>    
+                        </div>     
+
+                        <table class="table">
+                            <thead>
+                                <th>Nro</th>
+                                <th>DESCRIPCION</th>
+                                <th>ACTIVO</th>
+                                <th>ACCION</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of array_funciones">
+                                    <td style="justify-content: center;">
+                                            {{array_funciones.indexOf(item)+1}}
+                                    </td>                                
+                                    <td>
+                                        <input type="text" class="form-control form-control-lg form-control-solid" name="Nombre" placeholder="Nombre" autocomplete="off" [formControl]="data_DescripcionFuncion[array_funciones.indexOf(item)]" [class.is-invalid]="isFormControlInvalid(data_DescripcionFuncion[array_funciones.indexOf(item)])" [class.is-valid]="isFormControlValid(data_DescripcionFuncion[array_funciones.indexOf(item)])"/>   
+                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', data_DescripcionFuncion[array_funciones.indexOf(item)])"> Descripcion Funcion es obligatoria</div>
+                                    </td>
+                                    <td>
+                                        <span class="switch">
+                                            <label>
+                                                <input type="checkbox" name="Activo" [(ngModel)]="item.Activo">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </td>
+                                    <td>                                  
+                                        <a (click)="deleteFuncion(item)" title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                            >
+                                            <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                            class="svg-icon svg-icon-md svg-icon-danger">
+                                            </span>
+                                        </a>          
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-container>
+                <!-- REQUISITOS -->
+                <ng-container *ngIf="activeTabId === tabs.REQUISITOS_TAB">
+                    <div class="mt-5">
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label><span style="font-weight: bold;">VACANTE:</span> {{nombreVacante}}</label>                                    
+                                    </div>         
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <button (click)="addRequisito();" type="button" class="btn btn-primary font-weight-bold mr-2" >Agregar</button> 
+                                    </div>                        
+                                </div>
+                            </div>    
+                        </div>     
+
+                        <table class="table">
+                            <thead>
+                                <th>Nro</th>
+                                <th>DESCRIPCION</th>
+                                <th>ACTIVO</th>
+                                <th>ACCION</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of array_requisitos">
+                                    <td>
+                                            {{array_requisitos.indexOf(item)+1}}
+                                    </td>  
+                                    <td>
+                                        <input type="text" class="form-control form-control-lg form-control-solid" name="Nombre" placeholder="Nombre" autocomplete="off" [formControl]="data_DescripcionRequisito[array_requisitos.indexOf(item)]" [class.is-invalid]="isFormControlInvalid(data_DescripcionRequisito[array_requisitos.indexOf(item)])"[class.is-valid]="isFormControlValid(data_DescripcionRequisito[array_requisitos.indexOf(item)])"/>   
+                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', data_DescripcionRequisito[array_requisitos.indexOf(item)])"> Descripcion Requisito es obligatoria</div>   
+
+                                    </td>
+                                    <td>
+                                        <span class="switch">
+                                            <label>
+                                                <input type="checkbox" name="Activo" [(ngModel)]="item.Activo">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </td>
+                                    <td>                                  
+                                        <a (click)="deleteRequisito(item)" title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                            >
+                                            <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                            class="svg-icon svg-icon-md svg-icon-danger">
+                                            </span>
+                                        </a>          
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-container>
+                <!-- ESPECIFICACIONES -->
+                <ng-container *ngIf="activeTabId === tabs.ESPECIFICACIONES_TAB">
+                    <div class="mt-5">
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label><span style="font-weight: bold;">VACANTE:</span> {{nombreVacante}}</label>          
+                                    </div>         
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <button (click)="addEspecificacion();" type="button" class="btn btn-primary font-weight-bold mr-2" >Agregar</button> 
+                                    </div>                        
+                                </div>
+                            </div>    
+                        </div>     
+
+                        <table class="table">
+                            <thead>
+                                <th>Nro</th>
+                                <th>DESCRIPCION</th>
+                                <th>ACTIVO</th>
+                                <th>ACCION</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of array_especificaciones">
+                                    <td>
+                                        {{array_especificaciones.indexOf(item)+1}}
+                                    </td>   
+                                    <td>
+                                        <input type="text" class="form-control form-control-lg form-control-solid" name="Nombre" placeholder="Nombre" autocomplete="off" [formControl]="data_DescripcionEspecificacion[array_especificaciones.indexOf(item)]"[class.is-invalid]="isFormControlInvalid(data_DescripcionEspecificacion[array_especificaciones.indexOf(item)])"[class.is-valid]="isFormControlValid(data_DescripcionEspecificacion[array_especificaciones.indexOf(item)])"/>   
+                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', data_DescripcionEspecificacion[array_especificaciones.indexOf(item)])"> Descripcion Especificacion es obligatoria</div>   
+                                    </td>
+                                    <td>
+                                        <span class="switch">
+                                            <label>
+                                                <input type="checkbox" name="Activo" [(ngModel)]="item.Activo">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </td>
+                                    <td>                                  
+                                        <a (click)="deleteEspecificacion(item)" title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                            >
+                                            <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                            class="svg-icon svg-icon-md svg-icon-danger">
+                                            </span>
+                                        </a>          
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-container> 
+            </div>
+
+            <div class="float-right">
+                <button type="button" class="btn btn-primary font-weight-bold mr-2" disabled *ngIf="!hide_load">Registrando...</button>
+            <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="hide_load" (click)="saveUpdateVacante()" >Registrar Vacante</button>
+                <a class="btn btn-danger font-weight-bold mr-2" routerLink="/Talento/masters/Vacante">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>

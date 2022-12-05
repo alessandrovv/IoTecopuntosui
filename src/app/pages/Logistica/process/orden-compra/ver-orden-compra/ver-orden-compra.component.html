@@ -1,0 +1,572 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Ver Orden de Compra</h3>
+        </div>
+    </div>
+    
+    <div class="card-body">
+        <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+            <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DATOS_ORDEN)">
+                <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.DATOS_ORDEN"
+                    [class.active]="activeTabId === tabs.DATOS_ORDEN">Datos Generales</a>
+            </li>
+            <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DETALLE)">
+                <a class="nav-link" data-toggle="tab" role="tab" [attr.aria-selected]="activeTabId === tabs.DETALLE"
+                    [class.active]="activeTabId === tabs.DETALLE">Detalle</a>
+            </li>
+            <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DOCS_COMPRA)">
+                <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.DOCS_COMPRA"
+                    [class.active]="activeTabId === tabs.DOCS_COMPRA">Documentos adicionales</a>
+            </li>
+            <li class="nav-item cursor-pointer" (click)="changeTab(tabs.ULTIMAS_COMPRAS)">
+                <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.ULTIMAS_COMPRAS"
+                    [class.active]="activeTabId === tabs.ULTIMAS_COMPRAS">Ultimas Compras</a>
+            </li>
+        </ul>
+
+        <ng-container *ngIf="activeTabId === tabs.DATOS_ORDEN">
+            <div class="card-body">
+                <div class="form form-label-right">
+                    <div class="form-group row">
+                        <div class="col-lg-12">
+                            <div [formGroup]="formOrdenCompra">
+                                <div class="row">
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Código</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="Codigo" placeholder="Código" autocomplete="off" formControlName="Codigo" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label class="form-label">Código cotización Proveedor</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid" name="CodigoCotizacionProv" 
+                                            placeholder="Código Cotización Proveedor" autocomplete="off" formControlName="CodigoCotizacionProv" />
+                                    </div>
+                                    <div class="col-lg-6 d-none d-lg-block mb-5"></div>
+                                    <div class="col-lg-6 col-sm-6 mb-5">
+                                        <label>Proveedores</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="Proveedor" placeholder="Proveedor" autocomplete="off" formControlName="Proveedor" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>F. Ult. Compra</label>
+                                        <input type="date" readonly class="form-control form-control-lg form-control-solid"
+                                            name="FechaUltimaCompra" placeholder="F. Ult. Compra" autocomplete="off"
+                                            formControlName="FechaUltimaCompra" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label class="form-label">Monto histórico compra</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="MontoHistorico" placeholder="Monto histórico compra" autocomplete="off"
+                                            formControlName="MontoHistorico" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Cuenta bancaria</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="CuentaBancaria" placeholder="Cuenta Bancaria" autocomplete="off" formControlName="CuentaBancaria" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Contacto</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="Contacto" placeholder="Contacto" autocomplete="off" formControlName="Contacto" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Tipo Documento</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="TipoDocumento" placeholder="Tipo de documento" autocomplete="off" formControlName="TipoDocumento" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Forma de Pago</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="FormaPago" placeholder="Forma de pago" autocomplete="off" formControlName="FormaPago" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Fecha de emisión </label>
+                                        <input type="date" class="form-control form-control-lg form-control-solid"
+                                            name="FechaEmision" placeholder="Fecha de emisión" autocomplete="off"
+                                            [class.is-invalid]="isFormControlInvalid(controlsDatos.FechaEmision)"
+                                            [class.is-valid]="isFormControlValid(controlsDatos.FechaEmision)" formControlName="FechaEmision" />
+                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', controlsDatos.FechaEmision)"> 
+                                            Fecha de emisión es obligatorio.
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Fecha de entrega </label>
+                                        <input type="date" class="form-control form-control-lg form-control-solid"
+                                            name="FechaEntrega" placeholder="Fecha de entrega" autocomplete="off"
+                                            [min]="controlsDatos.FechaEmision.value"
+                                            [class.is-invalid]="isFormControlInvalid(controlsDatos.FechaEntrega)"
+                                            [class.is-valid]="isFormControlValid(controlsDatos.FechaEntrega)" formControlName="FechaEntrega" />
+                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', controlsDatos.FechaEntrega)"> 
+                                            Fecha de entrega es obligatorio.
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Tipo de moneda</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="TipoMoneda" placeholder="Tipo de moneda" autocomplete="off" formControlName="TipoMoneda" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label class="form-label">Tasa de cambio</label>
+                                        <input type="number" min="0.01" step="0.01" class="form-control form-control-lg form-control-solid" name="TasaCambio"
+                                            placeholder="Tasa de cambio" autocomplete="off" [class.is-invalid]="isFormControlInvalid('TasaCambio')"
+                                            [class.is-valid]="isFormControlValid('TasaCambio')" formControlName="TasaCambio" />
+                                    </div>
+                                    <div class="col-lg-6 col-sm-6 mb-5">
+                                        <label>Establecimiento</label>
+                                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                            name="Establecimiento" placeholder="Establecimiento" autocomplete="off" formControlName="Establecimiento" />
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label>Incluye IGV</label>
+                                        <span class="switch">
+                                            <label>
+                                                <input type="checkbox" name="IncluyeIgv" formControlName="IncluyeIgv">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-6 mb-5">
+                                        <label class="form-label">Número de decimales</label>
+                                        <input type="text" class="form-control form-control-lg form-control-solid"
+                                            name="NumeroDecimales" placeholder="Número de decimales " autocomplete="off"
+                                            [class.is-invalid]="isFormControlInvalid(controlsDatos.NumeroDecimales)"
+                                            [class.is-valid]="isFormControlValid(controlsDatos.NumeroDecimales)" formControlName="NumeroDecimales" />
+                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', controlsDatos.NumeroDecimales)"> 
+                                            Numero de decimales es obligatorio.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <div [hidden]="activeTabId != tabs.DETALLE">
+            <br>
+            <div class="row" style="overflow-x: auto;">
+                <div class="col-lg-12">
+                    <table class="table">
+                        <thead>
+                            <th>OPERACIONES</th>
+                            <th>CODIGO</th>
+                            <th>CANTIDAD</th>
+                            <th>PRESENTACIÓN</th>
+                            <th>DESCRIPCIÓN</th>
+                            <th>VALOR UNITARIO</th>
+                            <th>DESCUENTO</th>
+                            <th>IGV UNIT.</th>
+                            <th>PRECIO UNITARIO</th>
+                            <th>PRECIO TOTAL</th>
+                            <th>CANTIDAD TOTAL</th>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let item of materiales.controls; let i = index">
+                                <tr [formGroup]="item">
+                                    <td style="vertical-align: middle;">
+                                        <button title="Ver material" class="btn btn-icon btn-light btn-hover-info btn-sm mr-3" (click)="editarMaterial(i)">
+                                            <span [inlineSVG]="'./assets/media/svg/icons/General/Visible.svg'" cacheSVG="true"
+                                                class="svg-icon svg-icon-md svg-icon-info">
+                                            </span>
+                                        </button>
+                                        <button title="Eliminar material" class="btn btn-icon btn-light btn-hover-danger btn-sm mr-3" [disabled]="true">
+                                            <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                                class="svg-icon svg-icon-md svg-icon-danger">
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ array_materiales[i].codigo }}
+                                    </td>
+                                    <td style="vertical-align: middle; min-width: 8vw;">
+                                        <input type="number" class="form-control form-control-lg form-control-solid" name="Cantidad" autocomplete="off"
+                                            [class.is-invalid]="isFormControlInvalid(item.controls.Cantidad)"
+                                            [class.is-valid]="isFormControlValid(item.controls.Cantidad)"
+                                            formControlName="Cantidad" placeholder="Cantidad" />
+                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', item.controls.Cantidad)">
+                                            Cantidad es obligatorio. 
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ array_materiales[i].nombrePresentacion }}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ array_materiales[i].nombreMaterial }}
+                                    </td>
+                                    <td style="vertical-align: middle; min-width: 8vw;">
+                                        <input type="number" class="form-control form-control-lg form-control-solid"
+                                            name="ValorUnit" [min]="0.01" step="0.01" autocomplete="off"
+                                            [class.is-invalid]="isFormControlInvalid(item.controls.ValorUnit)"
+                                            [class.is-valid]="isFormControlValid(item.controls.ValorUnit)"
+                                            formControlName="ValorUnit" placeholder="Valor Unitario" />
+                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', item.controls.ValorUnit)">
+                                            Valor Unitario es obligatorio.
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: middle; min-width: 8vw;">
+                                        <input type="number" class="form-control form-control-lg form-control-solid"
+                                            name="DescuentoUnit" [min]="0.01" step="0.01" autocomplete="off"
+                                            [class.is-invalid]="isFormControlInvalid(item.controls.DescuentoUnit)"
+                                            [class.is-valid]="isFormControlValid(item.controls.DescuentoUnit)"
+                                            formControlName="DescuentoUnit" placeholder="Descuento Unitario" />
+                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', item.controls.DescuentoUnit)">
+                                            Descuento Unitario es obligatorio. 
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ fixLabel(item.controls.IgvUnit.value) }}
+                                    </td>
+                                    <td style="vertical-align: middle; min-width: 8vw;">
+                                        <input type="number" class="form-control form-control-lg form-control-solid"
+                                            name="PrecioUnit" [min]="0.01" step="0.01" autocomplete="off"
+                                            [class.is-invalid]="isFormControlInvalid(item.controls.PrecioUnit)"
+                                            [class.is-valid]="isFormControlValid(item.controls.PrecioUnit)"
+                                            formControlName="PrecioUnit" placeholder="Precio Unitario" />
+                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', item.controls.PrecioUnit)">
+                                            Precio Unitario es obligatorio. 
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: middle; min-width: 8vw;">
+                                        <input type="number" class="form-control form-control-lg form-control-solid"
+                                            name="PrecioTotal" [min]="0.01" step="0.01" autocomplete="off" readonly
+                                            formControlName="PrecioTotal" placeholder="Precio Total" />
+                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', item.controls.PrecioTotal)">
+                                            Precio Total es obligatorio. 
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ fixLabel(item.controls.CantidadTotal.value) }} 
+                                        <br>
+                                        {{ array_materiales[i].unidadMedida }}
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col-lg-6"></div>
+                <div class="col-lg-6">
+                    <div class="card card-custom bg-gray">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label>SUBTOTAL</label>
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    <label *ngIf="subTotal>0">{{ fixLabel(subTotal) }}</label>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-6 mt-3">
+                                    <label>DESCUENTO</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-3 mt-2">
+                                            <button title="Delete documento de compra" class="btn btn-icon btn-light btn-hover-primary btn-sm" [disabled]="true">
+                                                <span *ngIf="activeDescuentoTotal===0" [inlineSVG]="'./assets/media/svg/icons/General/Unlock.svg'" cacheSVG="true"
+                                                    class="svg-icon svg-icon-md svg-icon-primary">
+                                                </span>
+                                                <span *ngIf="activeDescuentoTotal===1" [inlineSVG]="'./assets/media/svg/icons/General/Lock.svg'" cacheSVG="true"
+                                                    class="svg-icon svg-icon-md svg-icon-primary">
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <input type="number" min="0.01" step="0.01" class="form-control form-control-lg form-control-solid text-right"  name="descuentoTotal" autocomplete="off" placeholder="DescuentoTotal" [disabled]="true" [(ngModel)]="descuentoTotalFix" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label>IGV</label>
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    <label *ngIf="igvTotal>0">{{ fixLabel(igvTotal) }}</label>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label><b>TOTAL</b></label>
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    <label *ngIf="total>0">{{ fixLabel(total) }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <ng-container *ngIf="activeTabId === tabs.DOCS_COMPRA">
+            <div class="card-body">
+                <div class="mt-5">
+                    <div class="form-group row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <label class="checkbox checkbox-lg checkbox-inline" style="font-size: 12px;">
+                                    <input type="checkbox" [checked]="activeDocCompra" [disabled]="true"/>
+                                    <span></span>&nbsp;&nbsp; ¿Generar documentos de compra?
+                                </label>
+                            </div>
+                            <br>
+                            <ng-container *ngIf="activeDocCompra===1">
+                                <div style="overflow-x: auto;">
+                                    <table class="table">
+                                        <tbody>
+                                            <ng-container *ngFor="let item of dc.controls; let i = index">
+                                                <tr [formGroup]="item">
+                                                    <td style="justify-content: center;">
+                                                        <label>Anticipo</label>
+                                                        <span class="switch">
+                                                            <label>
+                                                                <input type="checkbox" name="Anticipo" formControlName="Anticipo">
+                                                                <span></span>
+                                                            </label>
+                                                        </span>
+                                                    </td>
+                                                    <td style="min-width: 13vw;">
+                                                        <label>Fecha de emisión</label>
+                                                        <input type="date" class="form-control form-control-lg form-control-solid" name="FechaEmision" autocomplete="off"
+                                                            [min]="controlsDatos.FechaEmision.value" 
+                                                            [class.is-invalid]="isFormControlInvalid(item.controls.FechaEmision)"
+                                                            [class.is-valid]="isFormControlValid(item.controls.FechaEmision)"
+                                                            formControlName="FechaEmision" placeholder="Serie" />
+                                                        <div class="invalid-feedback"
+                                                            *ngIf="FormControlHasError('required', item.controls.FechaEmision)">
+                                                            Fecha de emisión es obligatorio.
+                                                        </div>
+                                                    </td>
+                                                    <td style="min-width: 13vw;">
+                                                        <label>Serie</label>
+                                                        <input type="text" class="form-control form-control-lg form-control-solid" name="Serie" autocomplete="off"
+                                                            [class.is-invalid]="isFormControlInvalid(item.controls.Serie)"
+                                                            [class.is-valid]="isFormControlValid(item.controls.Serie)"
+                                                            formControlName="Serie" placeholder="Serie" />
+                                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', item.controls.Serie)">
+                                                            Serie es obligatorio. </div>
+                                                    </td>
+                                                    <td style="min-width: 13vw;">
+                                                        <label>Número</label>
+                                                        <input type="text" class="form-control form-control-lg form-control-solid" name="Numero" autocomplete="off"
+                                                            [class.is-invalid]="isFormControlInvalid(item.controls.Numero)"
+                                                            [class.is-valid]="isFormControlValid(item.controls.Numero)"
+                                                            formControlName="Numero" placeholder="Número" />
+                                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', item.controls.Numero)">
+                                                            Numero es obligatorio. </div>
+                                                    </td>
+                                                    <td style="min-width: 13vw;">
+                                                        <label>Tasa de cambio</label>
+                                                        <div class="row">
+                                                            <div class="col-lg-7 pr-0">
+                                                                <input type="text" class="form-control form-control-lg form-control-solid" name="tasaCambio"            
+                                                                    autocomplete="off"
+                                                                    [class.is-invalid]="isFormControlInvalid(item.controls.TasaCambio)"
+                                                                    [class.is-valid]="isFormControlValid(item.controls.TasaCambio)"
+                                                                    formControlName="TasaCambio" placeholder="Tasa de cambio" />
+                                                                <div class="invalid-feedback" *ngIf="FormControlHasError('required', item.controls.TasaCambio)">
+                                                                    Tasa de cambio es obligatorio.
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-1 pl-0">
+                                                                <button title="Add tasa de cambio" class="btn btn-primary btn-sm" style="height: 100%;"
+                                                                    [disabled]="true">
+                                                                    <span [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'" cacheSVG="true"
+                                                                        class="svg-icon pl-2 svg-icon-md svg-icon-hover-primary">
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td style="min-width: 13vw;" *ngIf="item.controls.Anticipo.value==true">
+                                                        <label>Descripción</label>
+                                                        <input type="text" class="form-control form-control-lg form-control-solid" name="descripcion" autocomplete="off"
+                                                            [class.is-invalid]="isFormControlInvalid(item.controls.Descripcion)"
+                                                            [class.is-valid]="isFormControlValid(item.controls.Descripcion)"
+                                                            formControlName="Descripcion" placeholder="Descripción" />
+                                                        <div class="invalid-feedback"
+                                                            *ngIf="FormControlHasError('required', item.controls.Descripcion)">
+                                                            Descripción es obligatorio. </div>
+                                                    </td>
+                                                    <td style="min-width: 13vw;" *ngIf="item.controls.Anticipo.value==true">
+                                                        <label>Total</label>
+                                                        <input type="number" class="form-control form-control-lg form-control-solid" name="Total" autocomplete="off"
+                                                            formControlName="Total" placeholder="Total"
+                                                            [class.is-invalid]="isFormControlInvalid(item.controls.Total)"
+                                                            [class.is-valid]="isFormControlValid(item.controls.Total)" />
+                                                        <div class="invalid-feedback" *ngIf="FormControlHasError('required', item.controls.Total)">
+                                                            Total es obligatorio. </div>
+                                                    </td>
+                                                    <td style="justify-content: center;">
+                                                        <br>
+                                                        <button title="Delete documento de compra" class="btn btn-icon btn-light btn-hover-danger btn-sm" 
+                                                        [disabled]="true">
+                                                            <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                                                class="svg-icon svg-icon-md svg-icon-danger">
+                                                            </span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>    
+                                </div>
+                            </ng-container>
+                            <br>
+                            <div class="row">
+                                <label class="checkbox checkbox-lg checkbox-inline" style="font-size: 12px;">
+                                    <input type="checkbox" [disabled]="true" [checked]="activeNotaEntrada"/>
+                                    <span></span>&nbsp;&nbsp; ¿Generar nota de entrada?
+                                </label>
+                            </div>
+                            <ng-container *ngIf="activeNotaEntrada===1">
+                                <br>
+                                <div class="col-lg-3">
+                                    <label>Fecha contable</label>
+                                    <input type="date" class="form-control form-control-lg form-control-solid" name="FechaContable" autocomplete="off"
+                                        [class.is-invalid]="isFormControlInvalid(deta_formFechaContable)"
+                                        [class.is-valid]="isFormControlValid(deta_formFechaContable)"
+                                        [formControl]="deta_formFechaContable" placeholder="Fecha contable" />
+                                    <div class="invalid-feedback"
+                                        *ngIf="FormControlHasError('required', deta_formFechaContable)">
+                                        Fecha de emisión es obligatorio.
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <div [hidden]="activeTabId != tabs.ULTIMAS_COMPRAS">
+            <div class="mt-5">
+                <div class="form form-label-right">
+                    <div class="form-group row">
+                        <div class="col-lg-8"></div>
+                        <div class="col-lg-4" [formGroup]="filterGroupUltCompras">
+                            <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
+                                (keyup)="searchUltimasCompras()"
+                                formControlName="buscarUltCompras" /><small class="form-text text-muted"><b>Buscar</b> en todos los
+                                campos</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+                <mat-table class="lmat-elevation-z8" [dataSource]="listUltimasCompras" matSort perfectScrollbar>
+            
+                    <ng-container matColumnDef="Nro">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                        <mat-cell *matCellDef="let i = index;">{{matPaginatorU.pageSize * matPaginatorU.pageIndex + i + 1}}
+                        </mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="Correlativo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Codigo</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.codigo}}</mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="TipoDocumento">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo Documento</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.tipoDocumento}}</mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="Moneda">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Moneda</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.moneda}}</mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="FechaEmision">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>F. emisión</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.fechaEmision}}</mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="Total">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Total</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.total}}</mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="Material">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Material</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.material}}</mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="Cantidad">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.cantidad}}</mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="PrecioUnitario">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Prec. Unitario</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.precioUnit}}</mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="Descuento">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Descuento</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.descuentoUnit}}</mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="PrecioTotal">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Prec. Total</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.precioTotal}}</mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="Estado">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Estado</mat-header-cell>
+                        <mat-cell *matCellDef="let lesson">{{lesson.estado}}</mat-cell>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="loadingUltimas">
+                        <mat-footer-cell *matFooterCellDef colspan="8">
+                            Loading data...
+                        </mat-footer-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="noDataUltimas">
+                        <mat-footer-cell *matFooterCellDef colspan="8">
+                            No se encontraron registros.
+                        </mat-footer-cell>
+                    </ng-container>
+            
+                    <mat-header-row *matHeaderRowDef="displayedColumnsUlt"></mat-header-row>
+            
+                    <mat-row *matRowDef="let row; columns: displayedColumnsUlt"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['loadingUltimas']" [ngClass]="{'hide': listUltimasCompras!=null}">
+                    </mat-footer-row>
+                    <mat-footer-row *matFooterRowDef="['noDataUltimas']"
+                        [ngClass]="{'hide': !(listUltimasCompras!=null && listUltimasCompras.data.length==0)}">
+                    </mat-footer-row>
+                </mat-table>
+            </div>
+            <div class="mat-table__bottom">
+                <mat-spinner [diameter]="20" *ngIf="searchBanUltimas"></mat-spinner>
+                <mat-paginator #matPaginatorU [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="float-right">
+            <button type="button" class="btn btn-light-danger btn-hover-danger font-weight-bold mr-2">
+                <span [inlineSVG]="'./assets/media/svg/icons/Files/Selected-file.svg'" cacheSVG="true"
+                    class="svg-icon svg-icon-md svg-icon-danger">
+                </span> PDF</button>
+            <button type="button" class="btn btn-warning font-weight-bold mr-2" (click)="copiarOrden()">
+                <span [inlineSVG]="'./assets/media/svg/icons/General/Duplicate.svg'" cacheSVG="true"
+                    class="svg-icon svg-icon-md svg-icon-hover-warning">
+                </span> Copiar</button>
+            <a class="btn btn-info font-weight-bold mr-2" routerLink="/Logistica/process/OrdenCompra"> <span [inlineSVG]="'./assets/media/svg/icons/Code/Left-circle.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-hover-info">
+            </span> Volver</a>
+        </div>
+    </div>
+</div>

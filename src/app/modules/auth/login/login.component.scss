@@ -1,0 +1,52 @@
+:host {
+  width: 100%;
+  max-width: 450px;
+}
+@media (max-width: 767px) {
+  :host {
+    width: 100%;
+  }
+}
+.contenedor-login{
+  color: #fff;
+}
+//Boton Personalizado de Aspire
+.btn.btn-aspire {
+  color: #FFFFFF;
+  background-color: #645CED;
+  border-color: #645CED;
+}
+.btn.btn-aspire.disabled, .btn.btn-aspire:disabled {
+  color: #FFFFFF;
+  background-color: #6A7DE5;
+  border-color: #6A7DE5;
+}
+.btn.btn-aspire:hover:not(.btn-text):not(:disabled):not(.disabled), .btn.btn-aspire:focus:not(.btn-text), .btn.btn-aspire.focus:not(.btn-text) {
+  color: #FFFFFF;
+  border-color: #6A7DE5;
+}
+.link-aspire{
+  color: #000;
+  cursor: pointer;
+}
+
+.switch input:empty ~ span:after {
+  
+  opacity: 1!important;
+}
+//Switch Personalizado de aspire
+input:empty ~ span::after {
+  background-color: #645CED;  
+}
+input:checked {
+// Base
+~ span:before {
+    background-color: #645CED;    
+}
+
+// Tick
+~ span:after {
+    opacity: 1;
+    background-color: #FFFFFF;
+}
+}

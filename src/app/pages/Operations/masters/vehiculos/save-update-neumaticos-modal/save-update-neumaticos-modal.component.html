@@ -1,0 +1,180 @@
+<div class="modal-content">
+    <div class="modal-header bg-primary">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            Registrar Neumatico
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 304px">
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container>
+
+        <ng-container>
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group">
+
+                    <div class="row align-items-start">
+                        <div class="col">
+                            <label>Codigo</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid" name="Codigo"
+                                placeholder="Codigo" autocomplete="off"
+                                maxlength="10"
+                                [class.is-invalid]="isControlInvalid('Codigo')"
+                                [class.is-valid]="isControlValid('Codigo')" formControlName="Codigo" />
+
+                            <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Codigo')"> El
+                                Codigo es
+                                obligatorio. </div> -->
+                        </div>
+
+
+
+
+                        <div class="col">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid" name="Nombre"
+                                placeholder="Nombre" autocomplete="off" 
+                                maxlength="50"
+                                [class.is-invalid]="isControlInvalid('Nombre')"
+                                [class.is-valid]="isControlValid('Nombre')" formControlName="Nombre" />
+
+                            <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombre')"> El
+                                Nombre
+                                obligatorio. </div> -->
+                        </div>
+
+
+
+                        <div class="col-lg-12">
+                            <label>Tamaño</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid" name="Tamanio"
+                                placeholder="Tamanio" 
+                                maxlength="50"
+                                autocomplete="off"
+                                [class.is-invalid]="isControlInvalid('Tamanio')"
+                                [class.is-valid]="isControlValid('Tamanio')" formControlName="Tamanio" />
+
+                            <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Tamanio')"> El
+                                Tamaño
+                                obligatorio. </div> -->
+                        </div>
+
+                        <div class="col">
+                            <label>Tracción</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid" name="Traccion"
+                                placeholder="Traccion" autocomplete="off"
+                                maxlength="50"
+                                [class.is-invalid]="isControlInvalid('Traccion')"
+                                [class.is-valid]="isControlValid('Traccion')" formControlName="Traccion" />
+
+                            <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Traccion')">
+                                Traccion
+                                obligatorio. </div> -->
+                        </div>
+
+
+
+                        <div class="col">
+                            <label>Surco Inicial</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                name="SurcoInicial" placeholder="SurcoInicial" autocomplete="off"
+                                (keypress)="numberOnly($event)"
+                                [class.is-invalid]="isControlInvalid('SurcoInicial')"
+                                [class.is-valid]="isControlValid('SurcoInicial')" formControlName="SurcoInicial" />
+
+                            <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'SurcoInicial')"> El
+                                Surco inicial
+                                obligatorio. </div> -->
+                        </div>
+
+                    </div>
+
+                    <div class="row align-items-end">
+
+
+
+
+
+                        <div class="col">
+                            <label>Costo Unitario: </label>
+                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                name="CostoUnitario" placeholder="CostoUnitario" autocomplete="off"
+                                (keypress)="numberOnly($event)"
+                                [class.is-invalid]="isControlInvalid('CostoUnitario')"
+                                [class.is-valid]="isControlValid('CostoUnitario')" formControlName="CostoUnitario" />
+
+                            <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'CostoUnitario')"> Costo
+                                obligatorio. </div> -->
+                        </div>
+
+                        <div class="col">
+                            <label>Activo: </label>
+                            <span class="switch">
+                                <label>
+                                    <input type="checkbox" name="Activo" formControlName="Activo">
+                                    <span></span>
+                                </label>
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label>Marca: </label>
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Marca" name="Marca"
+                                [searchable]="true" placeholder="Marca" [class.is-invalid]="isControlInvalid('Marca')">
+                                <ng-option *ngFor="let item of array_neumaticoMarcas" [value]="item.valor">
+                                    {{item.nombre}}
+                                </ng-option>
+                            </ng-select>
+
+                            <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Marca')"> Marca
+                            obligatorio. </div> -->
+                        </div>
+
+                        <div class="col">
+                            <label>Tipo: </label>
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Tipo" name="Tipo"
+                                [searchable]="true" placeholder="Tipo" [class.is-invalid]="isControlInvalid('Tipo')">
+                                <ng-option *ngFor="let item of array_neumaticoTipos" [value]="item.valor">
+                                    {{item.nombre}}
+                                </ng-option>
+                            </ng-select>
+
+                            <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Tipo')"> Tipo
+                            obligatorio. </div> -->
+                        </div>
+
+                        <div class="col">
+                            <label>Posición: </label>
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Posicion"
+                                name="Posicion" [searchable]="true" placeholder="Posicion"
+                                [class.is-invalid]="isControlInvalid('Posicion')">
+                                <ng-option *ngFor="let item of array_neumaticoPosiciones" [value]="item.valor">
+                                    {{item.nombre}}
+                                </ng-option>
+                            </ng-select>
+
+                            <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Posicion')"> Posicion
+                            obligatorio. </div> -->
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </ng-container>
+    </div>
+    <hr class="my-4">
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+
+        <ng-container>
+            <button type="submit" class="btn btn-primary btn-elevate" (click)="addNeumatico()"
+                [disabled]="formGroup.invalid">
+                Guardar
+            </button>
+        </ng-container>
+    </div>
+</div>

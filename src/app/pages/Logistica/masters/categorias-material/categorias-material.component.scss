@@ -1,0 +1,54 @@
+.mat-row {
+    width: 100%;
+    min-width: 910px;
+}
+
+.mat-header-row {
+    width: 100%;
+    min-width: 910px;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+}
+
+.mat-column-Nro {
+    min-width: 50px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 50px;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-actions {
+    min-width: 150px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-Estado {
+    min-width: 100px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-Nombre {
+    min-width: 300px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+}
+
+.mat-column-Descripcion {
+    min-width: 300px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+}

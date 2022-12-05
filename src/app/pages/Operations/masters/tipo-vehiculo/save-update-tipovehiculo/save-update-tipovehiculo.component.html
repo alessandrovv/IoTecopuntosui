@@ -1,0 +1,165 @@
+<div class="card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title">			
+      <ng-container>
+        <ng-container *ngIf="idTipoVehiculo > 0">Editar</ng-container>
+        <ng-container *ngIf="idTipoVehiculo=== 0">Nuevo </ng-container>
+        Tipo de Vehiculo
+      </ng-container>
+		</div>
+	</div>
+
+	<div class="card-body">
+    <div
+    class="overlay overlay-block cursor-default modal-body"
+    style="min-height: 404px; padding-top: 0;"
+  >
+    <ng-container>
+      <form action="#" class="form form-label-right"  [formGroup] ="formDatos"> 
+          <div class="form-group">
+          
+              <div class="row" >
+                <div class="col-lg-12">
+                    <label class="form-label">Nombre del Tipo de Vehiculo</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid" name="Nombre" placeholder="Nombre" autocomplete="off" [class.is-invalid]="isControlInvalid('Nombre')" [class.is-valid]="isControlValid('Nombre')" formControlName="Nombre"/>             
+                     <div class="feedback" *ngIf="!formDatos.controls['Nombre'].value">Por favor, ingresa <b>Nombre</b></div>
+                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombre')"> Nombre obligatorio. </div> 
+                    <div class="valid-feedback" *ngIf="isControlValid('Nombre')">Nombre correcto</div>
+                  </div>
+              </div> 
+              <br>
+              <div class="row">
+                  <div class="col-lg-12">
+                      <label class="form-label">Descripcion</label>
+                      <input type="text" class="form-control form-control-lg form-control-solid" name="Descripcion" placeholder="Descripcion" autocomplete="off" [class.is-invalid]="isControlInvalid('Descripcion')" [class.is-valid]="isControlValid('Descripcion')" formControlName="Descripcion"/>             
+                      <div class="feedback" *ngIf="!formDatos.controls['Descripcion'].value">Por favor, ingresa <b>Descripcion</b></div>
+                      <div class="invalid-feedback" *ngIf="controlHasError('required', 'Descripcion')"> Descripcion obligatoria. </div> 
+                      <div class="valid-feedback" *ngIf="isControlValid('Descripcion')">Descripcion correcta</div> 
+                    </div>
+                </div>   
+              
+              <br> 
+              <div class="row">
+                <div class="col-lg-12">
+                    <label class="form-label">Activo</label>
+                    <span class="switch">
+                        <label>
+                            <input type="checkbox" name="Activo" formControlName="Activo">
+                            <span></span>
+                        </label>
+                    </span>
+                  </div>
+              </div>  
+            <br>
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="form-label">CARACTERISTICAS: </label>
+                  <table class="table">
+                    <thead class="table" style="background: #5262BC; color: rgb(255, 255, 255);">
+                      <th scope="col-4" style=" text-align: center; min-width: 95px;">     </th>
+                      <th scope="col">Habilitado</th>
+                      <th scope="col">Obligatorio</th>
+                      <th scope="col">Tipo de Dato</th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Todos</th>
+                        <td>
+                                <span class="switch" style=" text-align: center;">
+                                  <label>
+                                      <input type="checkbox" (change)=" cambioHabilitado()" name="Activo" formControlName="TodoHabilitado">
+                                      <span></span>
+                                  </label>
+                          </span>
+                        </td>
+                        <td>
+                          <span class="switch" style=" text-align: center;">
+                            <label>
+                                <input type="checkbox" name="Activo" (change)=" cambioObligatorio() " formControlName="TodoObligatorio">
+                                <span></span>
+                            </label>
+                          </span>
+                        </td>
+                        <td>
+                          <div class="col-lg-6"> 
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="TodoTipoDato"  (change)=" cambioTipoDato()"
+                                      [searchable]="true" placeholder="Tipo Dato">
+                                <ng-option *ngFor="let item of array_tipoDato" [value]="item.valor">
+                                        {{item.nombre}}
+                                </ng-option>    
+                            </ng-select>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <br>
+                  <table class="table" formArrayName="caracteristicas" >
+                    <thead class="table" style="background: #5262BC; color: rgb(255, 255, 255);">
+                      <th scope="col-4" style=" text-align: center; min-width: 95px;">     </th>
+                      <th scope="col">Habilitado</th>
+                      <th scope="col">Obligatorio</th>
+                      <th scope="col">Tipo de Dato</th>
+                    </thead>
+                     <tbody>
+                    <!-- <tbody>   -->   
+                        <tr  *ngFor="let caracteristica of arrayCaracteriticas.controls; let i = index;">
+                            
+                              <th scope="row">{{array_CaracteristicasVehiculo[i]?.nombre}}</th>
+                              <td>
+                                
+                                      <span class="switch" style=" text-align: center;" [formGroupName]="i" >
+                                        <label >
+                                            <input type="checkbox"  (change)="verificarTodoHabilitado()" name="Hablitado" formControlName="Habilitado">
+                                            <span></span>
+                                        </label>
+                                </span>
+                              </td>
+                              <td>
+                                <span class="switch" style=" text-align: center;"[formGroupName]="i" >
+                                  <label>
+                                      <input type="checkbox"  name="Obligatorio" (change)="verificarTodoObligatorio()"  formControlName="Obligatorio">
+                                      <span></span>
+                                  </label>
+                                </span>
+                              </td>
+                              <td>
+                                <div class="col-lg-7" [formGroupName]="i">
+                                  <ng-select style="min-width: 105px;" #agreeSelect [clearSearchOnAdd]="false"  (change)="verificarTodoTipo()"  formControlName="tipoDato"
+                                        [searchable]="true" placeholder="Tipo Dato">
+                                      <ng-option *ngFor="let item of array_tipoDato" [value]="item.valor">
+                                          {{item.nombre}}
+                                      </ng-option>
+                                </ng-select>
+                                </div>      
+                              </td>
+                      </tr>                                        
+                    </tbody>
+                  </table>  
+                </div>
+              </div>              
+            </div>                
+        </form>
+    </ng-container>
+    <div class="row justify-content-center align-items-center">
+      <div class="col-lg-2">
+        <ng-container>
+          <button type="submit" class="btn btn-primary btn-elevate"  (click)="save()">
+            Guardar
+          </button>
+        </ng-container>
+      </div>
+      <div class="col-lg-2">
+        <ng-container>
+          <button type="submit" class="btn btn-danger btn-elevate"  (click)="cancelar()">
+            Cancelar
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  
+  </div>
+
+  </div>  
+</div>

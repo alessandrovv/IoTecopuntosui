@@ -1,0 +1,66 @@
+.mat-row{
+    min-width: 850px;
+    width: 100%;
+}
+
+.mat-header-row {
+    min-width: 850px;
+    width: 100%;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+}
+
+.mat-column-Nro{
+	min-width: 50px;
+	white-space: pre-wrap;
+	width: 100%;
+	flex: 0 0 50px;
+	justify-content: center;
+}
+
+.mat-column-Moneda , .mat-column-TipoCuenta {
+	min-width: 180px;
+	white-space: pre-wrap;
+	width: 100%;
+	flex: 0 0 180px;
+	justify-content: center;
+}
+
+.mat-column-NroCuenta , .mat-column-NroCuentaInterbancaria {
+	min-width: 220px;
+	white-space: pre-wrap;
+	width: 100%;
+	flex: 0 0 220px;
+	justify-content: center;
+}
+
+
+// .mat-column-Codigo{
+// 	min-width: 70px;
+// 	white-space: pre-wrap;
+// 	width: 100%;
+// 	flex: 0 0 70px;
+// 	justify-content: left;
+// }
+
+.mat-column-Activo,.mat-column-Operaciones{
+    min-width: 100px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 80px;
+    justify-content: center;
+}
+
+// .mat-column-Operaciones{
+//     min-width: 80px;
+//     white-space: pre-wrap;
+//     width: 100%;
+//     flex: 0 0 80px;
+//     justify-content: center;
+// }
+
+.mat-cell,.mat-header-cell,.mat-footer-cell{
+    overflow: visible !important;
+}

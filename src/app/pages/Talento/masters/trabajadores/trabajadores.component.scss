@@ -1,0 +1,68 @@
+.mat-row{
+    // min-width: 900px;
+    width: 100%;
+}
+.mat-header-row {
+    // min-width: 900px;
+    width: 100%;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+}
+table {
+    width: 100%;
+}
+
+
+.mat-column-Activo,
+.mat-column-Nro,
+.mat-column-Edad {
+    min-width: 80px;
+    width: 100%;
+    font-size: 11.5px;
+    flex: 0 0 80px;
+    justify-content: center;
+}
+
+
+.mat-column-actions,
+.mat-column-Sexo,
+.mat-column-FechaInicioContrato,
+.mat-column-FechaFinContrato,
+.mat-column-Codigo,
+.mat-column-DocumentoIdentidad {
+    min-width: 150px;
+    width: 100%;
+    font-size: 11.5px;
+    flex: 0 0 150px;
+    justify-content: center;
+}
+
+.mat-column-Direccion,
+.mat-column-NombresApellidos {
+    min-width: 280px;
+    width: 100%;
+    font-size: 11.5px;
+    flex: 0 0 150px;
+    justify-content: left;
+}
+
+.mat-column-TipoContrato,
+.mat-column-PuestoTrabajo,
+.mat-column-Empresa,
+.mat-column-Area {
+    min-width: 200px;
+    width: 100%;
+    font-size: 11.5px;
+    flex: 0 0 200px;
+    justify-content: left;
+}
+.mat-column-Empresa,
+.mat-column-Codigo {
+    min-width: 50px;
+    width: 100%;
+    font-size: 11.5px;
+    flex: 0 0 200px;
+    justify-content: left;
+}

@@ -1,0 +1,127 @@
+<div class="form form-label-right">
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <div [formGroup]="formOrdenCompra">
+                <div class="row">
+                    <div class="col-lg-3 col-6 mb-5">
+                        <label>Código</label>
+                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                            name="Codigo" placeholder="Código" autocomplete="off" formControlName="Codigo" />
+                    </div>
+                    <div class="col-lg-3 col-6 mb-5">
+                        <label>Proveedor</label>
+                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                            name="Proveedor" placeholder="Proveedor" autocomplete="off" formControlName="Proveedor" />
+                    </div>
+                    <div class="col-lg-3 col-6 mb-5">
+                        <label>Tipo de documento</label>
+                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                            name="TipoDocumento" placeholder="Tipo de documento" autocomplete="off" formControlName="TipoDocumento" />
+                    </div>
+                    <div class="col-lg-3 col-6 mb-5">
+                        <label>Forma de pago</label>
+                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                            name="FormaPago" placeholder="Forma de pago" autocomplete="off" formControlName="FormaPago" />
+                    </div>
+                    <div class="col-lg-2 col-6 mb-5">
+                        <label>Fecha de emisión </label>
+                        <input type="date" class="form-control form-control-lg form-control-solid"
+                            name="FechaEmision" placeholder="Fecha de emisión" autocomplete="off" formControlName="FechaEmision" />
+                    </div>
+                    <div class="col-lg-2 col-6 mb-5">
+                        <label>Fecha de entrega </label>
+                        <input type="date" class="form-control form-control-lg form-control-solid"
+                            name="FechaEntrega" placeholder="Fecha de entrega" autocomplete="off"formControlName="FechaEntrega" />
+                    </div>
+                    <div class="col-lg-3 col-6 mb-5">
+                        <label>Tipo de moneda</label>
+                        <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                            name="TipoMoneda" placeholder="Tipo de moneda" autocomplete="off" formControlName="TipoMoneda" />
+                    </div>
+                    <div class="col-lg-5 col-6 mb-5">
+                        <label>Documento</label>
+                        <div class="row">
+                            <div class="col-6 mb-5">
+                                <input type="text" class="form-control form-control-lg form-control-solid"
+                                    name="SerieDocumento" placeholder="Serie de documento" autocomplete="off" formControlName="SerieDocumento" />
+                            </div>
+                            <div class="col-6 mb-5">
+                                <input type="text" class="form-control form-control-lg form-control-solid"
+                                    name="NumeroDocumento" placeholder="Numero de Documento" autocomplete="off" formControlName="NumeroDocumento" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mb-5">
+                        <label>Observación</label>
+                        <textarea class="form-control" rows="3" formControlName="Observacion" name="Observacion"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-5" style="overflow-x: auto;">
+    <div class="col-lg-12">
+        <table class="table">
+            <thead>
+                <th>OPERACIONES</th>
+                <th>CODIGO</th>
+                <th>CANTIDAD</th>
+                <th>PRESENTACIÓN</th>
+                <th>DESCRIPCIÓN</th>
+                <th>VALOR UNITARIO</th>
+                <th>PRECIO UNITARIO</th>
+                <th>VALOR TOTAL</th>
+                <th>PRECIO TOTAL</th>
+                <th>CANTIDAD TOTAL</th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of array_materiales; let i = index">
+                    <tr>
+                        <td style="vertical-align: middle;">
+                            <button title="Editar material" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-3" [disabled]="true">
+                                <span [inlineSVG]="'./assets/media/svg/icons/General/Edit.svg'" cacheSVG="true"
+                                    class="svg-icon svg-icon-md svg-icon-primary">
+                                </span>
+                            </button>
+                            <button title="Eliminar material" class="btn btn-icon btn-light btn-hover-danger btn-sm mr-3" [disabled]="true">
+                                <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                    class="svg-icon svg-icon-md svg-icon-danger">
+                                </span>
+                            </button>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            {{ array_materiales[i].codigo }}
+                        </td>
+                        <td style="vertical-align: middle; min-width: 8vw;">
+                            {{ array_materiales[i].cantidad }}
+                        </td>
+                        <td style="vertical-align: middle;">
+                            {{ array_materiales[i].nombrePresentacion }}
+                        </td>
+                        <td style="vertical-align: middle;">
+                            {{ array_materiales[i].nombreMaterial }}
+                        </td>
+                        <td style="vertical-align: middle; min-width: 8vw;">
+                            {{ fixedValor(array_materiales[i].valorUnit) }}
+                        </td>
+                        <td style="vertical-align: middle; min-width: 8vw;">
+                            {{ fixedValor(array_materiales[i].precioUnit) }}
+                        </td>
+                        <td style="vertical-align: middle;">
+                            {{ fixedValor(array_materiales[i].valorTotal) }}
+                        </td>
+                        <td style="vertical-align: middle; min-width: 8vw;">
+                            {{ fixedValor(array_materiales[i].precioTotal) }}
+                        </td>
+                        <td style="vertical-align: middle;">
+                            {{ fixedValor(array_materiales[i].cantidadTotal) }}
+                            <br>
+                            {{ array_materiales[i].unidadMedida }}
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

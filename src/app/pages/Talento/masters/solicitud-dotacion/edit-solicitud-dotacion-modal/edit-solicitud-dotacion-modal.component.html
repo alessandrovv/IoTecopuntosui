@@ -1,0 +1,93 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <ng-container *ngIf="product">
+        <!-- <ng-container *ngIf="product.id">Editar</ng-container>
+        <ng-container *ngIf="!product.id">Crear</ng-container> -->
+        Solicitud de dotación
+      </ng-container>
+    </div>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="product">
+      <form action="#" class="form form-label-right" [formGroup]="formGroup">
+				<div class="row">
+					<div class="col-6 border-right">
+						<div class="form-group row">
+							<label class="form-label col-12">Código solicitud</label>
+							<div class="col-12">
+								<input type="text" class="form-control" readonly name="CodigoSolicitud" formControlName="CodigoSolicitud">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="form-label col-12">Fecha de solicitud</label>
+							<div class="col-12">
+								<input type="date" class="form-control" name="FechaSolicitud" formControlName="FechaSolicitud" id="dtSolicitud">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="form-label col-12">Técnico</label>
+							<div class="col-12">
+								<input type="text" class="form-control" name="Tecnico" formControlName="Tecnico">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="form-label col-12">Número de cuotas</label>
+							<div class="col-lg-12">
+								<input type="number" id="numCuotas" class="form-control" value="1" name="NumeroCuotas" formControlName="NumeroCuotas" placeholder="1"/>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="form-label col-12">Monto total</label>
+							<div class="col-lg-12">
+								<input type="number" class="form-control" readonly name="MontoTotal" formControlName="MontoTotal">
+							</div>
+						</div>
+					</div>
+					<div class="col-6 border-left">
+						<label class="row col-12" for="">Herramientas Solicitadas</label>
+						<div class="row" *ngFor="let tipo of this.arrHerramientas">
+							<div class="col-12 mx-4 pl-5 mb-4">
+								<table class="w-100 ml-2">
+									<thead>
+										<thead>
+											<th colspan="2">{{ tipo.tipoHerramienta }}</th>
+										</thead>
+									</thead>
+									<tbody *ngFor="let herramienta of tipo.herramientas">
+										<tr>
+											<td class="pl-2">{{ herramienta.nombreHermienta }} ({{herramienta.cantidad}})</td>
+											<td class="text-right pr-3">S/{{ herramienta.precioUnitario | number: '1.2' }}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+      </form>
+    </ng-container>
+  </div>
+  <div class="modal-footer align-items-center">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">
+      Desaprobar solicitud
+    </button>
+    <ng-container *ngIf="product">
+      <button type="submit" class="btn btn-warning btn-elevate" (click)="save()" [disabled]="formGroup.invalid">
+        Registrar coutas
+      </button>
+    </ng-container>
+  </div>
+</div>
+
+

@@ -1,0 +1,186 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Ordenes de Compra</h3>
+        </div>
+        <div class="card-toolbar">
+            <button type="button" class="btn btn-primary" (click)="addOrdenCompra()">Nueva Orden de Compra</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- begin: Filtration form -->
+        <div class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-12">
+                    <div class="row" [formGroup]="filterGroup">
+                        <div class="col-lg-1 mb-5 d-none d-lg-block"></div>
+                        <div class="col-lg-2 col-6 mb-5">
+                            <input class="form-control" formControlName="Desde" type="date"
+                            (change)="getOrdenesCompraList($event.target.value, filterGroup.controls['Hasta'].value, filterGroup.controls['Estado'].value, filterGroup.controls['Proveedor'].value)">
+                            <small class="form-text text-muted"><b>Filtrar</b> por Desde</small>
+                        </div>
+                        <div class="col-lg-2 col-6 mb-5">
+                            <input class="form-control" formControlName="Hasta" type="date" [min]="filterGroup.controls['Desde'].value"
+                            (change)="getOrdenesCompraList(filterGroup.controls['Desde'].value, $event.target.value, filterGroup.controls['Estado'].value, filterGroup.controls['Proveedor'].value)">
+                            <small class="form-text text-muted"><b>Filtrar</b> por Hasta</small>
+                        </div>
+                        <div class="col-lg-4 col-6 mb-5">
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Proveedor"
+                            (change)="getOrdenesCompraList(filterGroup.controls['Desde'].value, filterGroup.controls['Hasta'].value, filterGroup.controls['Estado'].value, $event)">
+                                <ng-option *ngFor="let item of array_proveedores" [value]="item.idProveedor">
+                                    {{item.razonSocial}}
+                                </ng-option>
+                            </ng-select>
+                            <small class="form-text text-muted"><b>Filtrar</b> por Proveedor</small>
+                        </div>
+                        <div class="col-lg-2 col-6 mb-5">
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Estado"
+                                (change)="getOrdenesCompraList(filterGroup.controls['Desde'].value, filterGroup.controls['Hasta'].value, $event, filterGroup.controls['Proveedor'].value)">
+                                <ng-option *ngFor="let item of array_estado" [value]="item.valor">
+                                    {{item.nombre}}
+                                </ng-option>
+                            </ng-select>
+                            <small class="form-text text-muted"><b>Filtrar</b> por Estado</small>
+                        </div>
+                        <div class="col-lg-4 col-sm-12 mb-5 offset-lg-8" [formGroup]="searchGroup">
+                            <input type="search" class="form-control" name="searchText" placeholder="Buscar" value=""
+                                formControlName="searchTerm" (keyup)="search()" /><small
+                                class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end: Filtration form -->
+
+        <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+            <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+
+                <ng-container matColumnDef="Nro">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                    <mat-cell *matCellDef="let i = index;">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">
+                        <div ngbDropdown container="body">
+                            <button class="btn btn-light-primary btn-icon btn-sm" id="acciones" ngbDropdownToggle>
+                                <i class="ki ki-bold-more-ver"></i>
+                            </button>
+                            <div ngbDropdownMenu="acciones">
+                                <a ngbDropdownItem title="Editar Orden Compra" class="dropdown-item" *ngIf="lesson.idEstado=='0001'"
+                                    (click)="editOrdenCompra(lesson.idOrdenCompra)">
+                                    <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                                        class="svg-icon svg-icon-md svg-icon-primary">
+                                    </span>&nbsp;&nbsp;&nbsp;Editar
+                                </a>
+                                <a ngbDropdownItem title="Ver Orden Compra" class="dropdown-item" type="button"
+                                    *ngIf="lesson.idEstado!=='0001'" (click)="verOrdenCompra(lesson.idOrdenCompra)">
+                                    <span [inlineSVG]="'./assets/media/svg/icons/General/Visible.svg'" cacheSVG="true"
+                                        class="svg-icon svg-icon-md svg-icon-info">
+                                    </span>&nbsp;&nbsp;&nbsp;Ver 
+                                </a>
+                                <button ngbDropdownItem title="Cerrar Orden Compra" class="dropdown-item" type="button"
+                                    *ngIf="lesson.idEstado!=='0001' && lesson.idEstado!=='0004'" (click)="cerrarOrdenCompra(lesson.idOrdenCompra)">
+                                    <span [inlineSVG]="'./assets/media/svg/icons/General/Lock.svg'" cacheSVG="true"
+                                        class="svg-icon svg-icon-md svg-icon-success">
+                                    </span>&nbsp;&nbsp;&nbsp;Cerrar
+                                </button>
+                                <button ngbDropdownItem title="Anular Orden Compra" class="dropdown-item" type="button"
+                                    [disabled]="lesson.idEstado=='0004'" (click)="anularOrdenCompra(lesson.idOrdenCompra)">
+                                    <span [inlineSVG]="'./assets/media/svg/icons/Code/Error-circle.svg'" cacheSVG="true"
+                                        class="svg-icon svg-icon-md svg-icon-danger">
+                                    </span>&nbsp;&nbsp;&nbsp;Anular
+                                </button>
+                                <a ngbDropdownItem title="Copiar Orden Compra" class="dropdown-item" type="button"
+                                (click)="copiarOrdenCompra(lesson.idOrdenCompra)">
+                                    <span [inlineSVG]="'./assets/media/svg/icons/General/Duplicate.svg'" cacheSVG="true"
+                                        class="svg-icon svg-icon-md svg-icon-warning">
+                                    </span>&nbsp;&nbsp;&nbsp;Copiar
+                                </a>
+                                <a ngbDropdownItem title="PDF de Orden Compra" class="dropdown-item" type="button">
+                                    <span [inlineSVG]="'./assets/media/svg/icons/Files/Selected-file.svg'" cacheSVG="true"
+                                        class="svg-icon svg-icon-md svg-icon-danger">
+                                    </span>&nbsp;&nbsp;&nbsp;Ver PDF
+                                </a>
+                            </div>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Estado">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">
+                        <div style="height: 100%; width: 100%; display: flex; flex-direction:column">
+                            <a title="lesson.estado" class="btn btn-light btn-sm mx-3 estado" [style.color]="lesson.colorTexto" [style.background]="lesson.colorFondo">
+                                {{lesson.estado}}
+                            </a>
+                            <small style="font-weight: bolder; text-align: center; color: #aa1111" *ngIf="lesson.repetido">REPETIDO</small>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Codigo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CÓDIGO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.codigo}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Proveedor">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>PROVEEDOR</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.proveedor}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="FechaEmision">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>FECHA EMISIÓN</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.fechaEmision | date : 'dd/MM/yyyy'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="TipoDocumento">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TIPO DOCUMENTO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.tipoDocumento}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Moneda">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MONEDA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.moneda}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Total">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TOTAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.total.toFixed(lesson.numDecimales)}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Empleado">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>EMPLEADO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.empleado}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="loading">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        Loading data...
+                    </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        No se encontraron registros.
+                    </mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+            </mat-table>
+        </div>
+
+        <div class="mat-table__bottom">
+            <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+            <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+    </div>
+</div>

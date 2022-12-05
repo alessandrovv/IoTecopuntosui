@@ -1,0 +1,129 @@
+<div class="modal-content">
+    <div class="modal-header bg-primary">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            Registrar Documento
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 304px">
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container>
+
+        <ng-container>
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Tipo documento: </label>
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="TipoDocumento"
+                                name="TipoDocumento" [searchable]="true" placeholder="TipoDocumento"
+                                [class.is-invalid]="isControlInvalid('TipoDocumento')">
+                                <ng-option *ngFor="let item of array_tiposDocumentoVehiculo" [value]="item.valor">
+                                    {{item.nombre}}
+                                </ng-option>
+                            </ng-select>
+
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'TipoDocumento')"> Tipo de
+                                documento es
+                                obligatorio. </div>
+                        </div>
+                       
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>N° Documento</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                name="NumeroDocumento" placeholder="NumeroDocumento" autocomplete="off"
+                                (keypress)="numberOnly($event)"
+                                maxlength="15"
+                                [class.is-invalid]="isControlInvalid('NumeroDocumento')"
+                                [class.is-valid]="isControlValid('NumeroDocumento')"
+                                formControlName="NumeroDocumento" />
+
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'NumeroDocumento')"> El
+                                numero de documento es
+                                obligatorio. </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Fecha de Pago: </label>
+                            <input type="date" class="form-control form-control-lg " name="FechaPago"
+                                placeholder="FechaPago" autocomplete="off"
+                                max="{{this.formGroup.controls.FechaInicioVigencia.value}}"
+                                (change)="validarFecha('FechaPago','FechaInicioVigencia')"
+                                [class.is-invalid]="isControlInvalid('FechaPago')"
+                                [class.is-valid]="isControlValid('FechaPago')" formControlName="FechaPago" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'FechaPago')">
+                                Fecha de pago es obligatoria.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Importe Pagado: </label>
+                            <input type="text" class="form-control form-control-lg "
+                                name="ImportePago" placeholder="ImportePago" autocomplete="off"
+                                (keypress)="numberOnly($event)"
+                                maxlength="4"
+                                [class.is-invalid]="isControlInvalid('ImportePago')"
+                                [class.is-valid]="isControlValid('ImportePago')" formControlName="ImportePago" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'ImportePago')">
+                                Importe de pago es obligatoria.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label class="form-label">Fecha inicio Vigencia: </label>
+                            <input type="date" class="form-control form-control-lg "
+                                name="FechaInicioVigencia" placeholder="FechaInicioVigencia" autocomplete="off"
+                                min="{{this.formGroup.controls.FechaPago.value}}"
+                                (change)="validarFecha('FechaInicioVigencia','FechaFinVigencia')"
+                                [class.is-invalid]="isControlInvalid('FechaInicioVigencia')"
+                                [class.is-valid]="isControlValid('FechaInicioVigencia')"
+                                formControlName="FechaInicioVigencia" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'FechaInicioVigencia')">
+                                Fecha de inicio es obligatoria.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label class="form-label">Fecha fin Vigencia: </label>
+                            <input type="date" class="form-control form-control-lg "
+                                name="FechaFinVigencia" placeholder="FechaFinVigencia" autocomplete="off"
+                                min="{{this.formGroup.controls.FechaInicioVigencia.value}}"
+                                [class.is-invalid]="isControlInvalid('FechaFinVigencia')"
+                                [class.is-valid]="isControlValid('FechaFinVigencia')"
+                                formControlName="FechaFinVigencia" />
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'FechaFinVigencia')">
+                                Fecha de fin es obligatoria.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </ng-container>
+    </div>
+    <hr class="my-4">
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+
+        <ng-container>
+            <button type="submit" class="btn btn-primary btn-elevate" (click)="addDocumento()" [disabled]="formGroup.invalid">
+                Guardar
+            </button>
+        </ng-container>
+    </div>
+</div>

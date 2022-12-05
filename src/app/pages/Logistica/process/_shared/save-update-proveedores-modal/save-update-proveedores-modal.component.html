@@ -1,0 +1,344 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label">Nuevo Proveedor</h3>
+      </div>
+      <div class="card-toolbar">
+        <!-- <button type="button" class="btn btn-primary" (click)="addConfiguracion()">Nueva Configuración</button> -->
+      </div>
+    </div>
+
+    <div class="card-body">
+        <div class="form form-label-right">
+        
+            <div class="mt-5">
+             <div class="form-group row">
+                <div class="col-lg-12">
+                  <div [formGroup]="formDatosPersonales">
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6 mb-5">
+                            <label>Código</label>
+                            <input type="text" readonly class="form-control form-control-lg form-control-solid" name="Codigo" placeholder="Código" autocomplete="off"
+                              formControlName="Codigo"/>
+                          </div>
+                          <div class="col-lg-4 col-sm-6 mb-5">
+                            <label>Categoria</label>
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Categoria" [class.is-invalid]="isControlInvalid('Categoria')" placeholder="Seleccione una Categoria" >
+                                <ng-option *ngFor="let item of array_categorias" [value]="item.idCategoriaProveedor">
+                                    {{item.nombre}}
+                                </ng-option>
+                            </ng-select>
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Categoria')"> La Categoria es obligatorio. </div>  
+                          </div>
+                          <div class="col-lg-4 mb-5 d-none d-lg-block"></div>
+                          <div class="col-lg-3 col-6 mb-5">
+                              <label>País</label>
+                              <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Pais" [class.is-invalid]="isControlInvalid('Pais')" [class.is-valid]="isControlValid('Pais')" placeholder="Seleccione un País" (change)="getListarDepartamento($event, null)" >
+                                  <ng-option *ngFor="let item of array_pais" [value]="item.Pais">
+                                      {{item.NombrePais}}
+                                  </ng-option>
+                              </ng-select>
+                              <div class="invalid-feedback" *ngIf="controlHasError('required', 'Pais')"> Pais es obligatorio. </div>  
+                          </div>
+          
+                          <div class="col-lg-3 col-6 mb-5">
+                              <label>Departamento</label>
+                              <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Departamento" formControlName="Departamento" [class.is-invalid]="isControlInvalid('Departamento')" [class.is-valid]="isControlValid('Departamento')" (change)="getListarProvincia($event, null)">
+                                  <ng-option *ngFor="let item of array_departamento" [value]="item.Departamento">
+                                      {{item.NombreDepartamento}}
+                                  </ng-option>
+                              </ng-select>
+                              <div class="invalid-feedback" *ngIf="controlHasError('required', 'Departamento')"> Departamento es obligatorio. </div>  
+                          </div>
+  
+                          <div class="col-lg-3 col-6 mb-5">
+                              <label>Provincia</label>
+                              <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Provincia" formControlName="Provincia" [class.is-invalid]="isControlInvalid('Provincia')" [class.is-valid]="isControlValid('Provincia')" (change)="getListarDistrito($event, null)">
+                                  <ng-option *ngFor="let item of array_provincia" [value]="item.Provincia">
+                                      {{item.NombreProvincia}}
+                                  </ng-option>
+                              </ng-select>
+                              <div class="invalid-feedback" *ngIf="controlHasError('required', 'Provincia')"> Provincia es obligatorio. </div>  
+                          </div>
+  
+                          <div class="col-lg-3 col-6 mb-5">
+                              <label>Distrito</label>
+                              <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Distrito" formControlName="Distrito" [class.is-invalid]="isControlInvalid('Distrito')" [class.is-valid]="isControlValid('Distrito')" >
+                                  <ng-option *ngFor="let item of array_distrito" [value]="item.Distrito">
+                                      {{item.NombreDistrito}}
+                                  </ng-option>
+                              </ng-select>
+                              <div class="invalid-feedback" *ngIf="controlHasError('required', 'Distrito')"> Distrito es obligatorio. </div>  
+                          </div>
+                          <div class="col-lg-6 mb-5">
+                              <label class="form-label">Razon Social</label>
+                              <input type="text" class="form-control form-control-lg form-control-solid" name="RazonSocial" placeholder="Razon Social" autocomplete="off" [class.is-invalid]="isControlInvalid('RazonSocial')" [class.is-valid]="isControlValid('RazonSocial')" formControlName="RazonSocial"/>             
+                              <div class="invalid-feedback" *ngIf="controlHasError('required', 'RazonSocial')"> Razon Social es obligatorio. </div> 
+                          </div>
+                          <div class="col-lg-6 mb-5">
+                              <label class="form-label">Nombre Comercial</label>
+                              <input type="text" class="form-control form-control-lg form-control-solid" name="NombreComercial" placeholder="Nombre Comercial" autocomplete="off" [class.is-invalid]="isControlInvalid('NombreComercial')" [class.is-valid]="isControlValid('NombreComercial')" formControlName="NombreComercial"/>             
+                              <div class="invalid-feedback" *ngIf="controlHasError('required', 'NombreComercial')"> Nombre Comercial es obligatorio. </div>  
+                          </div>
+                          <div class="col-lg-6 mb-5">
+                              <label class="form-label">Direccion</label>
+                              <input type="text" class="form-control form-control-lg form-control-solid" name="Direccion" placeholder="Direccion" autocomplete="off" [class.is-invalid]="isControlInvalid('Direccion')" [class.is-valid]="isControlValid('Direccion')" formControlName="Direccion"/>             
+                              <div class="invalid-feedback" *ngIf="controlHasError('required', 'Direccion')"> La Direccion es obligatoria. </div> 
+                          </div>            
+                          <div class="col-lg-6 mb-5">
+                              <label class="form-label">Referencia</label>
+                              <input type="text" class="form-control form-control-lg form-control-solid" name="Referencia" placeholder="Referencia" autocomplete="off" [class.is-invalid]="isControlInvalid('Referencia')" [class.is-valid]="isControlValid('Referencia')" formControlName="Referencia"/>             
+                          </div>
+                          <div class="col-lg-3 col-6 mb-5">
+                              <label>Tipo Documento</label>
+                              <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="TipoDocumento" [class.is-invalid]="isControlInvalid('TipoDocumento')" placeholder="Seleccione un Tipo Documento">
+                                  <ng-option *ngFor="let item of array_tipo_doc" [value]="item.ValorDocIdentidad">
+                                      {{item.NombreDocIdentidad}}
+                                  </ng-option>
+                              </ng-select>
+                              <div class="invalid-feedback" *ngIf="controlHasError('required', 'TipoDocumento')"> Tipo Documento es obligatorio. </div>  
+                          </div>
+                          <div class="col-lg-3 col-6 mb-5">
+                              <label>Documento</label>
+                              <input type="number" class="form-control form-control-lg form-control-solid" name="DocumentoIdentidad" placeholder="Documento" autocomplete="off" [class.is-invalid]="isControlInvalid('DocumentoIdentidad')" [class.is-valid]="isControlValid('DocumentoIdentidad')" formControlName="DocumentoIdentidad"/>             
+                              <div class="invalid-feedback" *ngIf="controlHasError('required', 'DocumentoIdentidad')"> Documento de Identidad es obligatorio. </div> 
+                          </div>
+                          <div class="col-lg-3 col-6 mb-5">
+                              <label>Telefono 1:</label>
+                              <input type="number" class="form-control form-control-lg form-control-solid" name="Telefono" placeholder="Telefono" autocomplete="off" [class.is-invalid]="isControlInvalid('Telefono')" [class.is-valid]="isControlValid('Telefono')" formControlName="Telefono"/>             
+                              <div class="invalid-feedback" *ngIf="controlHasError('required', 'Telefono')"> Telefono es obligatorio. </div> 
+                          </div>
+                          <div class="col-lg-3 col-6 mb-5">
+                              <label>Telefono 2:</label>
+                              <input type="number" class="form-control form-control-lg form-control-solid" name="Telefono2" placeholder="Telefono 2" autocomplete="off" [class.is-invalid]="isControlInvalid('Telefono2')" [class.is-valid]="isControlValid('Telefono2')" formControlName="Telefono2"/>              
+                          </div>
+                          <div class="col-lg-3 col-6 mb-5">
+                              <label>Email</label>
+                              <input type="email" class="form-control form-control-lg form-control-solid" name="Email" placeholder="Email" autocomplete="off" [class.is-invalid]="isControlInvalid('Email')" [class.is-valid]="isControlValid('Email')" formControlName="Email"/>       
+                          </div>
+                          <div class="col-lg-3 col-6 mb-5" *ngIf="mostrar()">
+                              <label>Activo</label>
+                              <span class="switch">
+                                  <label>
+                                      <input type="checkbox" name="Activo" formControlName="Activo" >
+                                      <span></span>
+                                  </label>
+                              </span>
+                          </div>
+                    </div>
+                  </div>
+                </div> 
+            </div>
+        </div>
+
+            <div class="card-body">
+                <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+                <li class="nav-item cursor-pointer" (click)="changeTab(tabs.CONTACTO_TAB)">
+                    <a class="nav-link" data-toggle="tab" role="tab" [attr.aria-selected]="activeTabId === tabs.CONTACTO_TAB" [class.active]="activeTabId === tabs.CONTACTO_TAB">Contacto</a>
+                </li>
+                <li class="nav-item cursor-pointer" (click)="changeTab(tabs.CUENTAS_BANCARIAS_TAB)">
+                    <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.CUENTAS_BANCARIAS_TAB" [class.active]="activeTabId === tabs.CUENTAS_BANCARIAS_TAB">Cuentas Bancarias</a>
+                </li>  
+                </ul>
+            
+                <ng-container *ngIf="activeTabId === tabs.CONTACTO_TAB">
+                    <div class="mt-5">
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <button type="button" class="btn btn-primary font-weight-bold mr-2" (click)="addContactos();">+</button>                                 
+                                    </div>                                                                            
+                                </div>
+
+                                <div style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <th>N°</th>
+                                            <th>OPERACIONES</th>
+                                            <th>ACTIVO</th>
+                                            <th>TIPO DOC. IDENTIDAD</th>
+                                            <th>DOC. IDENTIDAD</th>
+                                            <th>NOMBRE</th>
+                                            <th>APE. PATERNO</th>
+                                            <th>APE. MATERNO</th>
+                                            <th>CARGO</th>
+                                            <th>TELEFONO</th>
+                                            <th>CORREO</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of array_contactos">
+                                                <td style="justify-content: center;"> 
+                                                    {{array_contactos.indexOf(item)+1}}
+                                                </td> 
+                                                <td>                                  
+                                                    <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                                        (click)="deleteContacto(item)">
+                                                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                                        class="svg-icon svg-icon-md svg-icon-danger">
+                                                        </span>
+                                                    </a>          
+                                                </td>
+                                                <td >
+                                                    <span class="switch">
+                                                        <label>
+                                                            <input type="checkbox" name="Activo" [(ngModel)]="item.Activo" >
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </td>
+                                                <td style="min-width: 13vw;">
+                                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" [formControl]="deta_formTipoDocumentoContacto[array_contactos.indexOf(item)]" [class.is-invalid]="isFormControlInvalid(deta_formTipoDocumentoContacto[array_contactos.indexOf(item)])" placeholder="Seleccione un Tipo Documento" appendTo="body">
+                                                        <ng-option *ngFor="let item of array_tipo_doc" [value]="item.ValorDocIdentidad">
+                                                            {{item.NombreDocIdentidad}}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', deta_formTipoDocumentoContacto[array_contactos.indexOf(item)])"> Tipo Documento es obligatorio. </div>   
+                                                </td> 
+                                                                              
+                                                <td style="min-width: 230px;">
+                                                    <input type="number" class="form-control form-control-lg form-control-solid" name="DocumentoIdentidadContacto" autocomplete="off" [formControl]="deta_formDocumentoIdentidadContacto[array_contactos.indexOf(item)]" [class.is-invalid]="isFormControlInvalid(deta_formDocumentoIdentidadContacto[array_contactos.indexOf(item)])" [class.is-valid]="isFormControlValid(deta_formDocumentoIdentidadContacto[array_contactos.indexOf(item)])" />             
+                                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', deta_formDocumentoIdentidadContacto[array_contactos.indexOf(item)])"> Documento de Identidad es obligatorio. </div> 
+                                                </td>
+                                                <td style="min-width: 200px;">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Nombre" autocomplete="off" [class.is-invalid]="isFormControlInvalid(deta_formNombre[array_contactos.indexOf(item)])" [class.is-valid]="isFormControlValid(deta_formNombre[array_contactos.indexOf(item)])" [formControl]="deta_formNombre[array_contactos.indexOf(item)]"/>             
+                                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', deta_formNombre[array_contactos.indexOf(item)])"> El nombre es obligatorio. </div> 
+                                                </td>
+                                                <td style="min-width: 200px;">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="ApellidoPaterno" autocomplete="off" [class.is-invalid]="isFormControlInvalid(deta_formApellidoPaterno[array_contactos.indexOf(item)])" [class.is-valid]="isFormControlValid(deta_formApellidoPaterno[array_contactos.indexOf(item)])" [formControl]="deta_formApellidoPaterno[array_contactos.indexOf(item)]"/>             
+                                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', deta_formApellidoPaterno[array_contactos.indexOf(item)])"> El apellido paterno es obligatorio. </div> 
+                                                </td>
+                                                <td style="min-width: 200px;">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="ApellidoMaterno" autocomplete="off" [class.is-invalid]="isFormControlInvalid(deta_formApellidoMaterno[array_contactos.indexOf(item)])" [class.is-valid]="isFormControlValid(deta_formApellidoMaterno[array_contactos.indexOf(item)])" [formControl]="deta_formApellidoMaterno[array_contactos.indexOf(item)]"/>             
+                                                </td>
+                                                <td style="min-width: 200px;">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Cargo" autocomplete="off" [class.is-invalid]="isFormControlInvalid(deta_formCargo[array_contactos.indexOf(item)])" [class.is-valid]="isFormControlValid(deta_formCargo[array_contactos.indexOf(item)])" [formControl]="deta_formCargo[array_contactos.indexOf(item)]"/>             
+                                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', deta_formCargo[array_contactos.indexOf(item)])"> El cargo es obligatorio. </div> 
+                                                </td>
+                                                <td style="min-width: 250px;">
+                                                    <input type="number" class="form-control form-control-lg form-control-solid" name="TelefonoContacto" autocomplete="off" [class.is-invalid]="isFormControlInvalid(deta_formTelefonoContacto[array_contactos.indexOf(item)])" [class.is-valid]="isFormControlValid(deta_formTelefonoContacto[array_contactos.indexOf(item)])" [formControl]="deta_formTelefonoContacto[array_contactos.indexOf(item)]"/>             
+                                                </td>
+                                                <td style="min-width: 280px;">
+                                                    <input type="email" class="form-control form-control-lg form-control-solid" name="EmailContacto" autocomplete="off" [class.is-invalid]="isFormControlInvalid(deta_formEmailContacto[array_contactos.indexOf(item)])" [class.is-valid]="isFormControlValid(deta_formEmailContacto[array_contactos.indexOf(item)])" [formControl]="deta_formEmailContacto[array_contactos.indexOf(item)]"/>             
+                                                </td>
+                                            </tr> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            
+                <ng-container *ngIf="activeTabId === tabs.CUENTAS_BANCARIAS_TAB">
+                    <div class="mt-5">
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <button type="button" class="btn btn-primary font-weight-bold mr-2" (click)="addCuentasBancarias();">+</button>                                 
+                                    </div>                                                                            
+                                </div>
+
+                                <div style="overflow-x: auto;">
+                                    <table class="table">
+                                        <thead>
+                                            <th>N°</th>
+                                            <th>OPERACIONES</th>
+                                            <th>ACTIVO</th>
+                                            <th>BANCO</th>
+                                            <th>TITULAR</th>
+                                            <th>TIPO CUENTA</th>
+                                            <th>MONEDA</th>
+                                            <th>N° CUENTA</th>
+                                            <th>N° CUENTA INTERBANCARIA</th>
+                                            <th>DETRACCION</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of array_cuentasBancarias">
+                                                <td style="justify-content: center;"> 
+                                                    {{array_cuentasBancarias.indexOf(item)+1}}
+                                                </td>
+                                                <td>                                  
+                                                    <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                                        (click)="deleteCuentaBancaria(item)">
+                                                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                                        class="svg-icon svg-icon-md svg-icon-danger">
+                                                        </span>
+                                                    </a>          
+                                                </td> 
+                                                <td >
+                                                    <span class="switch">
+                                                        <label>
+                                                            <input type="checkbox" name="ActivoCuentaBancaria" [(ngModel)]="item.Activo" >
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" [formControl]="deta_formBanco[array_cuentasBancarias.indexOf(item)]" placeholder="Seleccione un Banco" [class.is-invalid]="isFormControlInvalid(deta_formBanco[array_cuentasBancarias.indexOf(item)])" appendTo="body">
+                                                        <ng-option *ngFor="let item of array_banco" [value]="item.Banco">
+                                                            {{item.NombreBanco}}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', deta_formBanco[array_cuentasBancarias.indexOf(item)])"> Banco es obligatorio. </div>  
+                                                </td>
+                                                <td style="min-width: 250px;">
+                                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Titular" autocomplete="off" [class.is-invalid]="isFormControlInvalid(deta_formTitular[array_cuentasBancarias.indexOf(item)])" [class.is-valid]="isFormControlValid(deta_formTitular[array_cuentasBancarias.indexOf(item)])" [formControl]="deta_formTitular[array_cuentasBancarias.indexOf(item)]"/>             
+                                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', deta_formTitular[array_cuentasBancarias.indexOf(item)])"> El titular es obligatorio. </div> 
+                                                </td>
+                                                <td>
+                                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" [formControl]="deta_formTipoCuenta[array_cuentasBancarias.indexOf(item)]" placeholder="Seleccione un Tipo de Cuenta" [class.is-invalid]="isFormControlInvalid(deta_formTipoCuenta[array_cuentasBancarias.indexOf(item)])" appendTo="body">
+                                                        <ng-option *ngFor="let item of array_tipo_cuenta" [value]="item.ValorCuenta">
+                                                            {{item.NombreCuenta}}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', deta_formTipoCuenta[array_cuentasBancarias.indexOf(item)])"> Tipo de Cuenta es obligatorio. </div>  
+                                                </td>
+                                                <td>
+                                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" [formControl]="deta_formTipoMoneda[array_cuentasBancarias.indexOf(item)]" placeholder="Seleccione un Tipo de Cuenta" [class.is-invalid]="isFormControlInvalid(deta_formTipoMoneda[array_cuentasBancarias.indexOf(item)])" appendTo="body">
+                                                        <ng-option *ngFor="let item of array_moneda" [value]="item.ValorMoneda">
+                                                            {{item.NombreMoneda}}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', deta_formTipoMoneda[array_cuentasBancarias.indexOf(item)])"> Tipo de Moneda es obligatorio. </div>  
+                                                </td>
+                                                <td style="min-width: 280px;">
+                                                    <input type="number" class="form-control form-control-lg form-control-solid" name="NCuenta" autocomplete="off" [formControl]="deta_formNumeroCuenta[array_cuentasBancarias.indexOf(item)]" [class.is-invalid]="isFormControlInvalid(deta_formNumeroCuenta[array_cuentasBancarias.indexOf(item)])" [class.is-valid]="isFormControlValid(deta_formNumeroCuenta[array_cuentasBancarias.indexOf(item)])" />             
+                                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', deta_formNumeroCuenta[array_cuentasBancarias.indexOf(item)])"> Número de Cuenta es obligatorio. </div> 
+                                                </td>
+                                                <td style="min-width: 280px;">
+                                                    <input type="number" class="form-control form-control-lg form-control-solid" name="CuentaInterbancaria" autocomplete="off" [formControl]="deta_formCuentaInterbancaria[array_cuentasBancarias.indexOf(item)]" [class.is-invalid]="isFormControlInvalid(deta_formCuentaInterbancaria[array_cuentasBancarias.indexOf(item)])" [class.is-valid]="isFormControlValid(deta_formCuentaInterbancaria[array_cuentasBancarias.indexOf(item)])" />             
+                                                    <div class="invalid-feedback" *ngIf="FormControlHasError('required', deta_formCuentaInterbancaria[array_cuentasBancarias.indexOf(item)])"> Cuenta Interbancaria es obligatorio. </div> 
+                                                </td>
+                                                <td >
+                                                    <span class="switch">
+                                                        <label>
+                                                            <input type="checkbox" name="Detraccion" [(ngModel)]="item.Detraccion" >
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+    
+            </div>
+
+          <div class="float-right">            
+            <button type="button" class="btn btn-primary font-weight-bold mr-2" disabled *ngIf="!hide_load">Registrando...</button>
+            <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="hide_load" (click)="saveUpdateProveedores()">Guardar</button>
+            <a class="btn btn-danger font-weight-bold mr-2" (click)="modal.dismiss()">Cancelar</a>
+          </div>
+
+      </div>
+  
+    </div>
+</div>

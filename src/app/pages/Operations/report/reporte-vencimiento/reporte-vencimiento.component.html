@@ -1,0 +1,271 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label">REPORTE DE VENCIMIENTO DE DOCUMENTOS DE VEHICULO</h3>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                <div class="form form-label-right">
+                    <div class="form-group">
+                        <div class="row" [formGroup]="filterGroup">
+                            <div class="col-lg-3">
+                                <ng-select #agreeSelect [clearSearchOnAdd] = "false" formControlName="Placa" 
+                                [searchable]="true" placeholder="Todos" (change)="getComboPlaca()">
+                                <ng-option *ngFor="let cat of arrayPlacas" [value]="cat.idVehiculo">
+                                    {{cat.placa}}
+                                </ng-option>
+                            </ng-select>
+                                  <small class="form-text text-muted"><b>Selecciona</b> la Placa</small>
+                            </div>
+                            <div class="col-lg-3">
+                                  <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="TipoVehiculo"
+                                      [searchable]="true" placeholder="Todos" >
+                                      <ng-option *ngFor="let item of arrayTipoVehiculo" [value]="item.idTipoVehiculo">
+                                          {{item.nombre}}
+                                      </ng-option>
+                                  </ng-select>
+                                  <small class="form-text text-muted"><b>Selecciona</b> el Tipo de Vehículo</small>
+                            </div>   
+                            <div class="col-lg-3">
+                                <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="TipoProcedencia"
+                                      [searchable]="true" placeholder="Todos" >
+                                      <ng-option *ngFor="let item of arrayTipoProcedencia" [value]="item.valor">
+                                          {{item.nombre}}
+                                      </ng-option>
+                                  </ng-select>
+                                  <small class="form-text text-muted"><b>Selecciona</b> el Tipo de Procedencia</small>
+                            </div> 
+                            <div class="col-lg-3">
+                                <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Proveedor"
+                                      [searchable]="true" placeholder="Todos" >
+                                      <ng-option *ngFor="let item of arrayProveedores" [value]="item.idProveedor">
+                                          {{item.razonSocial}}
+                                      </ng-option>
+                                  </ng-select>
+                                  <small class="form-text text-muted"><b>Selecciona</b> el Proveedor</small>
+                            </div> 
+                             
+                        </div>     
+                    </div>
+                </div>
+            </div>        
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="w-100 pt-2 border" style="background-color: #6A7DE5; border-radius: 5px 5px 0px 0px; padding-bottom: 2%;">
+
+            <div class="row justify-content-center" style="text-align: center; color: #FFFFFF;">
+                <h4>
+                    Leyenda de Riesgo
+                </h4>
+            </div>
+            <mat-divider></mat-divider>
+
+            <div class="row pb-1 mb-0 px-3 justify-content-center" style="margin-top: 10px;">
+                <div class="col">
+                    <div class="container-row contenedor-riesgo" >
+                        <div class="col-lg-12  d-flex align-items-center justify-content-center">
+                            <div style="width: 35px;height: 35px; float: left;">
+                                <div class="circulo" style="background-color: #ff0000; border-color: black;border: solid;border-width: 1px;"></div>
+                            </div>
+                            <label class="text-light font-weight-bold">Alto</label>
+                        </div>
+                        <div class="col-lg-">
+                            <input type="number" class="form-control form-control-lg form-control-solid" name="Nombre" placeholder="Número de días" autocomplete="off" 
+                            [(ngModel)] = "altoRiesgo" min="0" style="background-color: #6A7DE5; color: white; font-size: 16px;"/>             
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-1" style="margin-top: 4%; margin-left: 4%;">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                </div>
+
+                <div class="col">
+                    <div class="container-row contenedor-riesgo" >
+                        <div class="col-lg-12  d-flex align-items-center justify-content-center">
+                            <div style="width: 35px;height: 35px; float: left;">
+                                <div class="circulo" style="background-color: #FFBF00; border-color: black;border: solid;border-width: 1px;"></div>
+                            </div>
+                            <label class="text-light font-weight-bold">Medio</label>
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="margin-top: 3%;">
+                        <div class="col-md-5 align-items-center" style="text-align: center; color: #FFFFFF;">
+                            <h2>
+                                {{altoRiesgo == null ? null : altoRiesgo+1}}
+                            </h2>
+                        </div>
+                        <div class="col-md-2" style="text-align: center; color: #FFFFFF;">
+                            <h1>
+                                -
+                            </h1>
+                        </div>
+                        <div class="col-md-5" style="text-align: center; color: #FFFFFF;">
+                            <h2>
+                                {{bajoRiesgo == null? null : bajoRiesgo-1}}
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1" style="margin-top: 4%; margin-left: 4%;">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                </div>
+
+                <div class="col">
+                    <div class="container-row contenedor-riesgo" >
+                        <div class="col-lg-12  d-flex align-items-center justify-content-center">
+                            <div style="width: 35px;height: 35px; float: left;">
+                                <div class="circulo" style="background-color: #008000; border-color: black;border: solid;border-width: 1px;"></div>
+                            </div>
+                            <label class="text-light font-weight-bold">Bajo</label>
+                        </div>
+                        <div class="col-lg-12">
+                            <input type="number" class="form-control form-control-lg form-control-solid" name="Nombre" placeholder="Número de días" autocomplete="off" 
+                            [(ngModel)] = "bajoRiesgo" min="1" style="background-color: #6A7DE5; color: white; font-size: 16px;"/>             
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="container">
+            <div class="form form-label-right">
+                <div class="form-group">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-lg-3 col-sm-4 d-flex 
+                        flex-column 
+                        justify-content-center " style = "padding-bottom: 2px;">
+                            <button type="button" class="btn btn-primary" (click)="generarReporte()" [disabled]="validoGenerar()"><i class="fas fa-sync"></i>Generar Reporte</button>
+                        </div>
+                        <div class = "col-lg-3 col-sm-4 d-flex 
+                        flex-column 
+                        justify-content-center " style = "padding-bottom: 2px;">
+                            <button type="button" class="btn btn-success" (click)="descargarReporte()"><i class="fas fa-download"></i>Descargar Excel</button>
+                        </div>        
+                    </div>     
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+
+    <div class="row justify-content-center align-content-center">
+        
+      <!-- end: Filtration form -->
+
+    </div>
+
+
+     <div class="card-body ">
+        <div class="table-responsive angular-bootstrap-table mat-table__wrapper " style="overflow: auto">
+            <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar >
+    
+                <ng-container class="columna" matColumnDef="Nro">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                    <mat-cell *matCellDef="let i = index;">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}</mat-cell>
+                </ng-container>
+    
+                <ng-container  matColumnDef="PLACA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Placa</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.placa}}</mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="PROCEDENCIA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Procedencia</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.procedencia == null? '-' : lesson.procedencia}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="PROVEEDOR">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Proveedor</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.proveedor == null ? '-' : lesson.proveedor}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="TIPOVEHICULO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de Vehículo</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.tipoVehiculo == null ? '-' : lesson.tipoVehiculo}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="TIPODOCUMENTO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de Documento</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.tipoDocumento == null ? '-' : lesson.tipoDocumento}}</mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="NUMDOCUMENTO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Número de Documento</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.numeroDocumento == null ? '-' : lesson.numeroDocumento}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="FECHAPAGO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Pago</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.fechaPago == null ? '-' : lesson.fechaPago | date : 'dd/MM/yyyy'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="IMPORTEPAGADO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Importe Pagado</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.importePago == null ? '-' : lesson.importePago}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="INICIOVIGENCIA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Inicio de vigencia</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.fechaInicioVigencia == null ? '-' : lesson.fechaInicioVigencia | date : 'dd/MM/yyyy'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="FINVIGENCIA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Fin de vigencia</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.fechaFinVigencia == null ? '-' : lesson.fechaFinVigencia | date : 'dd/MM/yyyy'}}</mat-cell>
+                </ng-container> 
+
+                <ng-container matColumnDef="DIASVENCIMIENTO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Dias para Vencimiento</mat-header-cell>
+
+                    
+                    <mat-cell *matCellDef="let lesson">
+                    <div style="height: 100%; width: 100%; display: flex; flex-direction:column">
+                        <a class="fondo" [ngClass]="
+                        {'fondo-rojo': lesson.diasVencimiento <= numAltoRiesgo && lesson.diasVencimiento != null ?true:false,
+                        'fondo-amarillo': lesson.diasVencimiento < numBajoRiesgo && lesson.diasVencimiento > numAltoRiesgo && lesson.diasVencimiento != null?true:false,
+                        'fondo-verde': lesson.diasVencimiento >= numBajoRiesgo && lesson.diasVencimiento != null ?true:false}">
+                            {{lesson.diasVencimiento == null ? 0 : lesson.diasVencimiento}}
+                        </a>
+                    </div>
+                </mat-cell>
+                </ng-container> 
+                    
+                <ng-container matColumnDef="loading">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        Loading data...
+                    </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        No se encontraron registros.
+                    </mat-footer-cell>
+                </ng-container>
+    
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+            </mat-table> 
+    
+        </div>
+    
+            <div class="mat-table__bottom">
+                <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+                <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            </div>      
+        </div> 
+  </div>

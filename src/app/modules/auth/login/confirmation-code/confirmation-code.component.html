@@ -1,0 +1,16 @@
+<h1>Ingresar código</h1>
+<span>Se le envió un código de confirmación a WhatsApp</span>
+<br>
+<div class="otp-field" [formGroup]="otpForm">
+    <input type="text" id="first" value="" maxlength="1" (keyup)="handleOtp($event)" formControlName="first" />
+    <input type="text" id="second" value="" maxlength="1" (keyup)="handleOtp($event)" formControlName="second" />
+    <input type="text" id="third" value="" maxlength="1" (keyup)="handleOtp($event)" formControlName="third" />
+    <input type="text" id="fourth" value="" maxlength="1" (keyup)="handleOtp($event)" formControlName="fourth" />
+    <input type="text" id="fifth" value="" maxlength="1" (keyup)="handleOtp($event)" formControlName="fifth" />
+    <input type="text" id="sixth" value="" maxlength="1" (keyup)="handleOtp($event)" formControlName="sixth" />
+    
+</div>
+
+<div *ngIf="isLoading" class="spinner-border text-light" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>

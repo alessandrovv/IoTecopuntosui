@@ -1,0 +1,137 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Nueva Nota de Salida</h3>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-12">
+                    <div [formGroup]="formDatos">
+                        <div class="row">
+                            <div class="col-lg-4 col-6 mb-5">
+                                <label>Tipo de operación</label>
+                                <input type="text" readonly class="form-control form-control-lg form-control-solid" name="TipoOperacion" placeholder="Tipo Operacion" 
+                                    autocomplete="off" formControlName="TipoOperacion" />
+                            </div>
+                            <div class="col-lg-4 col-6 mb-5">
+                                <label>Tipo de documento</label>
+                                <input type="text" readonly class="form-control form-control-lg form-control-solid" name="TipoDocumento" placeholder="Tipo Documento" 
+                                    autocomplete="off" formControlName="TipoDocumento" />
+                            </div>
+                            <div class="col-lg-4 col-6 mb-5">
+                                <label>Periodo</label>
+                                <input type="text" readonly class="form-control form-control-lg form-control-solid" name="Periodo" placeholder="Periodo" 
+                                    autocomplete="off" formControlName="Periodo" />
+                            </div>
+                            <div class="col-lg-4 col-6 mb-5">
+                                <label>Fecha de emisión </label>
+                                <input type="date" class="form-control form-control-lg form-control-solid" name="FechaEmision" placeholder="Fecha de emisión"
+                                    autocomplete="off" formControlName="FechaEmision" />
+                            </div>
+                            <div class="col-lg-4 col-6 mb-5">
+                                <label>Fecha contable </label>
+                                <input type="date" class="form-control form-control-lg form-control-solid" name="FechaContable" placeholder="Fecha contable"   
+                                    autocomplete="off" formControlName="FechaContable" />
+                            </div>
+                            <div class="col-lg-4 col-6 mb-5">
+                                <label>Establecimiento</label>
+                                <input type="text" readonly class="form-control form-control-lg form-control-solid" name="Establecimiento" placeholder="Establecimiento"
+                                    autocomplete="off" formControlName="Establecimiento" />
+                            </div>
+                            <div class="col-lg-12 mb-5" *ngIf="!mostrarPV">
+                                <label>Observación</label>
+                                <textarea class="form-control" rows="3" formControlName="Observacion" name="Observacion"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [hidden]="!mostrarPV">
+            <app-vista-pedido-venta-ver 
+                #pedidoVenta
+            ></app-vista-pedido-venta-ver>
+        </div>
+        <ng-container *ngIf="mostrarOtros">
+            <div class="row" style="overflow-x: auto;">
+                <div class="col-lg-12">
+                    <table class="table">
+                        <thead>
+                            <th>OPERACIONES</th>
+                            <th>CODIGO</th>
+                            <th>CANTIDAD</th>
+                            <th>STOCK</th>
+                            <th>UNIDAD</th>
+                            <th>DESCRIPCIÓN</th>
+                            <th>OBSERVACIÓN</th>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let item of array_materiales; let i = index">
+                                <tr>
+                                    <td style="vertical-align: middle;">
+                                        <button title="Eliminar material" class="btn btn-icon btn-light btn-hover-danger btn-sm mr-3" [disabled]="true">
+                                            <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                                class="svg-icon svg-icon-md svg-icon-danger">
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ item.codigo }}
+                                    </td>
+                                    <td style="vertical-align: middle; min-width: 8vw;">
+                                        {{ item.cantidad }}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ item.stock }}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ item.unidadMedida }}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        {{ item.nombreMaterial }}
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <input type="text" class="form-control form-control-lg form-control-solid"
+                                        name="Observación" placeholder="Observación" autocomplete="off" [formControl]="deta_formObservacion[i]" />
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="card-footer" *ngIf="mostrarBotones">
+        <div class="float-right">
+            <button type="button" class="btn btn-light-danger btn-hover-danger font-weight-bold mr-2">
+                <span [inlineSVG]="'./assets/media/svg/icons/Files/Selected-file.svg'" cacheSVG="true"
+                    class="svg-icon svg-icon-md svg-icon-danger">
+                </span> PDF
+            </button>
+            <a class="btn btn-info font-weight-bold mr-2" routerLink="/Logistica/process/NotaAlmacen"> <span [inlineSVG]="'./assets/media/svg/icons/Code/Left-circle.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-hover-info">
+            </span> Volver</a>
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Eliminar material</h4>
+        <button type="button" class="btn btn-icon" aria-label="Close" (click)="modal.dismiss(false)">
+            <span [inlineSVG]="'./assets/media/svg/icons/Code/Error-circle.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-hover-dark">
+            </span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>¿Estas seguro de que deseas eliminar el material?</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss(false)">No</button>
+        <button type="button" class="btn btn-primary btn-elevate" (click)="modal.close(true)">Sí</button>
+    </div>
+</ng-template>

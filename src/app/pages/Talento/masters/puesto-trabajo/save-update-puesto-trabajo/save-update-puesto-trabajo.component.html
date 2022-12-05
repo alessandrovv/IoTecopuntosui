@@ -1,0 +1,148 @@
+<div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        <ng-container>
+          <ng-container *ngIf="idPuestoTrabajo > 0">Editar</ng-container>
+          <ng-container *ngIf="idPuestoTrabajo === 0">Nuevo</ng-container>
+          Puesto de Trabajo
+          <ng-container *ngIf="idPuestoTrabajo > 0"
+            >'{{ item.codigo }}'</ng-container
+          >
+        </ng-container>
+      </div>
+    </div>
+    <div
+      class="overlay overlay-block cursor-default modal-body"
+      style="min-height: 404px"
+    >
+      <ng-container *ngIf="isLoading$ | async">
+        <div class="overlay-layer bg-transparent">
+          <div class="spinner spinner-lg spinner-success"></div>
+        </div>
+      </ng-container>
+  
+      <ng-container>
+        <form action="#" class="form form-label-right" [formGroup]="formGroup"> 
+          <div class="form-group">
+              <div class="row">
+                <div class="col-lg-12">
+                    <label>Empresa</label>
+                    <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Empresa" name="Empresa"
+                        [searchable]="true" placeholder="Empresa" [class.is-invalid]="isControlInvalid('Empresa')" (change)="getAreas($event,null); getPuestoTrabajo($event, null, null)">
+                        
+                        <ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+                            {{item.razonSocial}}
+                        </ng-option>
+                    </ng-select>                
+                    <div class="feedback" *ngIf="!formGroup.controls['Empresa'].value">Por favor, selecciona una <b>Empresa</b></div>
+                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div>      
+                  </div>
+              </div>
+                <br>
+              <div class="row">
+                <div class="col-lg-12">
+                  <label>Area</label>
+                  <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Area" name="Area"
+                      [searchable]="true" placeholder="Area" [class.is-invalid]="isControlInvalid('Area')">
+                      <ng-option *ngIf="!array_areas || !formGroup.controls['Empresa'].value" [value]="-1" ng-model="selected" disabled>
+                        Selecciona una Empresa
+                      </ng-option>
+                      <ng-option *ngFor="let item of array_areas" [value]="item.Area">
+                          {{item.NombreArea}}
+                      </ng-option>
+                  </ng-select>                
+                  <div class="feedback" *ngIf="!formGroup.controls['Area'].value">Por favor, selecciona un <b>Area</b></div>
+                  <div class="invalid-feedback" *ngIf="controlHasError('required', 'Area')"> Area es obligatorio. </div>      
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-lg-12">
+                    <label class="form-label">Codigo</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid" name="Codigo" placeholder="Codigo" autocomplete="off" [class.is-invalid]="isControlInvalid('Codigo')" [class.is-valid]="isControlValid('Codigo')" formControlName="Codigo"/>             
+                    <div class="feedback" *ngIf="!formGroup.controls['Codigo'].value">Por favor, ingrese un <b>Codigo</b></div>
+                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Codigo')"> Codigo es obligatorio. </div> 
+                    <div class="valid-feedback" *ngIf="isControlValid('Codigo')">Codigo es correcto</div>
+                  </div>
+              </div>    
+              <br>
+              <div class="row">
+                <div class="col-lg-12">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid" name="Nombre" placeholder="Nombre" autocomplete="off" [class.is-invalid]="isControlInvalid('Nombre')" [class.is-valid]="isControlValid('Nombre')" formControlName="Nombre"/>             
+                    <div class="feedback" *ngIf="!formGroup.controls['Nombre'].value">Por favor, ingrese un <b>Nombre</b></div>
+                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombre')"> Nombre es obligatorio. </div> 
+                    <div class="valid-feedback" *ngIf="isControlValid('Nombre')">Nombre es correcto</div>
+                  </div>
+              </div> 
+              <br>
+              <div class="row">
+                <div class="col-lg-12">
+                  <label>Puesto superior 1</label>
+                  <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="PuestoSuperior1" name="PuestoSuperior1"
+                      [searchable]="true" placeholder="Puesto Superior" [class.is-invalid]="isControlInvalid('PuestoSuperior1')">
+                      <ng-option *ngIf="!array_puestoTrabajos || !formGroup.controls['PuestoSuperior1'].value" [value]="-1" ng-model="selected" disabled>
+                        Seleccione una Empresa
+                      </ng-option>
+                      <ng-option *ngFor="let item of array_puestoTrabajos" [value]="item.PuestoTrabajo">
+                          {{item.NombrePuestoTrabajo}}
+                      </ng-option>
+                  </ng-select>                
+                  <div class="feedback" *ngIf="!array_puestoTrabajos">Por favor, selecciona un <b>Empresa</b></div>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-lg-12">
+                  <label>Puesto superior 2</label>
+                  <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="PuestoSuperior2" name="PuestoSuperior2"
+                      [searchable]="true" placeholder="Puesto Superior" [class.is-invalid]="isControlInvalid('PuestoSuperior2')">
+                      <ng-option *ngIf="!array_puestoTrabajos || !formGroup.controls['PuestoSuperior2'].value" [value]="-1" ng-model="selected" disabled>
+                        Seleccione una Empresa
+                      </ng-option>
+                      <ng-option *ngFor="let item of array_puestoTrabajos" [value]="item.PuestoTrabajo">
+                          {{item.NombrePuestoTrabajo}}
+                      </ng-option>
+                  </ng-select>                
+                  <div class="feedback" *ngIf="!array_puestoTrabajos">Por favor, selecciona un <b>Empresa</b></div>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-lg-12">
+                    <label class="form-label">Descripcion</label>
+                    <textarea style="resize:none" type="text" class="form-control form-control-lg form-control-solid" name="Descripcion" placeholder="Descripcion" autocomplete="off" [class.is-invalid]="isControlInvalid('Descripcion')" [class.is-valid]="isControlValid('Descripcion')" formControlName="Descripcion"></textarea>
+                           
+                    <div class="feedback" *ngIf="!formGroup.controls['Descripcion'].value">Por favor, ingrese una <b>Descripcion</b></div>
+                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Descripcion')"> Descripcion es obligatorio. </div> 
+                    <div class="valid-feedback" *ngIf="isControlValid('Descripcion')">Descripcion es correcto</div>
+                  </div>
+              </div>    
+              
+              <br>
+              <div class="row">
+                <div class="col-lg-12">
+                    <label class="form-label">Activo</label>
+                    <span class="switch">
+                        <label>
+                            <input type="checkbox" name="Activo" formControlName="Activo">
+                            <span></span>
+                        </label>
+                    </span>
+                  </div>
+              </div>                
+          </div>                    
+        </form>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+      
+      <ng-container>
+        <button type="submit" class="btn btn-primary btn-elevate" (click)="save()" [disabled]="formGroup.invalid">
+          Guardar
+        </button>
+      </ng-container>
+    </div>
+  </div>
+  

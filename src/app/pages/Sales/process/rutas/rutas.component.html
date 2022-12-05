@@ -1,0 +1,149 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Lista de Rutas</h3>
+    </div>
+    <div class="card-toolbar">
+      <button type="button" class="btn btn-primary" (click)="addRuta()">Nueva Ruta</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <!-- begin: Filtration form -->
+    <div class="form form-label-right">
+      <div class="form-group row">
+        <div class="col-lg-12">
+          <div class="row" [formGroup]="filterGroup">
+            <div class="col-lg-3">
+							<input class="form-control" formControlName="Desde" type="date" (change)="getRutas($event.target.value, filterGroup.controls.Hasta.value, filterGroup.controls.Trabajador.value, filterGroup.controls.Estado.value)">
+							<small class="form-text text-muted"><b>Filtrar</b> por Desde</small>
+						</div>
+
+						<div class="col-lg-3">
+							<input class="form-control" formControlName="Hasta" type="date" (change)="getRutas(filterGroup.controls.Desde.value, $event.target.value, filterGroup.controls.Trabajador.value, filterGroup.controls.Estado.value)">
+							<small class="form-text text-muted"><b>Filtrar</b> por Hasta</small>
+						</div>
+            <div class="col-lg-3">
+              <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Trabajador" name="Trabajador" [searchable]="true" placeholder="Trabajador" (change)="getRutas(filterGroup.controls.Desde.value,filterGroup.controls.Hasta.value, $event, filterGroup.controls.Estado.value)">
+								<ng-option *ngFor="let item of array_trabajadores" [value]="item.idTrabajador">
+									{{item.NombresApellidos}}
+								</ng-option>
+							</ng-select>
+							<small class="form-text text-muted"><b>Filtrar</b> por Trabajador</small>
+            </div>
+            
+            <div class="col-lg-3">
+              <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Estado" (change)="getRutas(filterGroup.controls.Desde.value, filterGroup.controls.Hasta.value, filterGroup.controls.Trabajador.value, $event)">
+                <ng-option *ngFor="let item of array_estado" [value]="item.value">
+                    {{item.descripcion}}
+                </ng-option>
+              </ng-select>
+              <small class="form-text text-muted"><b>Filtrar</b> por Estado</small>
+            </div>
+
+          </div>
+        </div>          
+        <div class="col-lg-12" [formGroup]="searchGroup">
+          <div class="row">
+            <div class="col-lg-8"></div>
+            <div class="col-lg-4">
+              <input type="text" class="form-control" name="searchText" placeholder="Buscar" value="" (keyup)="search()"
+              formControlName="searchTerm" /><small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- end: Filtration form -->
+
+    <!-- begin:Table -->
+
+    <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+      <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+
+          <ng-container matColumnDef="Nro">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+              <mat-cell *matCellDef="let i = index;">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
+            <mat-cell *matCellDef="let lesson">                              
+
+                <a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                    (click)="editRuta(lesson.idRutaComercial)">
+                    <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                    class="svg-icon svg-icon-md svg-icon-primary">
+                    </span>
+                </a>
+
+                <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                    (click)="delete(lesson.idRutaComercial)">
+                    <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                    class="svg-icon svg-icon-md svg-icon-danger">
+                    </span>
+                </a>
+            </mat-cell>
+        </ng-container>
+        
+          <ng-container matColumnDef="Codigo">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>CODIGO</mat-header-cell>
+              <mat-cell *matCellDef="let lesson">{{lesson.codigo}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Fecha">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>FECHA</mat-header-cell>
+            <mat-cell *matCellDef="let lesson">{{lesson.fecha | date:'dd/MM/yyyy'}}</mat-cell>
+        </ng-container>
+
+          <ng-container matColumnDef="TrabajadorAsignado">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>TRABAJADOR ASIGNADO</mat-header-cell>
+              <mat-cell *matCellDef="let lesson">{{lesson.trabajadorAsignado}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Clientes">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>CLIENTES</mat-header-cell>
+              <mat-cell *matCellDef="let lesson">{{lesson.clientes}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Activo">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+            <mat-cell *matCellDef="let lesson">
+              <span class="switch">
+                <label>
+                    <input type="checkbox" name="Activo" [(ngModel)]="lesson.activo" (click) ="enableDisableRutaComercial(lesson)">
+                    <span></span>
+                </label>
+            </span> 
+            </mat-cell>
+        </ng-container>
+
+
+          
+
+          <ng-container matColumnDef="loading">
+              <mat-footer-cell *matFooterCellDef colspan="5">
+                  Loading data...
+              </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+              <mat-footer-cell *matFooterCellDef colspan="5">
+                  No se encontraron registros.
+              </mat-footer-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+          </mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']"
+              [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+      </mat-table>
+  </div>
+
+  <div class="mat-table__bottom">
+      <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+      <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>      
+  </div>
+</div>

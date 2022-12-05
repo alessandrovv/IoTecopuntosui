@@ -1,0 +1,8 @@
+<!-- <router-outlet></router-outlet> -->
+<div *ngIf="this.botones.length>1" style="display: flex;" class="w-100 p-3 mb-2">
+	<button *ngFor="let item of this.botones; let i = index" style="flex-grow: 1; min-width: 170px; font-weight: bolder;" (click)="this.testBoton($event,item.nombre)"  class="btn btn-success mx-3">{{item.texto}}</button>
+</div>
+
+<ng-container *ngIf="(this.testObj.botones['Talento'] && this.testObj.botones['Talento'].activo==1)" >
+	<app-dashboard-talento ></app-dashboard-talento>
+</ng-container>

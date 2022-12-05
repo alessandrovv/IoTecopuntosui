@@ -1,0 +1,183 @@
+<div class="card card-custom">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Materiales</h3>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="mt-5">
+            <div class="form-group row">
+                <div class="col-lg-12">
+                    <div class="row" [formGroup]="filterGroupMat">
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="searchMaterial" placeholder="Buscar material"
+                                formControlName="searchMaterial" (keyup)="searchMaterial()" /><small
+                                class="form-text text-muted"><b>Buscar</b> en todos los
+                                campos</small>
+                        </div>
+                        <div class="col-lg-3" style="display: none;">
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                formControlName="Categoria">
+                                <ng-option *ngFor="let item of array_categorias" [value]="item.valor">
+                                    {{item.nombre}}
+                                </ng-option>
+                            </ng-select>
+                            <small class="form-text text-muted"><b>Filtrar</b> por categoría</small>
+                        </div>
+                        <div class="col-lg-4">
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                (change)="getClase($event); getMateriales($event, filterGroupMat.controls.Clase.value, almacen);"
+                                formControlName="SubCategoria">
+                                <ng-option *ngFor="let item of array_subcategorias" [value]="item.Subcategoria">
+                                    {{item.NombreSubcategoria}}
+                                </ng-option>
+                            </ng-select>
+                            <small class="form-text text-muted"><b>Filtrar</b> por subcategoria</small>
+                        </div>
+                        <div class="col-lg-4">
+                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Clase"
+                                (change)="buscarSubcategoria($event);getMateriales(filterGroupMat.controls.SubCategoria.value, $event, almacen)">
+                                <ng-option *ngFor="let item of array_clases" [value]="item.Clase">
+                                    {{item.NombreClase}}
+                                </ng-option>
+                            </ng-select>
+                            <small class="form-text text-muted"><b>Filtrar</b> por clase</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+            <mat-table class="lmat-elevation-z8" [dataSource]="listMateriales" matSort perfectScrollbar>
+    
+                <ng-container matColumnDef="Codigo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CÓDIGO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.codigo}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="Material">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MATERIAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.nombreMaterial}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="Categoria">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CATEGORIA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.nombreCategoria}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="Subcategoria">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>SUBCATEGORIA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.nombreSubcategoria}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="Clase">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CLASE</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.nombreClase}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="Marca">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MARCA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.marca}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="Modelo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MODELO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.modelo}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="Acciones">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>OPERACIONES</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">
+                        <a title="Agregar material" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                            (click)="seleccionarMaterial(lesson)">
+                            <span [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'" cacheSVG="true"
+                                class="svg-icon svg-icon-md svg-icon-primary">
+                            </span>
+                        </a>
+                    </mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="loading">
+                    <mat-footer-cell *matFooterCellDef colspan="8">
+                        Loading data...
+                    </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="8">
+                        No se encontraron registros.
+                    </mat-footer-cell>
+                </ng-container>
+    
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listMateriales!=null}">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hide': !(listMateriales!=null && listMateriales.data.length==0)}">
+                </mat-footer-row>
+            </mat-table>
+        </div>
+        <div class="mat-table__bottom">
+            <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+            <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+        <br>
+        <div class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-12">
+                    <div [formGroup]="formDatosMaterial">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label>Material</label>
+                                <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                    name="Material" placeholder="Material" autocomplete="off" formControlName="Material" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Unidad de Medida</label>
+                                <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                    name="UnidadMedida" placeholder="UnidadMedida" autocomplete="off" formControlName="UnidadMedida" />
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Stock</label>
+                                <input type="text" readonly class="form-control form-control-lg form-control-solid"
+                                    name="Stock" placeholder="Stock" autocomplete="off" formControlName="Stock" />
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Cantidad</label>
+                                <input type="number" class="form-control form-control-lg form-control-solid"
+                                    [class.is-invalid]="isFormControlInvalid(controlsDatos.Cantidad)"
+                                    [class.is-valid]="isFormControlValid(controlsDatos.Cantidad)"
+                                    name="Cantidad" placeholder="Cantidad" autocomplete="off" formControlName="Cantidad" />
+                                <div class="invalid-feedback" *ngIf="FormControlHasError('required', controlsDatos.Cantidad)">
+                                    Cantidad es obligatorio. 
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Observación</label>
+                                <textarea class="form-control" rows="3" formControlName="Observacion" name="Observacion"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <div class="float-right">
+            <button type="button" class="btn btn-primary font-weight-bold mr-2" (click)="save()" [disabled]="formDatosMaterial.invalid"> 
+                <span [inlineSVG]="'./assets/media/svg/icons/Code/Done-circle.svg'" cacheSVG="true"
+                    class="svg-icon svg-icon-md svg-icon-hover-primary">
+                </span> Agregar
+            </button>
+            <button type="button" class="btn btn-danger font-weight-bold mr-2" (click)="modal.dismiss()"> 
+                <span [inlineSVG]="'./assets/media/svg/icons/Code/Error-circle.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-hover-danger"></span> Cancelar
+            </button>
+        </div>
+    </div>
+</div>

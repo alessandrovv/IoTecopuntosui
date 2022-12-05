@@ -1,0 +1,461 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Nuevo Material</h3>
+        </div>
+        <div class="card-toolbar">
+            <!-- <button type="button" class="btn btn-primary" (click)="addConfiguracion()">Nueva Configuración</button> -->
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="form form-label-right">
+
+            <div class="card-body">
+                <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+                    <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DATOS_TAB)">
+                        <a class="nav-link" data-toggle="tab" role="tab"
+                            [attr.aria-selected]="activeTabId === tabs.DATOS_TAB"
+                            [class.active]="activeTabId === tabs.DATOS_TAB">Datos Generales</a>
+                    </li>
+                    <li class="nav-item cursor-pointer" (click)="changeTab(tabs.PRESENTACIONES_TAB)">
+                        <a class="nav-link" data-toggle="tab" role="button"
+                            [attr.aria-selected]="activeTabId === tabs.PRESENTACIONES_TAB"
+                            [class.active]="activeTabId === tabs.PRESENTACIONES_TAB">Presentaciones</a>
+                    </li>
+                    <li class="nav-item cursor-pointer" (click)="changeTab(tabs.PRECIOS_TAB)">
+                        <a class="nav-link" data-toggle="tab" role="tab"
+                            [attr.aria-selected]="activeTabId === tabs.PRECIOS_TAB"
+                            [class.active]="activeTabId === tabs.PRECIOS_TAB">Precios</a>
+                    </li>
+                </ul>
+
+                <ng-container *ngIf="activeTabId === tabs.DATOS_TAB">
+                    <div class="mt-5">
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <div [formGroup]="formDatosGenerales">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-6 col-sm-6 ">
+                                            <label>Categoría</label>
+                                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                                formControlName="Categoria" placeholder="Seleccionar..."
+                                                (change)="getSubcategorias($event, null)"
+                                                [class.is-invalid]="isControlInvalid('Categoria')">
+                                                <ng-option *ngFor="let item of array_categorias"
+                                                    [value]="item.Categoria">
+                                                    {{item.NombreCategoria}}
+                                                </ng-option>
+                                            </ng-select>
+                                            <div class="invalid-feedback"
+                                                *ngIf="controlHasError('required','Categoria')"> Categoría es
+                                                obligatorio. </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                            <label>Subcategoría</label>
+                                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                                formControlName="Subcategoria" placeholder="Seleccionar..."
+                                                (change)="getClases($event,null); buscarCategoria($event)"
+                                                [class.is-invalid]="isControlInvalid('Subcategoria')">
+                                                <ng-option *ngFor="let item of array_subcategorias"
+                                                    [value]="item.Subcategoria">
+                                                    {{item.NombreSubcategoria}}
+                                                </ng-option>
+                                            </ng-select>
+                                            <div class="invalid-feedback"
+                                                *ngIf="controlHasError('required','Subcategoria')"> Subcategoría es
+                                                obligatorio. </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                            <label>Clase</label>
+                                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                                formControlName="Clase" placeholder="Seleccionar..."
+                                                (change)="buscarSubcategoria($event)"
+                                                [class.is-invalid]="isControlInvalid('Clase')">
+                                                <ng-option *ngFor="let item of array_clases" [value]="item.Clase">
+                                                    {{item.NombreClase}}
+                                                </ng-option>
+                                            </ng-select>
+                                            <div class="invalid-feedback" *ngIf="controlHasError('required','Clase')">
+                                                Clase es obligatorio. </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                            <label>Código</label>
+                                            <input type="text" readonly
+                                                class="form-control form-control-lg form-control-solid" name="Codigo"
+                                                placeholder="Código" autocomplete="off" formControlName="Codigo" />
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                            <label class="form-label">Nombre</label>
+                                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                                name="Nombre" placeholder="Nombre"
+                                                [class.is-invalid]="isControlInvalid('Nombre')"
+                                                [class.is-valid]="isControlValid('Nombre')" formControlName="Nombre" />
+                                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombre')">
+                                                Nombre es obligatorio. </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                            <label class="form-label">Marca</label>
+                                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                                name="Marca" placeholder="Marca" autocomplete="off"
+                                                formControlName="Marca" />
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                            <label class="form-label">Modelo</label>
+                                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                                name="Modelo" placeholder="Modelo" autocomplete="off"
+                                                formControlName="Modelo" />
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                            <label class="form-label">Color</label>
+                                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                                name="Color" placeholder="Color" autocomplete="off"
+                                                formControlName="Color" />
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                            <label class="form-label">Stock Mínimo</label>
+                                            <input type="number" class="form-control form-control-lg form-control-solid"
+                                                name="StockMinimo" placeholder="Stock Mínimo" autocomplete="off"
+                                                formControlName="StockMinimo" />
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                            <label>Tipo de Existencia</label>
+                                            <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                                placeholder="Seleccionar..." formControlName="TipoExistencia"
+                                                [class.is-invalid]="isControlInvalid('TipoExistencia')"
+                                                [class.is-valid]="isControlValid('TipoExistencia')">
+                                                <ng-option *ngFor="let item of array_tipoExistencias"
+                                                    [value]="item.TipoExistencia">
+                                                    {{item.NombreTipoExistencia}}
+                                                </ng-option>
+                                            </ng-select>
+                                            <div class="invalid-feedback"
+                                                *ngIf="controlHasError('required', 'TipoExistencia')"> Tipo de
+                                                Existencia es obligatorio. </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                            <label>Unidad de Medida</label>
+                                            <ng-select (change)="changeUnidadMedida()" #agreeSelect
+                                                [clearSearchOnAdd]="false" [searchable]="true"
+                                                placeholder="Seleccionar..." formControlName="UnidadMedida"
+                                                [class.is-invalid]="isControlInvalid('UnidadMedida')"
+                                                [class.is-valid]="isControlValid('UnidadMedida')">
+                                                <ng-option *ngFor="let item of array_unidadesMedida"
+                                                    [value]="item.UnidadMedida">
+                                                    {{item.NombreUnidadMedida}}
+                                                </ng-option>
+                                            </ng-select>
+                                            <div class="invalid-feedback"
+                                                *ngIf="controlHasError('required', 'UnidadMedida')"> Unidad de Medida es
+                                                obligatorio. </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                            <label class="form-label">Aplica venta</label>
+                                            <span class="switch">
+                                                <label>
+                                                    <input type="checkbox" name="AplicaVenta"
+                                                        formControlName="AplicaVenta">
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                        </div>
+
+                                        <!-- <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="form-label">Aplica venta</label>
+                                                <span class="switch">
+                                                    <label>
+                                                        <input type="checkbox" name="AplicaVenta"
+                                                            formControlName="AplicaVenta">
+                                                        <span></span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </div> -->
+
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-9 col-lg-7 col-md-6 col-sm-6">
+                                            <label>Activo</label>
+                                            <span class="switch">
+                                                <label>
+                                                    <input type="checkbox" name="Activo" formControlName="Activo">
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                        </div>
+
+                                        <div class="col-xl-3 col-lg-5 col-md-6 col-sm-6 mt-5">
+                                            <button type="button" class="btn btn-outline-success mr-2"
+                                                (click)="chargeFile2()">
+                                                Cargar imagen
+                                            </button>
+
+                                            <button *ngIf="downloadURL_2 !== null" (click)="limpiarArchivo()"
+                                                class="btn btn-outline-danger ">
+                                                Eliminar
+                                            </button>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div
+                                            class="offset-xl-9 col-xl-3 offset-lg-7 col-lg-5 offset-md-6 col-md-6 offset-sm-6 col-sm-6  mt-5">
+                                            <input hidden #file2 type="file" id="file2" accept="image/png, image/jpeg"
+                                                (change)="getFileDATA($event)" [formControl]="FileImagen" />
+
+
+                                            <div *ngIf="downloadURL_2 !== null">
+                                                <img [src]="downloadURL_2" class="img-product img-fluid">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="activeTabId === tabs.PRESENTACIONES_TAB">
+                    <div class="mt-5">
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <button type="button" class="btn btn-primary font-weight-bold mr-2"
+                                            (click)="addPresentacion()">Agregar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                                <th>N°</th>
+                                <th>PRESENTACIÓN</th>
+                                <th>UM PRESENTACIÓN</th>
+                                <th>EQUIVALENCIA</th>
+                                <th>UM MATERIAL</th>
+                                <th>ACTIVO</th>
+                                <th>OPERACIONES</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of array_presentaciones">
+                                    <td style="justify-content: center;">
+                                        {{array_presentaciones.indexOf(item)+1}}
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-lg form-control-solid"
+                                            name="Presentacion" placeholder="Presentacion" autocomplete="off"
+                                            (keyup)="buscarPresentacion(item)"
+                                            [formControl]="deta_Presentacion[array_presentaciones.indexOf(item)]"
+                                            [class.is-invalid]="isFormControlInvalid(deta_Presentacion[array_presentaciones.indexOf(item)]) || FormControlPresentacion(estadoPresentacion,item)"
+                                            [class.is-valid]="isFormControlValid(deta_Presentacion[array_presentaciones.indexOf(item)]) || FormControlPresentacion(estadoPresentacion,item)">
+                                        <div class="invalid-feedback"
+                                            *ngIf="FormControlPresentacion(estadoPresentacion,item)"> No se puede
+                                            repetir presentación</div>
+                                        <div class="invalid-feedback"
+                                            *ngIf="FormControlHasError('required', deta_Presentacion[array_presentaciones.indexOf(item)])">
+                                            Presentacion es obligatorio</div>
+
+                                    </td>
+                                    <td>
+                                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                            placeholder="Seleccionar..."
+                                            [formControl]="deta_UMPresentacion[array_presentaciones.indexOf(item)]"
+                                            [class.is-invalid]="isFormControlInvalid(deta_UMPresentacion[array_presentaciones.indexOf(item)])"
+                                            [class.is-valid]="isFormControlValid(deta_UMPresentacion[array_presentaciones.indexOf(item)])">
+                                            <ng-option *ngFor="let item2 of array_UMPresentacion"
+                                                [value]="item2.UnidadMedida">
+                                                {{item2.NombreUnidadMedida}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="invalid-feedback"
+                                            *ngIf="FormControlHasError('required', deta_UMPresentacion[array_presentaciones.indexOf(item)])">
+                                            Unidad de Medida es obligatoria</div>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-lg form-control-solid"
+                                            name="Equivalencia" placeholder="Equivalencia" autocomplete="off"
+                                            [formControl]="deta_Equivalencia[array_presentaciones.indexOf(item)]"
+                                            [class.is-invalid]="isFormControlInvalid(deta_Equivalencia[array_presentaciones.indexOf(item)])"
+                                            [class.is-valid]="isFormControlValid(deta_Equivalencia[array_presentaciones.indexOf(item)])">
+                                        <div class="invalid-feedback"
+                                            *ngIf="FormControlHasError('required', deta_Equivalencia[array_presentaciones.indexOf(item)])">
+                                            Equivalencia es obligatoria</div>
+                                    </td>
+                                    <td style="justify-content: center;">
+                                        {{umMaterial}}
+                                    </td>
+                                    <td>
+                                        <span class="switch">
+                                            <label>
+                                                <input type="checkbox" name="Activo" [(ngModel)]="item.Activo"
+                                                    [disabled]="array_presentaciones.indexOf(item)==0">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a (click)="deletePresentacion(item)" title="Eliminar Presentacion"
+                                            class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                            [hidden]="array_presentaciones.indexOf(item)==0">
+                                            <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                                                cacheSVG="true" class="svg-icon svg-icon-md svg-icon-danger">
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="activeTabId === tabs.PRECIOS_TAB">
+                    <div class="mt-5">
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <button type="button" class="btn btn-primary font-weight-bold mr-2"
+                                            (click)="addPrecio()">Agregar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                                <th>N°</th>
+                                <th>TIPO PRECIO</th>
+                                <th>MONEDA</th>
+                                <th>VALOR</th>
+                                <th>IGV</th>
+                                <th>PRECIO</th>
+                                <th>ACTIVO</th>
+                                <th>OPERACIONES</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of array_precio">
+                                    <td style="justify-content: center;">
+                                        {{array_precio.indexOf(item)+1}}
+                                    </td>
+                                    <td>
+                                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                            placeholder="Seleccionar..."
+                                            (change)="validarTipoPrecio($event,deta_Moneda[array_precio.indexOf(item)].value)"
+                                            [formControl]="deta_TipoPrecio[array_precio.indexOf(item)]"
+                                            [class.is-invalid]="isFormControlInvalid(deta_TipoPrecio[array_precio.indexOf(item)])"
+                                            [class.is-valid]="isFormControlValid(deta_TipoPrecio[array_precio.indexOf(item)])">
+                                            <ng-option *ngFor="let item2 of array_TipoPrecio" [value]="item2.valor">
+                                                {{item2.nombre}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="invalid-feedback"
+                                            *ngIf="FormControlHasError('required', deta_TipoPrecio[array_precio.indexOf(item)])">
+                                            Tipo precio es obligatorio</div>
+                                    </td>
+                                    <td>
+                                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                            placeholder="Seleccionar..."
+                                            (change)="validarMoneda(deta_TipoPrecio[array_precio.indexOf(item)].value,$event)"
+                                            [formControl]="deta_Moneda[array_precio.indexOf(item)]"
+                                            [class.is-invalid]="isFormControlInvalid(deta_Moneda[array_precio.indexOf(item)])"
+                                            [class.is-valid]="isFormControlValid(deta_Moneda[array_precio.indexOf(item)])">
+                                            <ng-option *ngFor="let item2 of array_Moneda" [value]="item2.Valor">
+                                                {{item2.nombre}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="invalid-feedback"
+                                            *ngIf="FormControlHasError('required', deta_Moneda[array_precio.indexOf(item)])">
+                                            Moneda es obligatorio</div>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-lg form-control-solid"
+                                            name="Valor" placeholder="Valor" autocomplete="off"
+                                            (keyup)="calcularPrecioConIgv(item)"
+                                            [formControl]="deta_VUPrecio[array_precio.indexOf(item)]"
+                                            [class.is-invalid]="isFormControlInvalid(deta_VUPrecio[array_precio.indexOf(item)])"
+                                            [class.is-valid]="isFormControlValid(deta_VUPrecio[array_precio.indexOf(item)])">
+                                        <div class="invalid-feedback"
+                                            *ngIf="FormControlHasError('required', deta_VUPrecio[array_precio.indexOf(item)])">
+                                            Valor es obligatorio</div>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-lg form-control-solid"
+                                            name="IGV" placeholder="IGV" autocomplete="off" disabled
+                                            [formControl]="deta_IGV[array_precio.indexOf(item)]"
+                                            [class.is-invalid]="isFormControlInvalid(deta_IGV[array_precio.indexOf(item)])"
+                                            [class.is-valid]="isFormControlValid(deta_IGV[array_precio.indexOf(item)])">
+                                        <div class="invalid-feedback"
+                                            *ngIf="FormControlHasError('required', deta_IGV[array_precio.indexOf(item)])">
+                                            Valor es obligatorio</div>
+                                    </td>
+
+                                    <td>
+                                        <input type="number" class="form-control form-control-lg form-control-solid"
+                                            name="Precio" placeholder="Precio" autocomplete="off"
+                                            (keyup)="calcularValorConIgv(item)"
+                                            [formControl]="deta_PUPrecio[array_precio.indexOf(item)]"
+                                            [class.is-invalid]="isFormControlInvalid(deta_PUPrecio[array_precio.indexOf(item)])"
+                                            [class.is-valid]="isFormControlValid(deta_PUPrecio[array_precio.indexOf(item)])">
+                                        <div class="invalid-feedback"
+                                            *ngIf="FormControlHasError('required', deta_PUPrecio[array_precio.indexOf(item)])">
+                                            Precio es obligatorio</div>
+                                    </td>
+
+                                    <td>
+                                        <span class="switch">
+                                            <label>
+                                                <input type="checkbox" name="Activo" [(ngModel)]="item.Activo">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a (click)="deletePrecio(item)" title="Eliminar precio"
+                                            class="btn btn-icon btn-light btn-hover-danger btn-sm">
+                                            <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                                                cacheSVG="true" class="svg-icon svg-icon-md svg-icon-danger">
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-container>
+
+            </div>
+
+            <div class="float-right">
+                <button type="button" class="btn btn-primary font-weight-bold mr-2" disabled
+                    *ngIf="!hide_load">Registrando...</button>
+                <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="hide_load"
+                    (click)="saveUpdateMaterial()">Registrar Material</button>
+                <a class="btn btn-danger font-weight-bold mr-2" routerLink="/Logistica/masters/Materiales">Cancelar</a>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>

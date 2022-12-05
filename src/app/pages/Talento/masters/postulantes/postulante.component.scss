@@ -1,0 +1,41 @@
+.mat-column-Nro{
+	min-width: 50px;
+	white-space: pre-wrap;
+	width: 100%;
+	flex: 0 0 50px;
+	justify-content: center;
+}
+
+.mat-column-Empresa,
+.mat-column-Codigo,
+.mat-column-Nombre,
+.mat-column-ApePaterno,
+.mat-column-ApeMaterno,
+.mat-column-DocIdentidad,
+.mat-column-Sexo{
+	min-width: 100px;
+	white-space: pre-wrap;
+	width: 100%;
+	flex: 0 0 100px;
+	justify-content: left;
+}
+
+.mat-column-Direccion,
+.mat-column-Area,
+.mat-column-PuestoTrabajo,
+.mat-column-ModalidadContratacion{
+	min-width: 150px;
+	white-space: pre-wrap;
+	width: 100%;
+	flex: 0 0 150px;
+	justify-content: left;
+}
+
+.mat-column-Edad,
+.mat-column-Activo{
+    min-width: 80px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 80px;
+    justify-content: center;
+}

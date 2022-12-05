@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            <ng-container>
+                <ng-container *ngIf = "Departamento > 0">Editar Departamento</ng-container>
+                <ng-container *ngIf = "Departamento === 0">Nueva Departamento</ng-container>
+                <!-- <ng-container *ngIf="Provincia > 0">'{{ item.idProvincia }}'</ng-container> -->
+            </ng-container>
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container>
+        <ng-container>
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-12" style="margin-bottom: 5px;">
+                            <small class="form-text text-muted"><b>Selecciona</b> el Pais</small>
+                            <ng-select #agreeSelect [clearSearchOnAdd] = "false" formControlName="Pais" [searchable]="true" placeholder="Pais">
+                                <ng-option *ngFor="let pais of array_paises" [value]="pais.Pais">
+                                    {{pais.NombrePais}}
+                                </ng-option>
+                            </ng-select>
+                        </div>  
+                    </div>
+                    <br>   
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid" name="Nombre" placeholder="Nombre" autocomplete="off" [class.is-invalid]="isControlInvalid('Nombre')" [class.is-valid]="isControlValid('Nombre')" formControlName="Nombre"/>             
+                            <div class="feedback" *ngIf="!formGroup.controls['Nombre'].value">Por favor, ingresa <b>Nombre</b></div>
+                            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombre')"> Nombre obligatorio. </div> 
+                            <div class="valid-feedback" *ngIf="isControlValid('Nombre')">Nombre correcto</div>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label class="form-label">Activo</label>
+                            <span class="switch">
+                                <label>
+                                    <input type="checkbox" name="Activo" formControlName="Activo">
+                                    <span></span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </ng-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+
+        <ng-container>
+            <button type="submit" class="btn btn-primary btn-elevate"[disabled]="formGroup.invalid" (click)="save()">
+                Guardar
+            </button>
+        </ng-container>
+    </div>
+</div>

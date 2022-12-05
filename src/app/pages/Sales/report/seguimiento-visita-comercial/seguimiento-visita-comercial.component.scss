@@ -1,0 +1,61 @@
+.circulo{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
+.table-responsive{
+    overflow-y: auto;
+    max-height: 62vh;
+}
+
+.mat-row{
+    min-width: 2720px;
+    width: 100%;
+}
+
+.mat-footer-row{
+    min-width: 2720px;
+    width: 100%;
+}
+
+.mat-header-row {
+    min-width: 2720px;
+    width: 100%;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+}
+table {
+    width: 100%;
+}
+
+
+.mat-column-actions,
+.mat-column-Estado {
+    min-width: 80px;
+    width: 100%;
+    flex: 0 0 80px;
+    justify-content: center;
+}
+
+.mat-column-Activo,
+.mat-column-Nro,
+.mat-column-Edad { 
+    min-width: 80px;
+    width: 100%;
+    flex: 0 0 80px;
+    justify-content: center;
+}
+
+mat-column-Activo,
+.mat-column-Fecha,
+.mat-column-HoraInicio,
+.mat-column-HoraFin
+{ 
+    min-width: 120px;
+    width: 100%;
+    flex: 0 0 80px;
+    justify-content: center;
+}

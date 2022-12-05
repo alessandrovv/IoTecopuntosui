@@ -1,0 +1,64 @@
+<div class="row">
+	<div class="col-lg-6  col-sm-12 px-3">
+		<div class="card card-custom gutter-b">
+			<div class="card-body">
+				<div class="row" [formGroup]="this.formFiltroGraficoFidelizacion">
+					<div class="col-12">
+						<label>Empresa</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Empresa" placeholder="Seleccione una Empresa"
+							(change)="elaborarGraficoFidelizacion($event)">
+							<ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+								{{item.razonSocial}}
+							</ng-option>
+						</ng-select>
+					</div>
+				</div>
+				<div id="graficoT2">
+					<app-grafico [tipo]="'line'" [titulo]="'Indice de Fidelización'" [container]="'graficoT2'" [updateEvent]="actualizarGraf2.asObservable()" #grafico2></app-grafico>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-6  col-sm-12 px-3">
+		<div class="card card-custom gutter-b">
+			<div class="card-body">
+				<div class="row" [formGroup]="this.formFiltroGraficoRotacion">
+					<div class="col-12">
+						<label>Empresa</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Empresa" placeholder="Seleccione una Empresa"
+							(change)="elaborarGraficoRotacion($event)">
+							<ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+								{{item.razonSocial}}
+							</ng-option>
+						</ng-select>
+					</div>
+				</div>
+				<div id="graficoT1">
+					<app-grafico [tipo]="'line'" [titulo]="'Indice de rotación'" [container]="'graficoT1'" [updateEvent]="actualizarGraf1.asObservable()" #grafico1></app-grafico>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-6  col-sm-12 offset-lg-3 offset-sm-0 px-3">
+		<div class="card card-custom gutter-b">
+			<div class="card-body">
+				<div class="row" [formGroup]="this.formFiltroGraficoDistrivucionArea">
+					<div class="col-12">
+						<label>Empresa</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Empresa" placeholder="Seleccione una Empresa"
+							(change)="elaborarGraficoDistribucionArea($event)">
+							<ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+								{{item.razonSocial}}
+							</ng-option>
+						</ng-select>
+					</div>
+				</div>
+				<div id="graficoT3">
+					<app-grafico [tipo]="'pie'" [titulo]="'Distribución por area'" [container]="'graficoT3'" [updateEvent]="actualizarGraf3.asObservable()" #grafico3></app-grafico>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- <app-grafico [tipo]="'column'" [titulo]="'Estado Ventas Departamento'" [container]="'grafico2'" [updateEvent]="actualizarGraf2.asObservable()" #grafico2></app-grafico> -->

@@ -1,0 +1,74 @@
+.mat-row{
+    min-width: 1190px;
+    width: 100%;
+}
+
+.mat-header-row {
+    min-width: 1190px;
+    width: 100%;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+}
+
+.mat-column-Nro{
+	min-width: 50px;
+	white-space: pre-wrap;
+	width: 100%;
+	flex: 0 0 50px;
+	justify-content: center;
+}
+
+.mat-column-TipoDocumentoIdentidad,
+.mat-column-RazonSocial {
+	min-width: 120px;
+	white-space: pre-wrap;
+	width: 100%;
+	justify-content: left;
+}
+
+.mat-column-DocumentoIdentidad {
+	min-width: 120px;
+	white-space: pre-wrap;
+	width: 100%;
+	justify-content: center;
+	text-align: center;
+}
+
+.mat-column-Categoria {
+	min-width: 100px;
+	white-space: pre-wrap;
+	width: 100%;
+	justify-content: left;
+}
+
+.mat-column-Telefono,
+.mat-column-Email {
+	min-width: 130px;
+	white-space: pre-wrap;
+	width: 100%;
+	justify-content: left;
+}
+
+
+.mat-column-Ubicacion{
+	min-width: 180px;
+	white-space: pre-wrap;
+	width: 100%;
+	justify-content: left;
+}
+
+.mat-column-Activo{
+    min-width: 90px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: center;
+}
+
+.mat-column-actions {
+	min-width: 90px;
+	white-space: pre-wrap;
+	width: 100%;
+	justify-content: center;
+}

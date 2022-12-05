@@ -1,0 +1,54 @@
+.mat-row {
+  width: 100%;
+  min-width: 1040px;
+}
+
+.mat-header-row {
+  width: 100%;
+  min-width: 1040px;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  background-color: white;
+}
+
+.mat-column-Nro {
+  min-width: 40px;
+  white-space: pre-wrap;
+  width: 100%;
+  flex: 0 0 40px;
+  justify-content: center;
+  text-align: center;
+}
+
+.mat-column-OPCIONES {
+  min-width: 100px;
+  white-space: pre-wrap;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+.mat-column-ACTIVO {
+  min-width: 200px;
+  white-space: pre-wrap;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+.mat-column-NOMBRE {
+  min-width: 200px;
+  white-space: pre-wrap;
+  width: 100%;
+  justify-content: left;
+  text-align: left;
+}
+
+.mat-column-DESCRIPCION {
+  min-width: 200px;
+  white-space: pre-wrap;
+  width: 100%;
+  justify-content: left;
+  text-align: left;
+}

@@ -1,0 +1,58 @@
+.mat-row {
+    width: 100%;
+}
+
+.mat-header-row {
+    width: 100%;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+    text-align: center;
+}
+
+.mat-column-Nro {
+    min-width: 150px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 150px;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-actions {
+    min-width: 150px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 150px;
+    justify-content: center;
+}
+
+.mat-column-Fecha {
+    min-width: 200px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 200px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.mat-column-Establecimiento {
+    min-width: 200px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 200px;
+    justify-content: left;
+}
+
+
+.mat-column-Estado {
+    min-width: 200px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 200px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

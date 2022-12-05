@@ -1,0 +1,373 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label">REPORTE DE COMPRAS</h3>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                <div class="form form-label-right">
+                    <div class="form-group">
+                        <div class="row" [formGroup]="filterGroup">
+                            <div class="col-lg-4">
+                                <ng-select #agreeSelect [clearSearchOnAdd] = "false" formControlName = "Categoria" 
+                                [searchable]="true" placeholder="Categoria" (change)="getSubcategorias($event); searchCategoria()">
+                                <ng-option *ngFor="let cat of arrayCategorias" [value]="cat.Categoria">
+                                    {{cat.NombreCategoria}}
+                                </ng-option>
+                            </ng-select>
+                                  <small class="form-text text-muted"><b>Filtrar</b> por Categoria</small>
+                            </div>
+                            <div class="col-lg-4">
+                                  <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Subcategoria"
+                                      [searchable]="true" placeholder="Sucategoria" (change)="searchSubCategoria($event);">
+                                      <ng-option *ngFor="let item of array_subcategorias" [value]="item.Subcategoria">
+                                          {{item.NombreSubcategoria}}
+                                      </ng-option>
+                                  </ng-select>
+                                  <small class="form-text text-muted"><b>Filtrar</b> por Subcategoria</small>
+                            </div>
+                            <div class="col-lg-4">
+                                <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="ClaseMaterial"
+                                    [searchable]="true" placeholder="Clase">
+                                    <ng-option *ngFor="let item of arrayClasesMateriales" [value]="item.Material">
+                                        {{item.NombreMaterial}}
+                                    </ng-option>
+                                </ng-select>
+                                <small class="form-text text-muted"><b>Filtrar</b> por Clase</small>
+                          </div>
+              
+                          </div>     
+                    </div>
+                </div>
+            </div>        
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                <div class="form form-label-right">
+                    <div class="form-group">
+                        <div class="row justify-content-center align-items-center" [formGroup]="filterGroup">
+                            <div class="col-lg-3">
+                                <input class="form-control calendar" formControlName="fechaInicio" type="date">
+                                <small class="form-text text-muted"><b>Filtrar</b> por Desde</small>
+                            </div>
+                            <div class="col-lg-3">
+                                <input class="form-control calendar" formControlName="fechaFinal" type="date"
+                                    [min]="filterGroup.controls['fechaInicio'].value">
+                                <small class="form-text text-muted"><b>Filtrar</b> por Hasta</small>
+                            </div>             
+                        </div>     
+                    </div>
+                </div>
+            </div>        
+        </div>
+    </div>
+
+<p></p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="container">
+            <div class="form form-label-right">
+                <div class="form-group">
+                    <div class="row justify-content-center align-items-center" [formGroup]="filterGroup">
+                        <div class="col-lg-3 col-sm-4 d-flex 
+                        flex-column 
+                        justify-content-center " style = "padding-bottom: 2px;">
+                            <button type="button" class="btn btn-primary" (click)="generarReporte()"><i class="fas fa-sync"></i>Generar Reporte</button>
+                        </div>
+                        <div class = "col-lg-3 col-sm-4 d-flex 
+                        flex-column 
+                        justify-content-center " style = "padding-bottom: 2px;">
+                            <button type="button" class="btn btn-success" (click)="descargarReporte()"><i class="fas fa-download"></i>Descargar Excel</button>
+                        </div>        
+                    </div>     
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+
+    <div class="row justify-content-center align-content-center">
+        
+      <!-- end: Filtration form -->
+
+    </div>
+
+
+     <div class="card-body ">
+        <div class="table-responsive angular-bootstrap-table mat-table__wrapper " style="overflow: auto">
+            <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar >
+    
+                <ng-container class="columna" matColumnDef="Nro">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                    <mat-cell *matCellDef="let i = index;">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}</mat-cell>
+                </ng-container>
+    
+                <ng-container  matColumnDef="CORRELATIVO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CORRELATIVO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.correlativo}}</mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="FECHA EMISION">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>FECHA DE EMISION</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.fechaEmision | date : 'dd/MM/yyyy'}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="TIPO DOCUMENTO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TIPO DOCUMENTO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.tipoDocumento}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="COMPROBANTE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>COMPROBANTE</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.idComprobante}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="MONEDA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MONEDA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.moneda}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="FORMA DE PAGO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>FORMA DE PAGO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.formaPago}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="MEDIO DE PAGO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MEDIO DE PAGO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.idMedioPago}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="CANAL">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CANAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.canal}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="SUBTOTAL">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>SUBTOTAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.subTotal}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="DESCUENTO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>DESCUENTO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.descuento}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="IGV">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>IGV</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.igv}}</mat-cell>
+                </ng-container> 
+
+                <ng-container matColumnDef="TOTAL">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TOTAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.total}}</mat-cell>
+                </ng-container> 
+
+                <ng-container matColumnDef="INTERES">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>INTERES</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.interes}}</mat-cell>
+                </ng-container> 
+
+                <ng-container matColumnDef="TOTAL INTERES">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TOTAL INTERES</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.totalInteres}}</mat-cell>
+                </ng-container> 
+                <ng-container matColumnDef="COD CLIENTE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>COD CLIENTE</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.codigoCliente}}</mat-cell>
+                </ng-container> 
+                <ng-container matColumnDef="RAZON SOCIAL">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>RAZON SOCIAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.razonSocial}}</mat-cell>
+                </ng-container> 
+                <ng-container matColumnDef="NOMBRE COMERCIAL">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRE COMERCIAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.nombreComercial}}</mat-cell>
+                </ng-container> 
+                <ng-container matColumnDef="NOMBRES">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRES</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.nombreCliente}}</mat-cell>
+                </ng-container> 
+                <ng-container matColumnDef="AP PATERNO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>AP. PATERNO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.apellidoPaterno}}</mat-cell>
+                </ng-container> 
+                <ng-container matColumnDef="AP MATERNO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>AP MATERNO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.apellidoMaterno}}</mat-cell>
+                </ng-container> 
+                <ng-container matColumnDef="CAT CLIENTE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CAT. CLIENTE</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.categoriaCliente}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="TIPO CLIENTE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TIPO CLIENTE</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.tipoCliente}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="PAIS">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MARCA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.paisCliente}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="CIUDAD">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CIUDAD</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.departamentoCLiente}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="TIPO DOC IDENT">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TIPO DOC. IDENT.</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.tipoDocIndentidad}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="DOC IDENTIDAD">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>DOC IDENTIDAD</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.documentoIdentidad}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="DIRECCION">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>DIRECCION</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.direccionCliente}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="F NACIMIENTO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>F. NACIMIENTO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.fechaNacimiento | date : 'dd/MM/yyyy'}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="SEXO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>SEXO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.sexo}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="TELEFONO 1">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TELEFONO 1</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.telefono1}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="TELEFONO 2">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TELEFONO 2</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.telefono2}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="EMAIL">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>EMAIL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.email}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="REFERENCIA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>REFERENCIA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.referencia}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="CUENTA FACEBOOK">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CUENTA FACEBOOK</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.facebook}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="CUENTA INSTAGRAM">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CUENTA INSTAGRAM</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.instagram}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="OCUPACION">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>OCUPACION</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.ocupacion}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="LUGAR OCUPACION">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>LUGAR OCUPACION</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.lugarOcupacion}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="CATEGORIA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CATEGORIA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.categoria}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="SUBCATEGORIA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>SUBCATEGORIA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.subCategoria}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="CLASE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CLASE MATERIAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.claseMaterial}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="COD PRODUCTO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>COD. PRODUCTO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.codigoMaterial}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="COD CONTABLE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>COD. CONTABLE</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.codigoContable}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="MATERIAL">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MATERIAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.Material}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="MARCA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MARCA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.marca}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="TALLA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TALLA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.talla}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="COLOR">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>COLOR</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.color}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="LINEA NEGOCIO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>LINEA NEGOCIO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.lineaNegocio}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="ESTAMPADO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ESTAMPADO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.estampado}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="UNID MEDIDA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>UNIDAD MEDIDA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.unidadMedida}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="TIPO EXISTENCIA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TIPO EXISTENCIA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.tipoExistencia}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="CANTIDAD">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CANTIDAD</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.cantidadMaterial}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="PRECIO UNITARIO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>PRECIO UNITARIO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.precioUnitarioMaterial}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="DSCTO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>DSCTO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.dscto}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="PRECIO TOTAL">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>PRECIO TOTAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.precioTotal}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="USUARIO REGISTRO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>USUARIO REGISTRO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.usuarioRegistro}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="FECHA REGISTRO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>FECHA REGISTRO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.fechaRegistro | date : 'dd/MM/yyyy'}}</mat-cell>
+                </ng-container>
+      
+                <ng-container matColumnDef="loading">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        Loading data...
+                    </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        No se encontraron registros.
+                    </mat-footer-cell>
+                </ng-container>
+    
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+            </mat-table> 
+    
+        </div>
+    
+            <div class="mat-table__bottom">
+                <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+                <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            </div>      
+        </div> 
+  </div>

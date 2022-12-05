@@ -1,0 +1,101 @@
+.mat-row {
+    width: 100%;
+}
+
+.mat-header-row {
+    width: 100%;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+}
+
+.mat-column-Nro {
+    min-width: 50px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 50px;
+    justify-content: center;
+}
+
+.mat-column-Proveedor{
+    min-width: 180px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 180px;
+    justify-content: left;
+}
+
+.mat-column-Empleado {
+    min-width: 140px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 140px;
+    justify-content: left;
+}
+
+.mat-column-TipoDocumento{
+    min-width: 140px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 140px;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-FechaEmision,
+.mat-column-Moneda {
+    min-width: 120px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 120px;
+    justify-content: center;
+}
+
+.mat-column-Codigo {
+    min-width: 130px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 130px;
+    justify-content: center;
+}
+
+.mat-column-Total{
+    min-width: 90px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 90px;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-Estado {
+    min-width: 100px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 100px;
+    justify-content: center;
+}
+
+.mat-column-actions {
+    min-width: 100px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 100px;
+    justify-content: center;
+}
+
+.mat-table,
+.mat-cell,
+.mat-header-cell,
+.mat-footer-cell {
+    overflow: visible;
+}
+
+.dropdown-item {
+    cursor: pointer;
+}
+
+.estado:hover {
+    cursor: default;
+}

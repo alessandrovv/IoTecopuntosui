@@ -1,0 +1,178 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Equipos Operativos</h3>
+    </div>
+	<div class="card-toolbar">
+        <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="!hide_load" disabled>Registrando...</button>
+        <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="hide_load" (click)="saveUpdateEquipoComercial()">Registrar</button>
+		<a routerLink="/Talento/masters/EquipoComercial" type="button" class="btn btn-danger">Cancelar</a>
+	</div>
+  </div>
+  <div class="card-body">
+    <div class="form form-label-right">
+        <div class="form-group row">
+          <div class="col-lg-12">
+            <div class="row" [formGroup]="filterGroup">
+
+              <div class="col-lg-3" *ngIf="idEquipoComercial === 0">
+				<label>Empresa</label>
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Empresa"
+                    [searchable]="true" placeholder="Empresa" (change)="getCetificados($event, 0, 1)">
+                    <ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+                        {{item.razonSocial}}
+                    </ng-option>
+                </ng-select>
+                <small class="form-text text-muted"><b>Filtrar</b> por Empresa</small>
+              </div>
+
+			  <div class="col-lg-3" *ngIf="idEquipoComercial > 0">
+				<label style="font-size: 14px; font-weight: bold;">Empresa:&nbsp;&nbsp;</label>
+                <label style="font-size: 14px;">{{DescEmpresa}}</label>
+              </div>
+
+              <div class="col-lg-3" *ngIf="idEquipoComercial === 0">
+				<label>Certificado</label>
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Certificado" formControlName="Certificado" (change)="getListarAsociadosComercial($event)">
+                    <ng-option *ngFor="let item of array_certificado" [value]="item.idCertificado">
+                        {{item.Nombre}}
+                    </ng-option>
+                </ng-select>
+                <small class="form-text text-muted"><b>Filtrar</b> por Certificado</small>
+              </div>
+  
+			  <div class="col-lg-3" *ngIf="idEquipoComercial > 0">
+				<label style="font-size: 14px; font-weight: bold;">Certificado:&nbsp;&nbsp;</label>
+                <label style="font-size: 14px;">{{DescCertificado}}</label>
+              </div>
+
+              <div class="col-lg-3" *ngIf="idEquipoComercial === 0">
+				<label>Asociado</label>
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Asociado" formControlName="Asociado" (change)="changeAsociado($event)">
+                    <ng-option *ngFor="let item of array_asociado" [value]="item.Trabajador">
+                        {{item.NombresTrabajador}}
+                    </ng-option>
+                </ng-select>
+                <small class="form-text text-muted"><b>Filtrar</b> por Asociado</small>
+              </div>
+	
+              <div class="col-lg-3" style="padding-top: 20px;" *ngIf="idEquipoComercial === 0">
+                <button type="button" class="btn btn-primary font-weight-bold mr-2" (click)="addAsesorComercial()">Agregar Asesor Comercial</button>
+              </div>
+  
+			   <div class="col-lg-3" *ngIf="idEquipoComercial > 0">
+                <button type="button" class="btn btn-primary font-weight-bold mr-2" (click)="addAsesorComercialEdicion()">Agregar Asesor Comercial</button>
+              </div>
+  
+
+            </div>
+          </div>         
+        </div>
+    </div>
+  </div>
+</div>
+<div class="row g-6 g-xl-9">
+	<div class="col-lg-4 py-3">
+		<div style="position: relative; display: flex; flex-direction: column; word-wrap: break-word;" class="card h-100" *ngIf="array_lider.length > 0">
+			<div class="card-body d-flex flex-column p-5">
+				<div class="row m-0">
+					<!-- <div class="col-lg-5 border border-2 border-dark rounded-lg d-flex align-items-center justify-content-center" style="height: 7em;">
+						<p class="text-center">Logo</p>
+					</div> -->
+					<div class="col-lg-12">
+						<h5>{{NombresLider}}</h5>
+						<p>Líder</p>
+					</div>
+				</div>
+				<br>
+				<div class="row m-0">
+					<table class="col-lg-12">
+						<tr>
+							<th>Celular</th>
+							<td class="text-right">{{CelularLider}}</td>
+						</tr>
+						<tr>
+							<th>Email</th>
+							<td class="text-right">{{EmailLider}}</td>
+						</tr>
+						<tr>
+							<th>Edad</th>
+							<td class="text-right">{{EdadLider}} años</td>
+						</tr>
+						<tr>
+							<th>Ventas</th>
+							<td class="text-right">{{VentasLider}}</td>
+						</tr>
+						<tr>
+							<th>Esquema Comisión</th>
+							<td class="text-right">{{EsquemaComisionLider}}</td>
+						</tr>
+
+						<tr *ngIf="vigenteLider === 0">
+							<th style="color: red;">Contrato</th>
+							<td style="color: red;" class="text-right">Sin Contrato</td>
+						</tr>
+
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-8">
+		<div class="row m-0">
+			<div class="col-lg-6 px-6 py-3" *ngFor="let item of array_asesores">
+				<div style="position: relative; display: flex; flex-direction: column; word-wrap: break-word;" class="card">
+					<div style="position: absolute; right: 0;" class="p-3">
+						<a title="Eliminar Asesor" class="btn btn-icon btn-light btn-hover-danger btn-sm" (click)="deleteAsesorComercial(item);">
+							<span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+							class="svg-icon svg-icon-md svg-icon-danger">
+							</span>
+						</a>    
+					</div>
+					<div class="card-body d-flex flex-column p-5">
+						<div class="row m-0">
+							<!-- <div class="col-lg-5 border border-2 border-dark rounded-lg d-flex align-items-center justify-content-center" style="height: 7em;">
+								<p class="text-center">Logo</p>
+							</div> -->
+							<div class="col-lg-11">
+								<h5>{{item.NombresTrabajador}}</h5>
+								<p>Asesor Comercial</p>
+							</div>
+						</div>
+						<div class="row m-0">
+							<table class="col-lg-12">
+								<tr>
+									<th>Celular</th>
+									<td class="text-right" style="max-width:12vw">{{item.Celular}}</td>
+								</tr>
+								<tr>
+									<th>Email</th>
+									<td class="text-right" style="max-width:12vw">{{item.Email}}</td>
+								</tr>
+								<tr>
+									<th>Edad</th>
+									<td class="text-right" style="max-width:12vw">{{item.Edad}} años</td>
+								</tr>
+								<tr>
+									<th>Ventas</th>
+									<td class="text-right" style="max-width:12vw">{{item.Ventas}}</td>
+								</tr>
+								<tr>
+									<th>Esquema Comisión</th>
+									<td class="text-right" style="max-width:12vw">{{item.EsquemaComision}}</td>
+								</tr>
+
+								<tr *ngIf="item.Vigente === 0">
+									<th style="color: red;">Contrato</th>
+									<td style="color: red;" class="text-right">Sin Contrato</td>
+								</tr>
+
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

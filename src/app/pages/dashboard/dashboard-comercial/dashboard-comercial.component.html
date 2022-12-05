@@ -1,0 +1,811 @@
+<div class="row">
+	<div class="col-12 px-3 h-100">
+		<div class="card card-custom gutter-b  h-100">
+			<div class="card-body">
+				<div class="row" [formGroup]="formReporteVentasDepartamento" style="gap:10px;flex-wrap: wrap;">
+					<select class="form-control"
+						style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+						formControlName="Tipo"
+						(change)="getDataReporteVentasByDepartamento($event.target.value, formReporteVentasDepartamento.controls.Anio.value, formReporteVentasDepartamento.controls.Mes.value, formReporteVentasDepartamento.controls.Semana.value, formReporteVentasDepartamento.controls.FechaDesde.value,  formReporteVentasDepartamento.controls.FechaHasta.value)">
+						<option [value]="1">Anual</option>
+						<option [value]="2">Mensual</option>
+						<option [value]="3">Semanal</option>
+						<option [value]="4">Diario</option>
+					</select>
+
+					<select class="form-control" *ngIf="formReporteVentasDepartamento.controls.Tipo.value !=4"
+						style="flex-grow: 1; min-width: 170px; font-weight: bolder;  display: inline; width: auto;"
+						formControlName="Anio"
+						(change)="getDataReporteVentasByDepartamento(formReporteVentasDepartamento.controls.Tipo.value, $event.target.value, formReporteVentasDepartamento.controls.Mes.value, formReporteVentasDepartamento.controls.Semana.value, formReporteVentasDepartamento.controls.FechaDesde.value,  formReporteVentasDepartamento.controls.FechaHasta.value)">
+						<option *ngFor="let anio of this.arrayAnios" [value]="anio">{{anio}}</option>
+					</select>
+
+
+					<select class="form-control" *ngIf="formReporteVentasDepartamento.controls.Tipo.value ==2"
+						style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+						formControlName="Mes"
+						(change)="getDataReporteVentasByDepartamento(formReporteVentasDepartamento.controls.Tipo.value,  formReporteVentasDepartamento.controls.Anio.value, $event.target.value, formReporteVentasDepartamento.controls.Semana.value, formReporteVentasDepartamento.controls.FechaDesde.value,  formReporteVentasDepartamento.controls.FechaHasta.value)">
+						<option *ngFor="let item of this.arrayMeses" [value]="item.value">{{item.name}}</option>
+					</select>
+
+					<select class="form-control" *ngIf="formReporteVentasDepartamento.controls.Tipo.value ==3"
+						style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+						formControlName="Semana"
+						(change)="getDataReporteVentasByDepartamento(formReporteVentasDepartamento.controls.Tipo.value, formReporteVentasDepartamento.controls.Anio.value, formReporteVentasDepartamento.controls.Mes.value, $event.target.value, formReporteVentasDepartamento.controls.FechaDesde.value, formReporteVentasDepartamento.controls.FechaHasta.value)">
+						<option value="1">Semana 1</option>
+						<option value="2">Semana 2</option>
+						<option value="3">Semana 3</option>
+						<option value="4">Semana 4</option>
+						<option value="5">Semana 5</option>
+						<option value="6">Semana 6</option>
+						<option value="7">Semana 7</option>
+						<option value="8">Semana 8</option>
+						<option value="9">Semana 9</option>
+						<option value="10">Semana 10</option>
+						<option value="11">Semana 11</option>
+						<option value="12">Semana 12</option>
+						<option value="13">Semana 13</option>
+						<option value="14">Semana 14</option>
+						<option value="15">Semana 15</option>
+						<option value="16">Semana 16</option>
+						<option value="17">Semana 17</option>
+						<option value="18">Semana 18</option>
+						<option value="19">Semana 19</option>
+						<option value="20">Semana 20</option>
+						<option value="21">Semana 21</option>
+						<option value="22">Semana 22</option>
+						<option value="23">Semana 23</option>
+						<option value="24">Semana 24</option>
+						<option value="25">Semana 25</option>
+						<option value="26">Semana 26</option>
+						<option value="27">Semana 27</option>
+						<option value="28">Semana 28</option>
+						<option value="29">Semana 29</option>
+						<option value="30">Semana 30</option>
+						<option value="31">Semana 31</option>
+						<option value="32">Semana 32</option>
+						<option value="33">Semana 33</option>
+						<option value="34">Semana 34</option>
+						<option value="35">Semana 35</option>
+						<option value="36">Semana 36</option>
+						<option value="37">Semana 37</option>
+						<option value="38">Semana 38</option>
+						<option value="39">Semana 39</option>
+						<option value="40">Semana 40</option>
+						<option value="41">Semana 41</option>
+						<option value="42">Semana 42</option>
+						<option value="43">Semana 43</option>
+						<option value="44">Semana 44</option>
+						<option value="45">Semana 45</option>
+						<option value="46">Semana 46</option>
+						<option value="47">Semana 47</option>
+						<option value="48">Semana 48</option>
+						<option value="49">Semana 49</option>
+						<option value="50">Semana 50</option>
+						<option value="51">Semana 51</option>
+						<option value="52">Semana 52</option>
+						<option value="53">Semana 53</option>
+						<option value="54">Semana 54</option>
+					</select>
+
+					<input class="form-control" *ngIf="formReporteVentasDepartamento.controls.Tipo.value ==4" type="date"
+						style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+						formControlName="FechaDesde"
+						(change)="getDataReporteVentasByDepartamento(formReporteVentasDepartamento.controls.Tipo.value, formReporteVentasDepartamento.controls.Anio.value, formReporteVentasDepartamento.controls.Mes.value, formReporteVentasDepartamento.controls.Semana.value, $event.target.value, formReporteVentasDepartamento.controls.FechaHasta.value)">
+					<input class="form-control" *ngIf="formReporteVentasDepartamento.controls.Tipo.value ==4" type="date"
+						style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+						formControlName="FechaHasta"
+						(change)="getDataReporteVentasByDepartamento(formReporteVentasDepartamento.controls.Tipo.value, formReporteVentasDepartamento.controls.Anio.value, formReporteVentasDepartamento.controls.Mes.value, formReporteVentasDepartamento.controls.Semana.value, formReporteVentasDepartamento.controls.FechaDesde.value,  $event.target.value)">
+
+				</div>
+				<div id="graficoC1">
+					<app-grafico [tipo]="'column'" [titulo]="'Estado Ventas Departamento'" [container]="'graficoC1'"
+						[updateEvent]="actualizarGraf1.asObservable()" #grafico1></app-grafico>
+
+					<!-- <app-grafico  [events]="eventsSubject.asObservable()" #grafico1></app-grafico> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12 col-lg-6 px-3 h-100">
+		<div class="card card-custom gutter-b">
+			<div class="card-body">
+				<div class="row" [formGroup]="formReporteVentasEstadoDAS">
+					<div class="col-12 pb-2">
+						<div class="row">
+							<div class="col-lg-6">
+								<label>País</label>
+								<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Pais" disabled="true"
+									placeholder="Pais"
+									(change)="getListarDepartamento($event, null, 'DAS'); getDataReporteVentasByEstadoDAS($event, formReporteVentasEstadoDAS.controls.Departamento.value, formReporteVentasEstadoDAS.controls.Tipo.value, formReporteVentasEstadoDAS.controls.Anio.value, formReporteVentasEstadoDAS.controls.Mes.value, formReporteVentasEstadoDAS.controls.Semana.value, formReporteVentasEstadoDAS.controls.FechaDesde.value,  formReporteVentasEstadoDAS.controls.FechaHasta.value)">
+									<ng-option *ngFor="let item of array_pais" [value]="item.Pais">
+										{{item.NombrePais}}
+									</ng-option>
+								</ng-select>
+							</div>
+
+							<div class="col-lg-6">
+								<label>Departamento</label>
+								<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Departamento"
+									formControlName="Departamento"
+									(change)="getDataReporteVentasByEstadoDAS(formReporteVentasEstadoDAS.controls.Pais.value, $event, formReporteVentasEstadoDAS.controls.Tipo.value, formReporteVentasEstadoDAS.controls.Anio.value, formReporteVentasEstadoDAS.controls.Mes.value, formReporteVentasEstadoDAS.controls.Semana.value, formReporteVentasEstadoDAS.controls.FechaDesde.value,  formReporteVentasEstadoDAS.controls.FechaHasta.value)">
+									<ng-option *ngFor="let item of array_departamento" [value]="item.Departamento">
+										{{item.NombreDepartamento}}
+									</ng-option>
+								</ng-select>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 pb-2">
+						<div class="d-flex w-100" style="gap:10px;flex-wrap: wrap;">
+							<select class="form-control"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Tipo"
+								(change)="getDataReporteVentasByEstadoDAS(formReporteVentasEstadoDAS.controls.Pais.value, formReporteVentasEstadoDAS.controls.Departamento.value, $event.target.value, formReporteVentasEstadoDAS.controls.Anio.value, formReporteVentasEstadoDAS.controls.Mes.value, formReporteVentasEstadoDAS.controls.Semana.value, formReporteVentasEstadoDAS.controls.FechaDesde.value,  formReporteVentasEstadoDAS.controls.FechaHasta.value)">
+								<option [value]="1">Anual</option>
+								<option [value]="2">Mensual</option>
+								<option [value]="3">Semanal</option>
+								<option [value]="4">Diario</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteVentasEstadoDAS.controls.Tipo.value !=4"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder;  display: inline; width: auto;"
+								formControlName="Anio"
+								(change)="getDataReporteVentasByEstadoDAS(formReporteVentasEstadoDAS.controls.Pais.value, formReporteVentasEstadoDAS.controls.Departamento.value, formReporteVentasEstadoDAS.controls.Tipo.value, $event.target.value, formReporteVentasEstadoDAS.controls.Mes.value, formReporteVentasEstadoDAS.controls.Semana.value, formReporteVentasEstadoDAS.controls.FechaDesde.value,  formReporteVentasEstadoDAS.controls.FechaHasta.value)">
+								<option *ngFor="let anio of this.arrayAnios" [value]="anio">{{anio}}</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteVentasEstadoDAS.controls.Tipo.value ==2"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Mes"
+								(change)="getDataReporteVentasByEstadoDAS(formReporteVentasEstadoDAS.controls.Pais.value, formReporteVentasEstadoDAS.controls.Departamento.value, formReporteVentasEstadoDAS.controls.Tipo.value,  formReporteVentasEstadoDAS.controls.Anio.value, $event.target.value, formReporteVentasEstadoDAS.controls.Semana.value, formReporteVentasEstadoDAS.controls.FechaDesde.value,  formReporteVentasEstadoDAS.controls.FechaHasta.value)">
+								<option *ngFor="let item of this.arrayMeses" [value]="item.value">{{item.name}}</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteVentasEstadoDAS.controls.Tipo.value ==3"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Semana"
+								(change)="getDataReporteVentasByEstadoDAS(formReporteVentasEstadoDAS.controls.Pais.value, formReporteVentasEstadoDAS.controls.Departamento.value, formReporteVentasEstadoDAS.controls.Tipo.value, formReporteVentasEstadoDAS.controls.Anio.value, formReporteVentasEstadoDAS.controls.Mes.value, $event.target.value, formReporteVentasEstadoDAS.controls.FechaDesde.value, formReporteVentasEstadoDAS.controls.FechaHasta.value)">
+								<option value="1">Semana 1</option>
+								<option value="2">Semana 2</option>
+								<option value="3">Semana 3</option>
+								<option value="4">Semana 4</option>
+								<option value="5">Semana 5</option>
+								<option value="6">Semana 6</option>
+								<option value="7">Semana 7</option>
+								<option value="8">Semana 8</option>
+								<option value="9">Semana 9</option>
+								<option value="10">Semana 10</option>
+								<option value="11">Semana 11</option>
+								<option value="12">Semana 12</option>
+								<option value="13">Semana 13</option>
+								<option value="14">Semana 14</option>
+								<option value="15">Semana 15</option>
+								<option value="16">Semana 16</option>
+								<option value="17">Semana 17</option>
+								<option value="18">Semana 18</option>
+								<option value="19">Semana 19</option>
+								<option value="20">Semana 20</option>
+								<option value="21">Semana 21</option>
+								<option value="22">Semana 22</option>
+								<option value="23">Semana 23</option>
+								<option value="24">Semana 24</option>
+								<option value="25">Semana 25</option>
+								<option value="26">Semana 26</option>
+								<option value="27">Semana 27</option>
+								<option value="28">Semana 28</option>
+								<option value="29">Semana 29</option>
+								<option value="30">Semana 30</option>
+								<option value="31">Semana 31</option>
+								<option value="32">Semana 32</option>
+								<option value="33">Semana 33</option>
+								<option value="34">Semana 34</option>
+								<option value="35">Semana 35</option>
+								<option value="36">Semana 36</option>
+								<option value="37">Semana 37</option>
+								<option value="38">Semana 38</option>
+								<option value="39">Semana 39</option>
+								<option value="40">Semana 40</option>
+								<option value="41">Semana 41</option>
+								<option value="42">Semana 42</option>
+								<option value="43">Semana 43</option>
+								<option value="44">Semana 44</option>
+								<option value="45">Semana 45</option>
+								<option value="46">Semana 46</option>
+								<option value="47">Semana 47</option>
+								<option value="48">Semana 48</option>
+								<option value="49">Semana 49</option>
+								<option value="50">Semana 50</option>
+								<option value="51">Semana 51</option>
+								<option value="52">Semana 52</option>
+								<option value="53">Semana 53</option>
+								<option value="54">Semana 54</option>
+							</select>
+
+							<input class="form-control" *ngIf="formReporteVentasEstadoDAS.controls.Tipo.value ==4" type="date"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="FechaDesde"
+								(change)="getDataReporteVentasByEstadoDAS(formReporteVentasEstadoDAS.controls.Pais.value, formReporteVentasEstadoDAS.controls.Departamento.value, formReporteVentasEstadoDAS.controls.Tipo.value, formReporteVentasEstadoDAS.controls.Anio.value, formReporteVentasEstadoDAS.controls.Mes.value, formReporteVentasEstadoDAS.controls.Semana.value, $event.target.value, formReporteVentasEstadoDAS.controls.FechaHasta.value)">
+
+							<input class="form-control" *ngIf="formReporteVentasEstadoDAS.controls.Tipo.value ==4" type="date"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="FechaHasta"
+								(change)="getDataReporteVentasByEstadoDAS(formReporteVentasEstadoDAS.controls.Pais.value, formReporteVentasEstadoDAS.controls.Departamento.value, formReporteVentasEstadoDAS.controls.Tipo.value, formReporteVentasEstadoDAS.controls.Anio.value, formReporteVentasEstadoDAS.controls.Mes.value, formReporteVentasEstadoDAS.controls.Semana.value, formReporteVentasEstadoDAS.controls.FechaDesde.value,  $event.target.value)">
+
+						</div>
+					</div>
+				</div>
+				<div id="graficoC2">
+					<app-grafico [tipo]="'column'" [titulo]="'Estado de Venta DAS'" [container]="'graficoC2'"
+						[updateEvent]="actualizarGraf2.asObservable()" #grafico2></app-grafico>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12 col-lg-6 px-3">
+		<div class="card card-custom gutter-b">
+			<div class="card-body">
+				<div class="row" [formGroup]="formReporteVentasEstadoWIN">
+					<div class="col-12 pb-2">
+						<div class="row">
+							<div class="col-lg-6">
+								<label>País</label>
+								<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Pais" disabled="true"
+									placeholder="Pais"
+									(change)="getListarDepartamento($event, null, 'DAS'); getDataReporteVentasByEstadoWIN($event, formReporteVentasEstadoWIN.controls.Departamento.value, formReporteVentasEstadoWIN.controls.Tipo.value, formReporteVentasEstadoWIN.controls.Anio.value, formReporteVentasEstadoWIN.controls.Mes.value, formReporteVentasEstadoWIN.controls.Semana.value, formReporteVentasEstadoWIN.controls.FechaDesde.value,  formReporteVentasEstadoWIN.controls.FechaHasta.value)">
+									<ng-option *ngFor="let item of array_pais" [value]="item.Pais">
+										{{item.NombrePais}}
+									</ng-option>
+								</ng-select>
+							</div>
+
+							<div class="col-lg-6">
+								<label>Departamento</label>
+								<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Departamento"
+									formControlName="Departamento"
+									(change)="getDataReporteVentasByEstadoWIN(formReporteVentasEstadoWIN.controls.Pais.value, $event, formReporteVentasEstadoWIN.controls.Tipo.value, formReporteVentasEstadoWIN.controls.Anio.value, formReporteVentasEstadoWIN.controls.Mes.value, formReporteVentasEstadoWIN.controls.Semana.value, formReporteVentasEstadoWIN.controls.FechaDesde.value,  formReporteVentasEstadoWIN.controls.FechaHasta.value)">
+									<ng-option *ngFor="let item of array_departamento" [value]="item.Departamento">
+										{{item.NombreDepartamento}}
+									</ng-option>
+								</ng-select>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 pb-2">
+						<div class="d-flex w-100" style="gap:10px;flex-wrap: wrap;">
+
+							<select class="form-control"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Tipo"
+								(change)="getDataReporteVentasByEstadoWIN(formReporteVentasEstadoWIN.controls.Pais.value, formReporteVentasEstadoWIN.controls.Departamento.value, $event.target.value, formReporteVentasEstadoWIN.controls.Anio.value, formReporteVentasEstadoWIN.controls.Mes.value, formReporteVentasEstadoWIN.controls.Semana.value, formReporteVentasEstadoWIN.controls.FechaDesde.value,  formReporteVentasEstadoWIN.controls.FechaHasta.value)">
+								<option [value]="1">Anual</option>
+								<option [value]="2">Mensual</option>
+								<option [value]="3">Semanal</option>
+								<option [value]="4">Diario</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteVentasEstadoWIN.controls.Tipo.value !=4"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder;  display: inline; width: auto;"
+								formControlName="Anio"
+								(change)="getDataReporteVentasByEstadoWIN(formReporteVentasEstadoWIN.controls.Pais.value, formReporteVentasEstadoWIN.controls.Departamento.value, formReporteVentasEstadoWIN.controls.Tipo.value, $event.target.value, formReporteVentasEstadoWIN.controls.Mes.value, formReporteVentasEstadoWIN.controls.Semana.value, formReporteVentasEstadoWIN.controls.FechaDesde.value,  formReporteVentasEstadoWIN.controls.FechaHasta.value)">
+								<option *ngFor="let anio of this.arrayAnios" [value]="anio">{{anio}}</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteVentasEstadoWIN.controls.Tipo.value ==2"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Mes"
+								(change)="getDataReporteVentasByEstadoWIN(formReporteVentasEstadoWIN.controls.Pais.value, formReporteVentasEstadoWIN.controls.Departamento.value, formReporteVentasEstadoWIN.controls.Tipo.value,  formReporteVentasEstadoWIN.controls.Anio.value, $event.target.value, formReporteVentasEstadoWIN.controls.Semana.value, formReporteVentasEstadoWIN.controls.FechaDesde.value,  formReporteVentasEstadoWIN.controls.FechaHasta.value)">
+								<option *ngFor="let item of this.arrayMeses" [value]="item.value">{{item.name}}</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteVentasEstadoWIN.controls.Tipo.value ==3"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Semana"
+								(change)="getDataReporteVentasByEstadoWIN(formReporteVentasEstadoWIN.controls.Pais.value, formReporteVentasEstadoWIN.controls.Departamento.value, formReporteVentasEstadoWIN.controls.Tipo.value, formReporteVentasEstadoWIN.controls.Anio.value, formReporteVentasEstadoWIN.controls.Mes.value, $event.target.value, formReporteVentasEstadoWIN.controls.FechaDesde.value, formReporteVentasEstadoWIN.controls.FechaHasta.value)">
+								<option value="1">Semana 1</option>
+								<option value="2">Semana 2</option>
+								<option value="3">Semana 3</option>
+								<option value="4">Semana 4</option>
+								<option value="5">Semana 5</option>
+								<option value="6">Semana 6</option>
+								<option value="7">Semana 7</option>
+								<option value="8">Semana 8</option>
+								<option value="9">Semana 9</option>
+								<option value="10">Semana 10</option>
+								<option value="11">Semana 11</option>
+								<option value="12">Semana 12</option>
+								<option value="13">Semana 13</option>
+								<option value="14">Semana 14</option>
+								<option value="15">Semana 15</option>
+								<option value="16">Semana 16</option>
+								<option value="17">Semana 17</option>
+								<option value="18">Semana 18</option>
+								<option value="19">Semana 19</option>
+								<option value="20">Semana 20</option>
+								<option value="21">Semana 21</option>
+								<option value="22">Semana 22</option>
+								<option value="23">Semana 23</option>
+								<option value="24">Semana 24</option>
+								<option value="25">Semana 25</option>
+								<option value="26">Semana 26</option>
+								<option value="27">Semana 27</option>
+								<option value="28">Semana 28</option>
+								<option value="29">Semana 29</option>
+								<option value="30">Semana 30</option>
+								<option value="31">Semana 31</option>
+								<option value="32">Semana 32</option>
+								<option value="33">Semana 33</option>
+								<option value="34">Semana 34</option>
+								<option value="35">Semana 35</option>
+								<option value="36">Semana 36</option>
+								<option value="37">Semana 37</option>
+								<option value="38">Semana 38</option>
+								<option value="39">Semana 39</option>
+								<option value="40">Semana 40</option>
+								<option value="41">Semana 41</option>
+								<option value="42">Semana 42</option>
+								<option value="43">Semana 43</option>
+								<option value="44">Semana 44</option>
+								<option value="45">Semana 45</option>
+								<option value="46">Semana 46</option>
+								<option value="47">Semana 47</option>
+								<option value="48">Semana 48</option>
+								<option value="49">Semana 49</option>
+								<option value="50">Semana 50</option>
+								<option value="51">Semana 51</option>
+								<option value="52">Semana 52</option>
+								<option value="53">Semana 53</option>
+								<option value="54">Semana 54</option>
+							</select>
+
+							<input class="form-control" *ngIf="formReporteVentasEstadoWIN.controls.Tipo.value ==4" type="date"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="FechaDesde"
+								(change)="getDataReporteVentasByEstadoWIN(formReporteVentasEstadoWIN.controls.Pais.value, formReporteVentasEstadoWIN.controls.Departamento.value, formReporteVentasEstadoWIN.controls.Tipo.value, formReporteVentasEstadoWIN.controls.Anio.value, formReporteVentasEstadoWIN.controls.Mes.value, formReporteVentasEstadoWIN.controls.Semana.value, $event.target.value, formReporteVentasEstadoWIN.controls.FechaHasta.value)">
+
+							<input class="form-control" *ngIf="formReporteVentasEstadoWIN.controls.Tipo.value ==4" type="date"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="FechaHasta"
+								(change)="getDataReporteVentasByEstadoWIN(formReporteVentasEstadoWIN.controls.Pais.value, formReporteVentasEstadoWIN.controls.Departamento.value, formReporteVentasEstadoWIN.controls.Tipo.value, formReporteVentasEstadoWIN.controls.Anio.value, formReporteVentasEstadoWIN.controls.Mes.value, formReporteVentasEstadoWIN.controls.Semana.value, formReporteVentasEstadoWIN.controls.FechaDesde.value,  $event.target.value)">
+						</div>
+					</div>
+
+				</div>
+				<div id="graficoC3">
+					<app-grafico [tipo]="'pie'" [titulo]="'Estado de Venta WIN'" [container]="'graficoC3'"
+						[updateEvent]="actualizarGraf3.asObservable()" #grafico3></app-grafico>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="card card-custom gutter-b">
+			<div class="card-body">
+				<div class="row" [formGroup]="formReporteVentasAsociado">
+					<div class="col-12 pb-2">
+						<div class="row">
+							<div class="col-lg-6">
+								<label>País</label>
+								<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Pais" disabled="true"
+									placeholder="Pais"
+									(change)="getListarDepartamento($event, null, 'ASOCIADO'); getDataReporteVentasByAsociado($event, formReporteVentasAsociado.controls.Departamento.value, formReporteVentasAsociado.controls.Tipo.value, formReporteVentasAsociado.controls.Anio.value, formReporteVentasAsociado.controls.Mes.value, formReporteVentasAsociado.controls.Semana.value, formReporteVentasAsociado.controls.FechaDesde.value,  formReporteVentasAsociado.controls.FechaHasta.value)">
+									<ng-option *ngFor="let item of array_pais" [value]="item.Pais">
+										{{item.NombrePais}}
+									</ng-option>
+								</ng-select>
+							</div>
+
+							<div class="col-lg-6">
+								<label>Departamento</label>
+								<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Departamento"
+									formControlName="Departamento"
+									(change)="getDataReporteVentasByAsociado(formReporteVentasAsociado.controls.Pais.value, $event, formReporteVentasAsociado.controls.Tipo.value, formReporteVentasAsociado.controls.Anio.value, formReporteVentasAsociado.controls.Mes.value, formReporteVentasAsociado.controls.Semana.value, formReporteVentasAsociado.controls.FechaDesde.value,  formReporteVentasAsociado.controls.FechaHasta.value)">
+									<ng-option *ngFor="let item of array_departamento" [value]="item.Departamento">
+										{{item.NombreDepartamento}}
+									</ng-option>
+								</ng-select>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 pb-2">
+						<div class="d-flex w-100" style="gap:10px;flex-wrap: wrap;">
+
+							<select class="form-control"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Tipo"
+								(change)="getDataReporteVentasByAsociado(formReporteVentasAsociado.controls.Pais.value, formReporteVentasAsociado.controls.Departamento.value, $event.target.value, formReporteVentasAsociado.controls.Anio.value, formReporteVentasAsociado.controls.Mes.value, formReporteVentasAsociado.controls.Semana.value, formReporteVentasAsociado.controls.FechaDesde.value,  formReporteVentasAsociado.controls.FechaHasta.value)">
+								<option [value]="1">Anual</option>
+								<option [value]="2">Mensual</option>
+								<option [value]="3">Semanal</option>
+								<option [value]="4">Diario</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteVentasAsociado.controls.Tipo.value !=4"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder;  display: inline; width: auto;"
+								formControlName="Anio"
+								(change)="getDataReporteVentasByAsociado(formReporteVentasAsociado.controls.Pais.value, formReporteVentasAsociado.controls.Departamento.value, formReporteVentasAsociado.controls.Tipo.value, $event.target.value, formReporteVentasAsociado.controls.Mes.value, formReporteVentasAsociado.controls.Semana.value, formReporteVentasAsociado.controls.FechaDesde.value,  formReporteVentasAsociado.controls.FechaHasta.value)">
+								<option *ngFor="let anio of this.arrayAnios" [value]="anio">{{anio}}</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteVentasAsociado.controls.Tipo.value ==2"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Mes"
+								(change)="getDataReporteVentasByAsociado(formReporteVentasAsociado.controls.Pais.value, formReporteVentasAsociado.controls.Departamento.value, formReporteVentasAsociado.controls.Tipo.value,  formReporteVentasAsociado.controls.Anio.value, $event.target.value, formReporteVentasAsociado.controls.Semana.value, formReporteVentasAsociado.controls.FechaDesde.value,  formReporteVentasAsociado.controls.FechaHasta.value)">
+								<option *ngFor="let item of this.arrayMeses" [value]="item.value">{{item.name}}</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteVentasAsociado.controls.Tipo.value ==3"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Semana"
+								(change)="getDataReporteVentasByAsociado(formReporteVentasAsociado.controls.Pais.value, formReporteVentasAsociado.controls.Departamento.value, formReporteVentasAsociado.controls.Tipo.value, formReporteVentasAsociado.controls.Anio.value, formReporteVentasAsociado.controls.Mes.value, $event.target.value, formReporteVentasAsociado.controls.FechaDesde.value, formReporteVentasAsociado.controls.FechaHasta.value)">
+								<option value="1">Semana 1</option>
+								<option value="2">Semana 2</option>
+								<option value="3">Semana 3</option>
+								<option value="4">Semana 4</option>
+								<option value="5">Semana 5</option>
+								<option value="6">Semana 6</option>
+								<option value="7">Semana 7</option>
+								<option value="8">Semana 8</option>
+								<option value="9">Semana 9</option>
+								<option value="10">Semana 10</option>
+								<option value="11">Semana 11</option>
+								<option value="12">Semana 12</option>
+								<option value="13">Semana 13</option>
+								<option value="14">Semana 14</option>
+								<option value="15">Semana 15</option>
+								<option value="16">Semana 16</option>
+								<option value="17">Semana 17</option>
+								<option value="18">Semana 18</option>
+								<option value="19">Semana 19</option>
+								<option value="20">Semana 20</option>
+								<option value="21">Semana 21</option>
+								<option value="22">Semana 22</option>
+								<option value="23">Semana 23</option>
+								<option value="24">Semana 24</option>
+								<option value="25">Semana 25</option>
+								<option value="26">Semana 26</option>
+								<option value="27">Semana 27</option>
+								<option value="28">Semana 28</option>
+								<option value="29">Semana 29</option>
+								<option value="30">Semana 30</option>
+								<option value="31">Semana 31</option>
+								<option value="32">Semana 32</option>
+								<option value="33">Semana 33</option>
+								<option value="34">Semana 34</option>
+								<option value="35">Semana 35</option>
+								<option value="36">Semana 36</option>
+								<option value="37">Semana 37</option>
+								<option value="38">Semana 38</option>
+								<option value="39">Semana 39</option>
+								<option value="40">Semana 40</option>
+								<option value="41">Semana 41</option>
+								<option value="42">Semana 42</option>
+								<option value="43">Semana 43</option>
+								<option value="44">Semana 44</option>
+								<option value="45">Semana 45</option>
+								<option value="46">Semana 46</option>
+								<option value="47">Semana 47</option>
+								<option value="48">Semana 48</option>
+								<option value="49">Semana 49</option>
+								<option value="50">Semana 50</option>
+								<option value="51">Semana 51</option>
+								<option value="52">Semana 52</option>
+								<option value="53">Semana 53</option>
+								<option value="54">Semana 54</option>
+							</select>
+
+							<input class="form-control" *ngIf="formReporteVentasAsociado.controls.Tipo.value ==4" type="date"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="FechaDesde"
+								(change)="getDataReporteVentasByAsociado(formReporteVentasAsociado.controls.Pais.value, formReporteVentasAsociado.controls.Departamento.value, formReporteVentasAsociado.controls.Tipo.value, formReporteVentasAsociado.controls.Anio.value, formReporteVentasAsociado.controls.Mes.value, formReporteVentasAsociado.controls.Semana.value, $event.target.value, formReporteVentasAsociado.controls.FechaHasta.value)">
+
+							<input class="form-control" *ngIf="formReporteVentasAsociado.controls.Tipo.value ==4" type="date"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="FechaHasta"
+								(change)="getDataReporteVentasByAsociado(formReporteVentasAsociado.controls.Pais.value, formReporteVentasAsociado.controls.Departamento.value, formReporteVentasAsociado.controls.Tipo.value, formReporteVentasAsociado.controls.Anio.value, formReporteVentasAsociado.controls.Mes.value, formReporteVentasAsociado.controls.Semana.value, formReporteVentasAsociado.controls.FechaDesde.value,  $event.target.value)">
+						</div>
+					</div>
+
+				</div>
+				<div id="graficoC4">
+					<app-grafico [tipo]="'column'" [titulo]="'Ventas Diarias'" [container]="'graficoC4'"
+						[updateEvent]="actualizarGraf4.asObservable()" #grafico4></app-grafico>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="card card-custom gutter-b">
+			<div class="card-body">
+				<div class="row" [formGroup]="formReporteVentasGeneral">
+					<div class="col-12 pb-2">
+						<div class="row">
+							<div class="col-lg-4">
+								<label>País</label>
+								<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Pais" disabled="true"
+									placeholder="Pais"
+									(change)="getListarDepartamento($event, null, 'GENERAL'); getDataReporteVentasGeneral($event, formReporteVentasGeneral.controls.Departamento.value, formReporteVentasGeneral.controls.Asociado.value, formReporteVentasGeneral.controls.Tipo.value, formReporteVentasGeneral.controls.Anio.value, formReporteVentasGeneral.controls.Mes.value, formReporteVentasGeneral.controls.Semana.value, formReporteVentasGeneral.controls.FechaDesde.value,  formReporteVentasGeneral.controls.FechaHasta.value)">
+									<ng-option *ngFor="let item of array_pais" [value]="item.Pais">
+										{{item.NombrePais}}
+									</ng-option>
+								</ng-select>
+							</div>
+
+							<div class="col-lg-4">
+								<label>Departamento</label>
+								<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Departamento"
+									formControlName="Departamento"
+									(change)="getDataReporteVentasGeneral(formReporteVentasGeneral.controls.Pais.value, $event, formReporteVentasGeneral.controls.Asociado.value, formReporteVentasGeneral.controls.Tipo.value, formReporteVentasGeneral.controls.Anio.value, formReporteVentasGeneral.controls.Mes.value, formReporteVentasGeneral.controls.Semana.value, formReporteVentasGeneral.controls.FechaDesde.value,  formReporteVentasGeneral.controls.FechaHasta.value)">
+									<ng-option *ngFor="let item of array_departamento" [value]="item.Departamento">
+										{{item.NombreDepartamento}}
+									</ng-option>
+								</ng-select>
+							</div>
+
+							<div class="col-lg-4">
+								<label>Asociado</label>
+								<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Asociado"
+									formControlName="Asociado"
+									(change)="getDataReporteVentasGeneral(formReporteVentasGeneral.controls.Pais.value, formReporteVentasGeneral.controls.Departamento.value, $event, formReporteVentasGeneral.controls.Tipo.value, formReporteVentasGeneral.controls.Anio.value, formReporteVentasGeneral.controls.Mes.value, formReporteVentasGeneral.controls.Semana.value, formReporteVentasGeneral.controls.FechaDesde.value,  formReporteVentasGeneral.controls.FechaHasta.value)">
+									<ng-option *ngFor="let item of array_asociados" [value]="item.idTrabajador">
+										{{item.NombreCompleto}}
+									</ng-option>
+								</ng-select>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 pb-2">
+						<div class="d-flex w-100" style="gap:10px;flex-wrap: wrap;">
+
+							<select class="form-control"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Tipo"
+								(change)="getDataReporteVentasGeneral(formReporteVentasGeneral.controls.Pais.value, formReporteVentasGeneral.controls.Departamento.value, formReporteVentasGeneral.controls.Asociado.value, $event.target.value, formReporteVentasGeneral.controls.Anio.value, formReporteVentasGeneral.controls.Mes.value, formReporteVentasGeneral.controls.Semana.value, formReporteVentasGeneral.controls.FechaDesde.value,  formReporteVentasGeneral.controls.FechaHasta.value)">
+								<option [value]="1">Anual</option>
+								<option [value]="2">Mensual</option>
+								<option [value]="3">Semanal</option>
+								<option [value]="4">Diario</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteVentasGeneral.controls.Tipo.value !=4"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder;  display: inline; width: auto;"
+								formControlName="Anio"
+								(change)="getDataReporteVentasGeneral(formReporteVentasGeneral.controls.Pais.value, formReporteVentasGeneral.controls.Departamento.value, formReporteVentasGeneral.controls.Asociado.value, formReporteVentasGeneral.controls.Tipo.value, $event.target.value, formReporteVentasGeneral.controls.Mes.value, formReporteVentasGeneral.controls.Semana.value, formReporteVentasGeneral.controls.FechaDesde.value,  formReporteVentasGeneral.controls.FechaHasta.value)">
+								<option *ngFor="let anio of this.arrayAnios" [value]="anio">{{anio}}</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteVentasGeneral.controls.Tipo.value ==2"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Mes"
+								(change)="getDataReporteVentasGeneral(formReporteVentasGeneral.controls.Pais.value, formReporteVentasGeneral.controls.Departamento.value, formReporteVentasGeneral.controls.Asociado.value, formReporteVentasGeneral.controls.Tipo.value,  formReporteVentasGeneral.controls.Anio.value, $event.target.value, formReporteVentasGeneral.controls.Semana.value, formReporteVentasGeneral.controls.FechaDesde.value,  formReporteVentasGeneral.controls.FechaHasta.value)">
+								<option *ngFor="let item of this.arrayMeses" [value]="item.value">{{item.name}}</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteVentasGeneral.controls.Tipo.value ==3"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Semana"
+								(change)="getDataReporteVentasGeneral(formReporteVentasGeneral.controls.Pais.value, formReporteVentasGeneral.controls.Departamento.value, formReporteVentasGeneral.controls.Asociado.value, formReporteVentasGeneral.controls.Tipo.value, formReporteVentasGeneral.controls.Anio.value, formReporteVentasGeneral.controls.Mes.value, $event.target.value, formReporteVentasGeneral.controls.FechaDesde.value, formReporteVentasGeneral.controls.FechaHasta.value)">
+								<option value="1">Semana 1</option>
+								<option value="2">Semana 2</option>
+								<option value="3">Semana 3</option>
+								<option value="4">Semana 4</option>
+								<option value="5">Semana 5</option>
+								<option value="6">Semana 6</option>
+								<option value="7">Semana 7</option>
+								<option value="8">Semana 8</option>
+								<option value="9">Semana 9</option>
+								<option value="10">Semana 10</option>
+								<option value="11">Semana 11</option>
+								<option value="12">Semana 12</option>
+								<option value="13">Semana 13</option>
+								<option value="14">Semana 14</option>
+								<option value="15">Semana 15</option>
+								<option value="16">Semana 16</option>
+								<option value="17">Semana 17</option>
+								<option value="18">Semana 18</option>
+								<option value="19">Semana 19</option>
+								<option value="20">Semana 20</option>
+								<option value="21">Semana 21</option>
+								<option value="22">Semana 22</option>
+								<option value="23">Semana 23</option>
+								<option value="24">Semana 24</option>
+								<option value="25">Semana 25</option>
+								<option value="26">Semana 26</option>
+								<option value="27">Semana 27</option>
+								<option value="28">Semana 28</option>
+								<option value="29">Semana 29</option>
+								<option value="30">Semana 30</option>
+								<option value="31">Semana 31</option>
+								<option value="32">Semana 32</option>
+								<option value="33">Semana 33</option>
+								<option value="34">Semana 34</option>
+								<option value="35">Semana 35</option>
+								<option value="36">Semana 36</option>
+								<option value="37">Semana 37</option>
+								<option value="38">Semana 38</option>
+								<option value="39">Semana 39</option>
+								<option value="40">Semana 40</option>
+								<option value="41">Semana 41</option>
+								<option value="42">Semana 42</option>
+								<option value="43">Semana 43</option>
+								<option value="44">Semana 44</option>
+								<option value="45">Semana 45</option>
+								<option value="46">Semana 46</option>
+								<option value="47">Semana 47</option>
+								<option value="48">Semana 48</option>
+								<option value="49">Semana 49</option>
+								<option value="50">Semana 50</option>
+								<option value="51">Semana 51</option>
+								<option value="52">Semana 52</option>
+								<option value="53">Semana 53</option>
+								<option value="54">Semana 54</option>
+							</select>
+
+							<input class="form-control" *ngIf="formReporteVentasGeneral.controls.Tipo.value ==4" type="date"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="FechaDesde"
+								(change)="getDataReporteVentasGeneral(formReporteVentasGeneral.controls.Pais.value, formReporteVentasGeneral.controls.Departamento.value, formReporteVentasGeneral.controls.Asociado.value, formReporteVentasGeneral.controls.Tipo.value, formReporteVentasGeneral.controls.Anio.value, formReporteVentasGeneral.controls.Mes.value, formReporteVentasGeneral.controls.Semana.value, $event.target.value, formReporteVentasGeneral.controls.FechaHasta.value)">
+
+							<input class="form-control" *ngIf="formReporteVentasGeneral.controls.Tipo.value ==4" type="date"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="FechaHasta"
+								(change)="getDataReporteVentasGeneral(formReporteVentasGeneral.controls.Pais.value, formReporteVentasGeneral.controls.Departamento.value, formReporteVentasGeneral.controls.Asociado.value, formReporteVentasGeneral.controls.Tipo.value, formReporteVentasGeneral.controls.Anio.value, formReporteVentasGeneral.controls.Mes.value, formReporteVentasGeneral.controls.Semana.value, formReporteVentasGeneral.controls.FechaDesde.value,  $event.target.value)">
+						</div>
+					</div>
+
+				</div>
+				<div id="graficoC5">
+					<app-grafico [tipo]="'line'" [titulo]="'Ventas Estatus General'" [container]="'graficoC5'"
+						[updateEvent]="actualizarGraf5.asObservable()" #grafico5></app-grafico>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="card card-custom gutter-b">
+			<div class="card-body">
+				<div class="row" [formGroup]="formReporteObservacionesVentas">
+					<div class="col-12 pb-2">
+						<div class="row">
+							<div class="col-lg-4">
+								<label>País</label>
+								<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Pais" disabled="true"
+									placeholder="Pais"
+									(change)="getListarDepartamento($event, null, 'GENERAL'); getDataReporteObservacionesVentas($event, formReporteObservacionesVentas.controls.Departamento.value, formReporteObservacionesVentas.controls.Asociado.value, formReporteObservacionesVentas.controls.Tipo.value, formReporteObservacionesVentas.controls.Anio.value, formReporteObservacionesVentas.controls.Mes.value, formReporteObservacionesVentas.controls.Semana.value, formReporteObservacionesVentas.controls.FechaDesde.value,  formReporteObservacionesVentas.controls.FechaHasta.value)">
+									<ng-option *ngFor="let item of array_pais" [value]="item.Pais">
+										{{item.NombrePais}}
+									</ng-option>
+								</ng-select>
+							</div>
+
+							<div class="col-lg-4">
+								<label>Departamento</label>
+								<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Departamento"
+									formControlName="Departamento"
+									(change)="getDataReporteObservacionesVentas(formReporteObservacionesVentas.controls.Pais.value, $event, formReporteObservacionesVentas.controls.Asociado.value, formReporteObservacionesVentas.controls.Tipo.value, formReporteObservacionesVentas.controls.Anio.value, formReporteObservacionesVentas.controls.Mes.value, formReporteObservacionesVentas.controls.Semana.value, formReporteObservacionesVentas.controls.FechaDesde.value,  formReporteObservacionesVentas.controls.FechaHasta.value)">
+									<ng-option *ngFor="let item of array_departamento" [value]="item.Departamento">
+										{{item.NombreDepartamento}}
+									</ng-option>
+								</ng-select>
+							</div>
+
+							<div class="col-lg-4">
+								<label>Asociado</label>
+								<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Asociado"
+									formControlName="Asociado"
+									(change)="getDataReporteObservacionesVentas(formReporteObservacionesVentas.controls.Pais.value, formReporteObservacionesVentas.controls.Departamento.value, $event, formReporteObservacionesVentas.controls.Tipo.value, formReporteObservacionesVentas.controls.Anio.value, formReporteObservacionesVentas.controls.Mes.value, formReporteObservacionesVentas.controls.Semana.value, formReporteObservacionesVentas.controls.FechaDesde.value,  formReporteObservacionesVentas.controls.FechaHasta.value)">
+									<ng-option *ngFor="let item of array_asociados" [value]="item.idTrabajador">
+										{{item.NombreCompleto}}
+									</ng-option>
+								</ng-select>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 pb-2">
+						<div class="d-flex w-100" style="gap:10px;flex-wrap: wrap;">
+
+							<select class="form-control"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Tipo"
+								(change)="getDataReporteObservacionesVentas(formReporteObservacionesVentas.controls.Pais.value, formReporteObservacionesVentas.controls.Departamento.value, formReporteObservacionesVentas.controls.Asociado.value, $event.target.value, formReporteObservacionesVentas.controls.Anio.value, formReporteObservacionesVentas.controls.Mes.value, formReporteObservacionesVentas.controls.Semana.value, formReporteObservacionesVentas.controls.FechaDesde.value,  formReporteObservacionesVentas.controls.FechaHasta.value)">
+								<option [value]="1">Anual</option>
+								<option [value]="2">Mensual</option>
+								<option [value]="3">Semanal</option>
+								<option [value]="4">Diario</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteObservacionesVentas.controls.Tipo.value !=4"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder;  display: inline; width: auto;"
+								formControlName="Anio"
+								(change)="getDataReporteObservacionesVentas(formReporteObservacionesVentas.controls.Pais.value, formReporteObservacionesVentas.controls.Departamento.value, formReporteObservacionesVentas.controls.Asociado.value, formReporteObservacionesVentas.controls.Tipo.value, $event.target.value, formReporteObservacionesVentas.controls.Mes.value, formReporteObservacionesVentas.controls.Semana.value, formReporteObservacionesVentas.controls.FechaDesde.value,  formReporteObservacionesVentas.controls.FechaHasta.value)">
+								<option *ngFor="let anio of this.arrayAnios" [value]="anio">{{anio}}</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteObservacionesVentas.controls.Tipo.value ==2"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Mes"
+								(change)="getDataReporteObservacionesVentas(formReporteObservacionesVentas.controls.Pais.value, formReporteObservacionesVentas.controls.Departamento.value, formReporteObservacionesVentas.controls.Asociado.value, formReporteObservacionesVentas.controls.Tipo.value,  formReporteObservacionesVentas.controls.Anio.value, $event.target.value, formReporteObservacionesVentas.controls.Semana.value, formReporteObservacionesVentas.controls.FechaDesde.value,  formReporteObservacionesVentas.controls.FechaHasta.value)">
+								<option *ngFor="let item of this.arrayMeses" [value]="item.value">{{item.name}}</option>
+							</select>
+
+							<select class="form-control" *ngIf="formReporteObservacionesVentas.controls.Tipo.value ==3"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="Semana"
+								(change)="getDataReporteObservacionesVentas(formReporteObservacionesVentas.controls.Pais.value, formReporteObservacionesVentas.controls.Departamento.value, formReporteObservacionesVentas.controls.Asociado.value, formReporteObservacionesVentas.controls.Tipo.value, formReporteObservacionesVentas.controls.Anio.value, formReporteObservacionesVentas.controls.Mes.value, $event.target.value, formReporteObservacionesVentas.controls.FechaDesde.value, formReporteObservacionesVentas.controls.FechaHasta.value)">
+								<option value="1">Semana 1</option>
+								<option value="2">Semana 2</option>
+								<option value="3">Semana 3</option>
+								<option value="4">Semana 4</option>
+								<option value="5">Semana 5</option>
+								<option value="6">Semana 6</option>
+								<option value="7">Semana 7</option>
+								<option value="8">Semana 8</option>
+								<option value="9">Semana 9</option>
+								<option value="10">Semana 10</option>
+								<option value="11">Semana 11</option>
+								<option value="12">Semana 12</option>
+								<option value="13">Semana 13</option>
+								<option value="14">Semana 14</option>
+								<option value="15">Semana 15</option>
+								<option value="16">Semana 16</option>
+								<option value="17">Semana 17</option>
+								<option value="18">Semana 18</option>
+								<option value="19">Semana 19</option>
+								<option value="20">Semana 20</option>
+								<option value="21">Semana 21</option>
+								<option value="22">Semana 22</option>
+								<option value="23">Semana 23</option>
+								<option value="24">Semana 24</option>
+								<option value="25">Semana 25</option>
+								<option value="26">Semana 26</option>
+								<option value="27">Semana 27</option>
+								<option value="28">Semana 28</option>
+								<option value="29">Semana 29</option>
+								<option value="30">Semana 30</option>
+								<option value="31">Semana 31</option>
+								<option value="32">Semana 32</option>
+								<option value="33">Semana 33</option>
+								<option value="34">Semana 34</option>
+								<option value="35">Semana 35</option>
+								<option value="36">Semana 36</option>
+								<option value="37">Semana 37</option>
+								<option value="38">Semana 38</option>
+								<option value="39">Semana 39</option>
+								<option value="40">Semana 40</option>
+								<option value="41">Semana 41</option>
+								<option value="42">Semana 42</option>
+								<option value="43">Semana 43</option>
+								<option value="44">Semana 44</option>
+								<option value="45">Semana 45</option>
+								<option value="46">Semana 46</option>
+								<option value="47">Semana 47</option>
+								<option value="48">Semana 48</option>
+								<option value="49">Semana 49</option>
+								<option value="50">Semana 50</option>
+								<option value="51">Semana 51</option>
+								<option value="52">Semana 52</option>
+								<option value="53">Semana 53</option>
+								<option value="54">Semana 54</option>
+							</select>
+
+							<input class="form-control" *ngIf="formReporteObservacionesVentas.controls.Tipo.value ==4" type="date"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="FechaDesde"
+								(change)="getDataReporteObservacionesVentas(formReporteObservacionesVentas.controls.Pais.value, formReporteObservacionesVentas.controls.Departamento.value, formReporteObservacionesVentas.controls.Asociado.value, formReporteObservacionesVentas.controls.Tipo.value, formReporteObservacionesVentas.controls.Anio.value, formReporteObservacionesVentas.controls.Mes.value, formReporteObservacionesVentas.controls.Semana.value, $event.target.value, formReporteObservacionesVentas.controls.FechaHasta.value)">
+
+							<input class="form-control" *ngIf="formReporteObservacionesVentas.controls.Tipo.value ==4" type="date"
+								style="flex-grow: 1; min-width: 170px; font-weight: bolder; display: inline; width: auto;"
+								formControlName="FechaHasta"
+								(change)="getDataReporteObservacionesVentas(formReporteObservacionesVentas.controls.Pais.value, formReporteObservacionesVentas.controls.Departamento.value, formReporteObservacionesVentas.controls.Asociado.value, formReporteObservacionesVentas.controls.Tipo.value, formReporteObservacionesVentas.controls.Anio.value, formReporteObservacionesVentas.controls.Mes.value, formReporteObservacionesVentas.controls.Semana.value, formReporteObservacionesVentas.controls.FechaDesde.value,  $event.target.value)">
+						</div>
+					</div>
+
+				</div>
+				<div id="graficoC6">
+					<app-grafico [tipo]="'treemap'" [titulo]="'Observaciones Ventas'" [container]="'graficoC6'"
+						[updateEvent]="actualizarGraf6.asObservable()" #grafico6></app-grafico>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

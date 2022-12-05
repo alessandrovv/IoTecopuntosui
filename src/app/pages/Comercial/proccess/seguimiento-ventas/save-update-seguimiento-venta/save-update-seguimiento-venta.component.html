@@ -1,0 +1,579 @@
+<div class="card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Seguimiento de Ventas</h3>
+		</div>
+		<div class="card-toolbar">
+			<button *ngIf="estadoGestion!==1" [disabled]="isGestionando || estadoGestion==2 ? true : null" type="button" class="btn btn-warning font-weight-bold mr-2"
+				(click)="gestionarSeguimientoVenta()">Gestionando</button>
+			<button [disabled]="(!isGestionando) ? true : null" type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="!hide_load"
+				disabled>Registrando...</button>
+			<button [disabled]="(!isGestionando) ? true : null"  type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="hide_load"
+				(click)="saveUpdateSeguimientoVenta()">Registrar</button>
+			<a routerLink="/Comercial/process/SeguimientoVentas" type="button" class="btn btn-danger">Cancelar</a>
+		</div>
+	</div>
+	<div class="card-body">
+		<div class="form form-label-right">
+			<div class="row">
+				<div class="col-12 col-md-4">
+					<p style="font-size: 14px;"><b>Asesor: </b> {{nombreAsesor}}</p>
+				</div>
+				<div class="col-12 col-md-4">
+					<p style="font-size: 14px;"><b>Supervisor: </b> {{nombreSupervisor}}</p>
+				</div>
+				<div class="col-12 col-md-4">
+					<p style="font-size: 14px;"><b>BackOffice: </b> {{nombreBackOffice}}</p>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-lg-12" [formGroup]="filterGroup">
+					<div class="row">
+
+						<div class="col-lg-3">
+							<label>Código</label>
+							<input type="text" readonly="true" class="form-control form-control-lg form-control-solid" name="Codigo"
+								placeholder="Código" autocomplete="off" formControlName="Codigo" />
+						</div>
+
+						<div class="col-lg-3">
+							<label>Nombres</label>
+							<input type="text" [readonly]="!isGestionando" class="form-control form-control-lg form-control-solid" name="NombreCliente"
+								placeholder="Nombres" autocomplete="off" formControlName="NombreCliente" [class.is-invalid]="isControlInvalid('NombreCliente')" [class.is-valid]="isControlValid('NombreCliente')"/>         
+								<div class="invalid-feedback" *ngIf="controlHasError('required', 'NombreCliente')"> Nombres son obligatorios. </div> 
+						</div>
+
+						<div class="col-lg-3">
+							<label>Apellido Paterno</label>
+							<input type="text" [readonly]="!isGestionando" class="form-control form-control-lg form-control-solid" name="ApePaternoCliente"
+								placeholder="Apellido Paterno" autocomplete="off" formControlName="ApePaternoCliente" [class.is-invalid]="isControlInvalid('ApePaternoCliente')" [class.is-valid]="isControlValid('ApePaternoCliente')"/>         
+								<div class="invalid-feedback" *ngIf="controlHasError('required', 'ApePaternoCliente')"> Apellido Paterno es obligatorio. </div>
+						</div>
+
+						<div class="col-lg-3">
+							<label>Apellido Materno</label>
+							<input type="text" [readonly]="!isGestionando" class="form-control form-control-lg form-control-solid" name="ApeMaternoCliente"
+								placeholder="Apellido Materno" autocomplete="off" formControlName="ApeMaternoCliente" [class.is-invalid]="isControlInvalid('ApeMaternoCliente')" [class.is-valid]="isControlValid('ApeMaternoCliente')"/>         
+								<div class="invalid-feedback" *ngIf="controlHasError('required', 'ApeMaternoCliente')"> Apellido Materno es obligatorio. </div>
+						</div>
+
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-lg-3">
+							<label>Tipo Documento</label>
+							<input *ngIf="!isGestionando" type="text" readonly="true" class="form-control form-control-lg form-control-solid"
+								name="TipoDocumento" placeholder="TipoDocumento" autocomplete="off" formControlName="TipoDocumento" />
+								<ng-select *ngIf="isGestionando" #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="cboTipoDocumento" [class.is-invalid]="isControlInvalid('cboTipoDocumento')" placeholder="Seleccione un Tipo Documento">
+										<ng-option *ngFor="let item of array_tipo_doc" [value]="item.ValorDocIdentidad">
+												{{item.NombreDocIdentidad}}
+										</ng-option>
+								</ng-select>
+								<div class="invalid-feedback" *ngIf="controlHasError('required', 'cboTipoDocumento')"> Tipo Documento es obligatorio. </div>  
+						</div>
+
+						<div class="col-lg-3">
+							<label>Doc. Identidad</label>
+							<input type="text" [readonly]="!isGestionando" class="form-control form-control-lg form-control-solid"
+								name="DocumentoIdentidad" placeholder="Documento Identidad" autocomplete="off"
+								formControlName="DocumentoIdentidad" [class.is-invalid]="isControlInvalid('DocumentoIdentidad')" [class.is-valid]="isControlValid('DocumentoIdentidad')"/>         
+								<div class="invalid-feedback" *ngIf="controlHasError('required', 'DocumentoIdentidad')"> Doc Identidad es obligatorio. </div>
+						</div>
+
+						<div class="col-lg-3">
+							<label>Departamento</label>
+							<input *ngIf="!isGestionando" type="text" readonly="true" class="form-control form-control-lg form-control-solid" name="Departamento"
+								placeholder="Departamento" autocomplete="off" formControlName="Departamento" />
+							<ng-select *ngIf="isGestionando" #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="cboDepartamento" [class.is-invalid]="isControlInvalid('cboDepartamento')" placeholder="Seleccione un Departamento" (change)="getListarProvincia($event,null)">
+									<ng-option *ngFor="let item of array_departamento" [value]="item.Departamento">
+											{{item.NombreDepartamento}}
+									</ng-option>
+							</ng-select>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'cboDepartamento')"> Departamento es obligatorio. </div>  
+						</div>
+
+						<div class="col-lg-3">
+							<label>Provincia</label>
+							<input *ngIf="!isGestionando" type="text" readonly="true" class="form-control form-control-lg form-control-solid" name="Provincia"
+								placeholder="Provincia" autocomplete="off" formControlName="Provincia" />
+							<ng-select *ngIf="isGestionando" #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="cboProvincia" [class.is-invalid]="isControlInvalid('cboProvincia')" placeholder="Seleccione una Provincia" (change)="getListarDistrito($event, null)">
+									<ng-option *ngFor="let item of array_provincia" [value]="item.Provincia">
+											{{item.NombreProvincia}}
+									</ng-option>
+							</ng-select>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'cboProvincia')"> Provincia es obligatorio. </div>  
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-lg-3">
+							<label>Distrito</label>
+							<input *ngIf="!isGestionando" type="text" readonly="true" class="form-control form-control-lg form-control-solid" name="Distrito"
+								placeholder="Distrito" autocomplete="off" formControlName="Distrito" />
+							<ng-select *ngIf="isGestionando" #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="cboDistrito" [class.is-invalid]="isControlInvalid('cboDistrito')" placeholder="Seleccione un Distrito">
+									<ng-option *ngFor="let item of array_distrito" [value]="item.Distrito">
+											{{item.NombreDistrito}}
+									</ng-option>
+							</ng-select>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'cboDistrito')"> Distrito es obligatorio. </div>  
+						</div>
+
+						<div class="col-lg-9">
+							<label>Dirección</label>
+							<input type="text" [readonly]="!isGestionando" class="form-control form-control-lg form-control-solid"
+								name="Direccion" placeholder="Dirección" autocomplete="off" formControlName="Direccion" [class.is-invalid]="isControlInvalid('Direccion')" [class.is-valid]="isControlValid('Direccion')" />             
+								<div class="invalid-feedback" *ngIf="controlHasError('required', 'Direccion')"> Direccion es obligatorio. </div> 
+						</div>
+
+					</div>
+
+					<br>
+					<div class="row">
+
+						<div class="col-lg-3">
+							<label>N° Contacto 1</label>
+							<input type="text" [readonly]="!isGestionando" class="form-control form-control-lg form-control-solid"
+								name="NroContacto1" placeholder="N° Contacto 1" autocomplete="off" formControlName="NroContacto1" [class.is-invalid]="isControlInvalid('NroContacto1')" [class.is-valid]="isControlValid('NroContacto1')"/>            
+								<div class="invalid-feedback" *ngIf="controlHasError('required', 'NroContacto1')"> N° Contacto 1 es obligatorio. </div> 
+						</div>
+
+						<div class="col-lg-3">
+							<label>N° Contacto 2</label>
+							<input type="text" [readonly]="!isGestionando" class="form-control form-control-lg form-control-solid"
+								name="NroContacto2" placeholder="N° Contacto 2" autocomplete="off" formControlName="NroContacto2" [class.is-invalid]="isControlInvalid('NroContacto2')" [class.is-valid]="isControlValid('NroContacto2')"/>            
+								<div class="invalid-feedback" *ngIf="controlHasError('required', 'NroContacto2')"> N° Contacto 2 es obligatorio. </div> 
+						</div>
+
+						<div class="col-lg-3">
+							<label>Whatsapp</label>
+							<input type="text" [readonly]="!isGestionando" class="form-control form-control-lg form-control-solid" name="Whatsapp"
+								placeholder="Whatsapp" autocomplete="off" formControlName="Whatsapp" [class.is-invalid]="isControlInvalid('Whatsapp')" [class.is-valid]="isControlValid('Whatsapp')"/>            
+								<div class="invalid-feedback" *ngIf="controlHasError('required', 'Whatsapp')"> Whatsapp es obligatorio. </div> 
+						</div>
+
+						<div class="col-lg-3">
+							<label>Email</label>
+							<input type="text" [readonly]="!isGestionando" class="form-control form-control-lg form-control-solid" name="Email"
+								placeholder="Email" autocomplete="off" formControlName="Email" [class.is-invalid]="isControlInvalid('Email')" [class.is-valid]="isControlValid('Email')"/>            
+								<div class="invalid-feedback" *ngIf="controlHasError('required', 'Email')"> Email es obligatorio. </div> 
+						</div>
+
+					</div>
+
+
+					<br>
+					<div class="row">
+						<div class="col-lg-12">
+							<h5>Datos de Venta</h5>
+						</div>
+					</div>
+
+					<br>
+					<div class="row">
+						<div class="col-lg-3">
+							<label>Canal de Venta</label>
+							<input *ngIf="!isGestionando" type="text" readonly="true" class="form-control form-control-lg form-control-solid"
+								name="CanalVenta" placeholder="Canal de Venta" autocomplete="off" formControlName="CanalVenta" />
+							<ng-select *ngIf="isGestionando" #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="cboCanalVenta" [class.is-invalid]="isControlInvalid('cboCanalVenta')" placeholder="Seleccione un Canal de Venta">
+									<ng-option *ngFor="let item of array_canales_venta" [value]="item.valor">
+											{{item.nombre}}
+									</ng-option>
+							</ng-select>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'cboCanalVenta')"> Canal Venta es obligatorio. </div>  
+						</div>
+
+						<div class="col-lg-3">
+							<label>Tipo de Servicio</label>
+							<input *ngIf="!isGestionando" type="text" readonly="true" class="form-control form-control-lg form-control-solid"
+								name="TipoServicio" placeholder="Tipo de Servicio" autocomplete="off" formControlName="TipoServicio" />
+							<ng-select *ngIf="isGestionando" #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="cboTipoServicio" [class.is-invalid]="isControlInvalid('cboTipoServicio')" placeholder="Seleccione un Tipo Servicio">
+									<ng-option *ngFor="let item of array_tipos_servicio" [value]="item.valor">
+											{{item.nombre}}
+									</ng-option>
+							</ng-select>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'cboTipoServicio')"> Tipo Servicio es obligatorio. </div>  
+						</div>
+
+						<div class="col-lg-3">
+							<label>Tipo de Inmueble</label>
+							<input *ngIf="!isGestionando" type="text" readonly="true" class="form-control form-control-lg form-control-solid"
+								name="TipoInmueble" placeholder="Tipo de Inmueble" autocomplete="off" formControlName="TipoInmueble" />
+							<ng-select *ngIf="isGestionando" #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="cboTipoInmueble" [class.is-invalid]="isControlInvalid('cboTipoInmueble')" placeholder="Seleccione un Tipo Inmueble">
+									<ng-option *ngFor="let item of array_tipos_inmueble" [value]="item.valor">
+											{{item.nombre}}
+									</ng-option>
+							</ng-select>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'cboTipoInmueble')"> Tipo Inmueble es obligatorio. </div>  
+						</div>
+
+						<div class="col-lg-3">
+							<label>Plan Contratado</label>
+							<input *ngIf="!isGestionando" type="text" readonly="true" class="form-control form-control-lg form-control-solid"
+								name="PlanContratado" placeholder="Plan Contratado" autocomplete="off"
+								formControlName="PlanContratado" />
+							<ng-select *ngIf="isGestionando" #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="cboPlanContratado" [class.is-invalid]="isControlInvalid('cboPlanContratado')" placeholder="Seleccione un Plan Contratado">
+									<ng-option *ngFor="let item of array_planes_contratado" [value]="item.idPlanContrato">
+											{{item.nombre}}
+									</ng-option>
+							</ng-select>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'cboPlanContratado')"> Plan Contratado es obligatorio. </div>  
+						</div>
+
+					</div>
+
+
+					<br>
+					<div class="row">
+						<div class="col-lg-3">
+							<label>Cuotas pago instalación</label>
+							<input *ngIf="!isGestionando" type="text" readonly="true" class="form-control form-control-lg form-control-solid"
+								name="CuotaPagoInstalacion" placeholder="Cuotas pago instalación" autocomplete="off"
+								formControlName="CuotaPagoInstalacion" />
+							<ng-select *ngIf="isGestionando" #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="cboCuotaPagoInstalacion" [class.is-invalid]="isControlInvalid('cboCuotaPagoInstalacion')" placeholder="Seleccione una Cuota Pago Instalacion">
+									<ng-option *ngFor="let item of array_cuota_pago_instalacion" [value]="item.valor">
+											{{item.nombre}}
+									</ng-option>
+							</ng-select>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'cboCuotaPagoInstalacion')"> Cuota Pago Instalacion es obligatorio. </div>  
+						</div>
+
+						<div class="col-lg-3">
+							<label>Cantidad de Mesh</label>
+							<input *ngIf="!isGestionando" type="text" readonly="true" class="form-control form-control-lg form-control-solid"
+								name="CantidadMesh" placeholder="Cantidad de Mesh" autocomplete="off" formControlName="CantidadMesh" />
+							<ng-select *ngIf="isGestionando" #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="cboCantidadMesh" [class.is-invalid]="isControlInvalid('cboCantidadMesh')" placeholder="Seleccione una CantidadMesh">
+									<ng-option *ngFor="let item of array_cantidad_mesh" [value]="item.valor">
+											{{item.nombre}}
+									</ng-option>
+							</ng-select>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'cboCantidadMesh')"> Cantidad Mesh es obligatorio. </div>  
+						</div>
+
+						<div class="col-lg-3">
+							<label>Mesh Cableado</label>
+							<input *ngIf="!isGestionando" type="text" readonly="true" class="form-control form-control-lg form-control-solid"
+							name="TextMeshCableado" placeholder="Cantidad de Mesh" autocomplete="off" formControlName="TextMeshCableado" />
+							<div *ngIf="isGestionando" class="row">
+								<div class="col-6 h-100" style="display: flex; align-items: center; gap: 7px;">
+									<input style="height:26px; width: 26px;" id="MeshCableadoTrue" type="radio" value="1"
+										name="MeshCableado" placeholder="Mesh Cableado"formControlName="MeshCableado" />
+									<label style="font-size: 18px;" class="m-0" for="MeshCableadoTrue">Sí</label>
+								</div>
+								<div class="col-6 h-100" style="display: flex; align-items: center; gap: 7px; margin-left: -10px;">
+									<input style="height:26px; width: 26px;" id="MeshCableadoFalse" type="radio" value="0"
+									name="MeshCableado" placeholder="Mesh Cableado" formControlName="MeshCableado" />
+									<label style="font-size: 18px;" class="m-0" for="MeshCableadoFalse">No</label>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-3">
+							<label>Cuotas Pago Instalacion Mesh</label>
+							<input *ngIf="!isGestionando" type="text" readonly="true" class="form-control form-control-lg form-control-solid"
+								name="CuotaPagoInstalacionMesh" placeholder="Cuotas Pago Instalacion Mesh" autocomplete="off"
+								formControlName="CuotaPagoInstalacionMesh" />
+							<ng-select *ngIf="isGestionando" #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="cboCuotaPagoInstalacionMesh" [class.is-invalid]="isControlInvalid('cboCuotaPagoInstalacionMesh')" placeholder="Seleccione una Cuota Pago Instalacion Mesh">
+									<ng-option *ngFor="let item of array_cuota_pago_instalacion_mesh" [value]="item.valor">
+											{{item.nombre}}
+									</ng-option>
+							</ng-select>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'cboCuotaPagoInstalacionMesh')"> Cuota Pago Instalacion Mesh es obligatorio. </div>  
+						</div>
+					</div>
+
+					<br>
+					<div class="row">
+						<div class="col-lg-3">
+							<label>Latitud</label>
+							<input type="text" [readonly]="!isGestionando" class="form-control form-control-lg form-control-solid" name="Latitud"
+								placeholder="Latitud Venta" autocomplete="off" formControlName="Latitud" [class.is-invalid]="isControlInvalid('Latitud')" [class.is-valid]="isControlValid('Latitud')"/>           
+								<div class="invalid-feedback" *ngIf="controlHasError('required', 'Latitud')"> Latitud es obligatorio. </div> 
+						</div>
+
+						<div class="col-lg-3">
+							<label>Longitud</label>
+							<input type="text" [readonly]="!isGestionando" class="form-control form-control-lg form-control-solid"
+								name="CuotaPagoInstalacionMesh" placeholder="Longitud Venta" autocomplete="off"
+								formControlName="Longitud" [class.is-invalid]="isControlInvalid('Longitud')" [class.is-valid]="isControlValid('Longitud')"/>           
+								<div class="invalid-feedback" *ngIf="controlHasError('required', 'Longitud')"> Longitud es obligatorio. </div> 
+						</div>
+					</div>
+
+					<br>
+					<div class="row">
+						<div class="col-lg-12">
+							<h5>Documentación</h5>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div style="display: none" class="col-lg-4">
+							<label>Estado Documentación</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="EstadoDocumentacion"
+								[searchable]="true" placeholder="Estado Documentación">
+								<ng-option *ngFor="let item of array_documentacion" [value]="item.valor">
+									{{item.nombre}}
+								</ng-option>
+							</ng-select>
+							<!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div>  -->
+						</div>
+
+						<div class="col-lg-4">
+							<label>Cargar Documentación</label>
+							<input type="text" style="display: none;" class="form-control form-control-lg form-control-solid"
+								name="FileGrabacion" placeholder="Cargar Documentación" autocomplete="off"
+								formControlName="UrlDocumentacion" />
+							<input *ngIf="nombreDocumentacion !== null" type="text"
+								class="form-control form-control-lg form-control-solid" disabled [value]="nombreDocumentacion">
+							<input *ngIf="nombreDocumentacion === null" type="file" class="form-control form-control-lg form-control-solid" name="FileGrabacion"
+								placeholder="Cargar Documentación" autocomplete="off" formControlName="FileDocumentacion"
+								(change)="getFileDATADocumentacion($event)" />
+						</div>
+
+						<div class="col-lg-2" style="padding-top: 30px;">
+							<a *ngIf="nombreDocumentacion !== null" title="Descargar {{nombreDocumentacion}}"
+								class="btn btn-icon btn-light btn-hover-light-primary btn-sm mx-3"
+								(click)="descargarArchivo(nombreDocumentacion, filterGroup.controls.UrlDocumentacion.value)">
+								<span [inlineSVG]="'./assets/media/svg/icons/Files/Cloud-download.svg'"
+									class="svg-icon svg-icon-md svg-icon-primary">
+								</span>
+							</a>
+							<a *ngIf="nombreDocumentacion !== null" title="Descartar {{nombreDocumentacion}}"
+								class="btn btn-icon btn-light btn-hover-light-danger btn-sm mx-3"
+								(click)="nombreDocumentacion = null">
+								<span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+									class="svg-icon svg-icon-md svg-icon-danger">
+								</span>
+							</a>
+						</div>
+
+
+
+					</div>
+					<br>
+					<div class="row">
+						<div *ngIf="nombreDocIdentidadDel !== null" class="col-lg-4 h-100">
+							<div class="row">
+								<div class="col-12">
+									<label *ngIf="nombreDocIdentidadDel !== null">Imagen delantera Documento Identidad</label>
+								</div>
+								<div class="col-12" style="height: 200px;">
+									<input type="text" style="display: none;" class="form-control form-control-lg form-control-solid"
+									name="FileDocDelantero" placeholder="Cargar Documentación" autocomplete="off"
+									formControlName="UrlDocumentoDelantero" />
+									<img [src]="filterGroup.controls.UrlDocumentoDelantero.value" class="img-document">
+								</div>
+								<div class="col-12">
+									<a title="Descargar {{nombreDocIdentidadDel}}" class="btn btn-light btn-hover-light-primary btn-block mt-3"
+									(click)="descargarArchivo(nombreDocIdentidadDel, filterGroup.controls.UrlDocumentoDelantero.value)">
+									<span [inlineSVG]="'./assets/media/svg/icons/Files/Cloud-download.svg'"
+										class="svg-icon svg-icon-md svg-icon-primary">
+									</span> Descargar</a>
+								</div>
+							</div>
+						</div>
+
+						<div *ngIf="nombreDocIdentidadTra !== null" class="col-lg-4">
+							<div class="row">
+								<div class="col-12">
+									<label *ngIf="nombreDocIdentidadTra !== null">Imagen Trasera Documento Identidad</label>
+								</div>
+								<div class="col-12" style="height: 200px;">
+									<input type="text" style="display: none;" class="form-control form-control-lg form-control-solid"
+									name="FileDocDelantero" placeholder="Cargar Documentación" autocomplete="off"
+									formControlName="UrlDocumentoTrasero" />
+									<img [src]="filterGroup.controls.UrlDocumentoTrasero.value" class="img-document">
+								</div>
+								<div class="col-12">
+									<a title="Descargar {{nombreDocIdentidadTra}}"
+									class="btn btn-light btn-hover-light-primary btn-block mt-3"
+									(click)="descargarArchivo(nombreDocIdentidadTra, filterGroup.controls.UrlDocumentoTrasero.value)">
+										<span [inlineSVG]="'./assets/media/svg/icons/Files/Cloud-download.svg'"
+											class="svg-icon svg-icon-md svg-icon-primary">
+										</span> Descargar
+									</a>
+								</div>
+							</div>						
+						</div>
+
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-lg-12">
+							<h5>Grabación</h5>
+						</div>
+					</div>
+
+					<br>
+					<div class="row">
+						<div style="display: none" class="col-lg-4">
+							<label>Estado Grabación</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="EstadoGrabacion" [searchable]="true"
+								placeholder="Estado Grabación">
+								<ng-option *ngFor="let item of array_grabacion" [value]="item.valor">
+									{{item.nombre}}
+								</ng-option>
+							</ng-select>
+							<!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div>  -->
+						</div>
+
+						<div class="col-lg-4">
+							<label>Cargar Grabacion</label>
+							<input type="text" style="display: none;" class="form-control form-control-lg form-control-solid"
+								name="FileGrabacion" placeholder="Cargar Documentación" autocomplete="off"
+								formControlName="UrlGrabacion" />
+							<input *ngIf="nombreGrabacion !== null" type="text"
+								class="form-control form-control-lg form-control-solid" disabled [value]="nombreGrabacion">
+							<input *ngIf="nombreGrabacion === null" type="file"
+								class="form-control form-control-lg form-control-solid" name="FileGrabacion"
+								placeholder="Cargar Grabacion" autocomplete="off" formControlName="FileGrabacion"
+								(change)="getFileDATAGrabacion($event)" />
+						</div>
+
+						<div class="col-lg-2" style="padding-top: 30px;">
+							<a *ngIf="nombreGrabacion !== null" title="Descargar {{nombreGrabacion}}"
+								class="btn btn-icon btn-light btn-hover-light-primary btn-sm mx-3"
+								(click)="descargarArchivo(nombreGrabacion, filterGroup.controls.UrlGrabacion.value)">
+								<span [inlineSVG]="'./assets/media/svg/icons/Files/Cloud-download.svg'"
+									class="svg-icon svg-icon-md svg-icon-primary">
+								</span>
+							</a>
+							<a *ngIf="nombreGrabacion !== null" title="Descartar {{nombreGrabacion}}"
+								class="btn btn-icon btn-light btn-hover-light-danger btn-sm mx-3"
+								(click)="nombreGrabacion = null">
+								<span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+									class="svg-icon svg-icon-md svg-icon-danger">
+								</span>
+							</a>
+						</div>
+
+					</div>
+
+					<br>
+					<div class="row">
+						<div class="col-lg-12">
+							<h5>Registro Conecta</h5>
+						</div>
+					</div>
+
+					<br>
+					<div class="row">
+						<div class="col-lg-4">
+							<label>Estado Reg. Conecta</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="EstadoRegConecta" [searchable]="true"
+								placeholder="Estado Reg. Conecta">
+								<ng-option *ngFor="let item of array_registro_crm" [value]="item.valor">
+									{{item.nombre}}
+								</ng-option>
+							</ng-select>
+						</div>
+
+						<div class="col-lg-4">
+							<label>Fecha Registro</label>
+							<input type="date" class="form-control form-control-lg form-control-solid" name="FechaRegistro"
+								placeholder="Fecha Registro" autocomplete="off" formControlName="FechaRegistro" />
+						</div>
+
+						<div class="col-lg-4">
+							<label>N° Contrato</label>
+							<input type="text" class="form-control form-control-lg form-control-solid" name="NumeroContrato"
+								placeholder="N° Contrato" autocomplete="off" formControlName="NumeroContrato" />
+						</div>
+
+					</div>
+
+
+					<br>
+					<div class="row">
+						<div class="col-lg-12">
+							<h5>Estado de Venta Interna</h5>
+						</div>
+					</div>
+
+					<br>
+					<div class="row">
+						<div class="col-lg-4">
+							<label>Estado Venta</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="EstadoVentaInterno"
+								[searchable]="true" placeholder="Estado Venta">
+								<ng-option *ngFor="let item of array_venta_interno" [value]="item.valor">
+									{{item.nombre}}
+								</ng-option>
+							</ng-select>
+							<!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div>  -->
+						</div>
+
+						<div class="col-lg-8">
+							<label>Observaciones</label>
+							<textarea type="text" class="form-control form-control-lg form-control-solid" name="ObservacionesInterno"
+								placeholder="Observaciones" formControlName="ObservacionesInterno"></textarea>
+							<!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div>  -->
+						</div>
+
+					</div>
+
+
+					<br>
+					<div class="row">
+						<div class="col-lg-12">
+							<h5>Estado de Venta Cliente</h5>
+						</div>
+					</div>
+
+					<br>
+					<div class="row">
+						<div class="col-lg-4">
+							<label>Estado Venta</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="EstadoVentaCliente"
+								[searchable]="true" placeholder="Estado Venta">
+								<ng-option *ngFor="let item of array_venta_cliente" [value]="item.valor">
+									{{item.nombre}}
+								</ng-option>
+							</ng-select>
+							<!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div>  -->
+						</div>
+
+						<div class="col-lg-8">
+							<label>Observaciones</label>
+							<textarea type="text" class="form-control form-control-lg form-control-solid" name="ObservacionesCliente"
+								placeholder="Observaciones" formControlName="ObservacionesCliente"></textarea>
+							<!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div>  -->
+						</div>
+					</div>
+
+
+					<br>
+					<div class="row">
+						<div class="col-lg-12">
+							<h5>Instalación</h5>
+						</div>
+					</div>
+
+					<br>
+					<div class="row">
+						<!-- <div class="col-lg-4">
+                    <label>Estado Instalación</label>
+                    <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="EstadoInstalacion"
+                        [searchable]="true" placeholder="Estado Instalación" >
+                        <ng-option *ngFor="let item of array_instalacion" [value]="item.valor">
+                            {{item.nombre}}
+                        </ng-option>
+                    </ng-select>
+                </div>   -->
+
+						<div class="col-lg-4">
+							<label>Fecha Instalación</label>
+							<input type="date" class="form-control form-control-lg form-control-solid" name="FechaInstalacion"
+								placeholder="Fecha Instalación" autocomplete="off" formControlName="FechaInstalacion" />
+						</div>
+
+
+
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

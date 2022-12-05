@@ -1,0 +1,98 @@
+.mat-row {
+    width: 100%;
+    min-width: 1140px;
+}
+
+.mat-header-row {
+    width: 100%;
+    min-width: 1140px;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+}
+
+.mat-column-Nro{
+    min-width: 50px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 50px;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-OPCIONES {
+    min-width: 130px;
+    white-space: pre-wrap;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-ACTIVO{
+    min-width: 90px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    align-self: center;
+}
+
+.mat-column-CODIGO {
+    min-width: 120px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    align-self: center;
+}
+
+.mat-column-MATERIAL {
+    min-width: 180px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+    display: flex;
+}
+
+.mat-column-SUBCATEGORIA {
+    min-width: 150px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+    display: flex;
+}
+
+.mat-column-CLASE {
+    min-width: 180px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+    display: flex;
+}
+
+.mat-column-MARCA {
+    min-width: 120px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+    display: flex;
+    align-content: center;
+}
+
+.mat-column-MODELO {
+    min-width: 120px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+    display: flex;
+    align-content: center;
+}

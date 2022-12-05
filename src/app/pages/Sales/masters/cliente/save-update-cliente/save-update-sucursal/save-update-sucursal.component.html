@@ -1,0 +1,94 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<div class="modal-title h4" id="example-modal-sizes-title-lg">
+			<ng-container>
+				<ng-container *ngIf="idClienteSucursal != null">Editar</ng-container>
+				<ng-container *ngIf="idClienteSucursal === null">Nuevo</ng-container>
+				ClienteSucursal
+				<ng-container *ngIf="idClienteSucursal != null">'{{ item.idClienteSucursal }}'</ng-container>
+			</ng-container>
+		</div>
+	</div>
+	<div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+		<ng-container *ngIf="isLoading$ | async">
+			<div class="overlay-layer bg-transparent">
+				<div class="spinner spinner-lg spinner-success"></div>
+			</div>
+		</ng-container>
+
+		<ng-container>
+			<form action="#" class="form form-label-right" [formGroup]="formClienteSucursal">
+          <div class="row">
+            <div class="col-12">
+              <label>País</label>
+              <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Pais" [class.is-invalid]="isControlInvalidS('Pais')" [class.is-valid]="isControlValidS('Pais')" placeholder="Seleccione un País" (change)="getSucursalListarDepartamento($event, null)" >
+                  <ng-option *ngFor="let item of array_sucursal_pais" [value]="item.Pais">
+                      {{item.NombrePais}}
+                  </ng-option>
+              </ng-select>
+              <div class="invalid-feedback d-block" *ngIf="controlHasErrorS('required', 'Pais')"> Pais es obligatorio. </div>
+            </div>
+            <div class="col-12">
+                <label>Departamento</label>
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Departamento" formControlName="Departamento" [class.is-invalid]="isControlInvalidS('Departamento')" [class.is-valid]="isControlValidS('Departamento')" (change)="getSucursalListarProvincia($event, null)">
+                    <ng-option *ngFor="let item of array_sucursal_departamento" [value]="item.Departamento">
+                        {{item.NombreDepartamento}}
+                    </ng-option>
+                </ng-select>
+                <div class="invalid-feedback d-block" *ngIf="controlHasErrorS('required', 'Departamento')"> Departamento es obligatorio. </div>
+            </div>
+            <div class="col-12">
+                <label>Provincia</label>
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Provincia" formControlName="Provincia" [class.is-invalid]="isControlInvalidS('Provincia')" [class.is-valid]="isControlValidS('Provincia')" (change)="getSucursalListarDistrito($event, null)">
+                    <ng-option *ngFor="let item of array_sucursal_provincia" [value]="item.Provincia">
+                        {{item.NombreProvincia}}
+                    </ng-option>
+                </ng-select>
+                <div class="invalid-feedback d-block" *ngIf="controlHasErrorS('required', 'Provincia')"> Provincia es obligatorio. </div>
+            </div>
+            <div class="col-12">
+                <label>Distrito</label>
+                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Distrito" formControlName="Distrito" [class.is-invalid]="isControlInvalidS('Distrito')" [class.is-valid]="isControlValidS('Distrito')" >
+                    <ng-option *ngFor="let item of array_sucursal_distrito" [value]="item.Distrito">
+                        {{item.NombreDistrito}}
+                    </ng-option>
+                </ng-select>
+                <div class="invalid-feedback d-block" *ngIf="controlHasErrorS('required', 'Distrito')"> Distrito es obligatorio. </div>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <label class="form-label">Direccion</label>
+              <input type="text" class="form-control form-control-lg form-control-solid" name="Direccion" placeholder="Direccion" autocomplete="off" formControlName="Direccion"/>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Referencia</label>
+              <input type="text" class="form-control form-control-lg form-control-solid" name="Referencia" placeholder="Referencia" autocomplete="off" formControlName="Referencia"/>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <label>Activo</label>
+                <span class="switch">
+                    <label>
+                        <input type="checkbox" name="Activo" formControlName="Activo" >
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+          </div>
+			</form>
+		</ng-container>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+
+		<ng-container>
+			<button type="submit" class="btn btn-primary btn-elevate" (click)="save()" [disabled]="formClienteSucursal.invalid">
+				Guardar
+			</button>
+		</ng-container>
+	</div>
+</div>

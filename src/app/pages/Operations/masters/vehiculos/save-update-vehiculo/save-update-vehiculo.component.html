@@ -1,0 +1,551 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Registro de Vehiculos</h3>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <!-- <app-save-update-documentos-modal #saveFormDocumentosModal (vehiculoDocumentoEvent)="createDocument($event)">
+
+        </app-save-update-documentos-modal> -->
+
+        <div class="form form-label-right">
+
+            <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+                <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DATOS_TAB)">
+                <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DATOS_TAB)">
+                    <a class="nav-link" data-toggle="tab" role="tab"
+                        [attr.aria-selected]="activeTabId === tabs.DATOS_TAB"
+                        [class.active]="activeTabId === tabs.DATOS_TAB">Datos</a>
+                </li>
+                <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DOCUMENTOS_TAB)">
+                    <a class="nav-link" data-toggle="tab" role="button"
+                        [attr.aria-selected]="activeTabId === tabs.DOCUMENTOS_TAB"
+                        [class.active]="activeTabId === tabs.DOCUMENTOS_TAB">Documentos</a>
+                </li>
+                <li class="nav-item cursor-pointer" (click)="changeTab(tabs.ALERTAS_TAB)">
+                    <a class="nav-link" data-toggle="tab" role="button"
+                        [attr.aria-selected]="activeTabId === tabs.ALERTAS_TAB"
+                        [class.active]="activeTabId === tabs.ALERTAS_TAB">Alertas</a>
+                </li>
+                <li class="nav-item cursor-pointer" (click)="changeTab(tabs.NEUMATICOS_TAB)">
+                    <a class="nav-link" data-toggle="tab" role="button"
+                        [attr.aria-selected]="activeTabId === tabs.NEUMATICOS_TAB"
+                        [class.active]="activeTabId === tabs.NEUMATICOS_TAB">Neumaticos</a>
+                </li>
+            </ul>
+
+
+            <div class="form-group row" [formGroup]="formDatos">
+
+                <label class="control-label col-md-2 col-sm-2 col-xs-12">Placa:</label>
+
+                <div class="col-md-4 col-sm-4 col-xs-12">
+
+                    <input type="text" 
+                    maxlength="10"
+                    class="form-control form-control-lg" placeholder="Placa" autocomplete="off"
+                        formControlName="Placa" 
+                        [class.is-invalid]="isControlInvalid(formDatos,'Placa')"
+                        [class.is-valid]="isControlValid(formDatos,'Placa')" />
+
+                    <div class="invalid-feedback" *ngIf="controlHasError(formDatos,'required', 'Placa')"> Placa es
+                        obligatorio.
+                    </div>
+                </div>
+
+                <label class="control-label col-md-2 col-sm-2 col-xs-12">Procedencia:</label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+
+                    <ng-select class="form-select form-select-lg" #agreeSelect placeholder="Seleccione Procedencia"
+                        formControlName="Procedencia" (change)="disableProveedorIf()"
+                        [class.is-invalid]="isControlInvalid(formDatos,'Procedencia')"
+                        [class.is-valid]="isControlValid(formDatos,'Procedencia')">
+                        <ng-option *ngFor="let item of array_procedencia" [value]="item.valor">
+                            {{item.nombre}}
+                        </ng-option>
+                    </ng-select>
+
+                    <div class="invalid-feedback" *ngIf="controlHasError(formDatos,'required', 'Procedencia')"> Placa es
+                        obligatorio.
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="form-group row" [formGroup]="formDatos">
+
+                <label class="control-label col-md-2 col-sm-2 col-xs-12">Proveedor:</label>
+
+                <div class="col-md-4 col-sm-4 col-xs-12">
+
+                    <ng-select class="form-select form-select-lg form-control-solid" #agreeSelect
+                        placeholder="Seleccione Proveedor" formControlName="Proveedor"
+                        [class.is-invalid]="isControlInvalid(formDatos,'Proveedor')"
+                        [class.is-valid]="isControlValid(formDatos,'Proveedor')">
+                        <ng-option *ngFor="let item of array_proveedores" [value]="item.idProveedor">
+                            {{item.razonSocial}}
+                        </ng-option>
+                    </ng-select>
+
+                    <div class="invalid-feedback" *ngIf="formDatos.errors?.valueIsDefault"> Proveedor es
+                        obligatorio.
+                    </div>
+
+                </div>
+
+                <label class="control-label col-md-2 col-sm-2 col-xs-12">Tipo de Vehiculo:</label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+
+                    <ng-select class="form-select form-select-lg form-control-solid" #agreeSelect
+                        placeholder="Seleccione tipo de vehiculo" formControlName="TipoVehiculo"
+                        [class.is-invalid]="isControlInvalid(formDatos,'TipoVehiculo')"
+                        [class.is-valid]="isControlValid(formDatos,'TipoVehiculo')"
+                        (change)="getCaracteristicasByTipoVehiculo($event);">
+                        <ng-option *ngFor="let item of array_tipoVehiculo" [value]="item.idTipoVehiculo">
+                            {{item.nombre}}
+                        </ng-option>
+                    </ng-select>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- begin: Filtration form -->
+
+
+            <ng-container *ngIf="activeTabId === tabs.DATOS_TAB">
+                <div class="mt-5">
+                    <div class="col-lg-12">
+                        <!-- POR MAPEAR NG MODEL A LOS CAMPOS -> [(ngModel)]="data[control.ConfigDatoContrato].value" -->
+
+                        <div *ngIf="array_data.length>0">
+                            <!-- ngfif Evitar ERROR Error: formGroup expects a FormGroup instance. Please pass one in. -->
+                            <div class="d-flex row" [formGroup]="FilterformTipoVehiculo">
+                                <ng-container *ngFor="let control of array_data">
+                                    <div class="col-lg-3 m--margin-bottom-10"
+                                        *ngIf="control.TipoDatoRespuesta == controlsEnum.TEXT">
+                                        <label class="form-label">{{ control.NombreDato }}</label>
+                                        <input type="text" class="form-control form-control-lg form-control-solid"
+                                            name="{{data[control.IdConfigDato].ControlName}}"
+                                            [required]="isRequired(control)" placeholder="{{control.NombreDato}}"
+                                            autocomplete="off"
+                                            formControlName="{{data[control.IdConfigDato].ControlName}}"
+                                            [class.is-invalid]="isControlInvalidDato(data[control.IdConfigDato].ControlName)"
+                                            [class.is-valid]="isControlValidDato(data[control.IdConfigDato].ControlName)" />
+                                        <div class="invalid-feedback"
+                                            *ngIf="controlHasErrorDato('required', data[control.IdConfigDato].ControlName)">
+                                            {{ control.NombreDato }} son obligatorios.
+                                        </div>
+                                        <br>
+
+                                    </div>
+
+
+                                    <div class="col-lg-3 m--margin-bottom-10"
+                                        *ngIf="control.TipoDatoRespuesta == controlsEnum.LIST_WS">
+                                        <!-- ComboBox -->
+                                        <label class="form-label">{{ control.NombreDato }}</label>
+                                        <ng-select class="form-select form-select-lg" #agreeSelect
+                                            [clearSearchOnAdd]="false" [searchable]="true"
+                                            placeholder="{{control.NombreDato}}"
+                                            formControlName="{{data[control.IdConfigDato].ControlName}}"
+                                            [class.is-invalid]="isControlInvalidDato(data[control.IdConfigDato].ControlName)"
+                                            [class.is-valid]="isControlValidDato(data[control.IdConfigDato].ControlName)">
+                                            <ng-option *ngFor="let item of data[control.IdConfigDato].valueCbo"
+                                                [value]="item">
+                                                {{item}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="invalid-feedback"
+                                            *ngIf="controlHasErrorDato('required', data[control.IdConfigDato].ControlName)">
+                                            {{ control.NombreDato }} son obligatorios.
+                                        </div>
+                                        <br>
+
+                                    </div>
+
+                                    <div class="col-lg-3 m--margin-bottom-10"
+                                        *ngIf="control.TipoDatoRespuesta == controlsEnum.NUMBER">
+                                        <label class="form-label">{{ control.NombreDato }}</label>
+                                        <input type="number" class="form-control form-control-lg form-control-solid"
+                                            placeholder="{{control.NombreDato}}"
+                                            formControlName="{{data[control.IdConfigDato].ControlName}}"
+                                            [class.is-invalid]="isControlInvalidDato(data[control.IdConfigDato].ControlName)"
+                                            [class.is-valid]="isControlValidDato(data[control.IdConfigDato].ControlName)">
+                                        <div class="invalid-feedback"
+                                            *ngIf="controlHasErrorDato('required', data[control.IdConfigDato].ControlName)">
+                                            {{ control.NombreDato }} son obligatorios.
+                                        </div>
+                                        <br>
+                                    </div>
+
+
+                                    <div class="col-lg-3 m--margin-bottom-10"
+                                        *ngIf="control.TipoDatoRespuesta == controlsEnum.DATE">
+                                        <label class="form-label">{{ control.NombreDato }}</label>
+                                        <input type="date" class="form-control form-control-lg form-control-solid"
+                                            placeholder="{{control.NombreDato}}"
+                                            formControlName="{{data[control.IdConfigDato].ControlName}}"
+                                            [class.is-invalid]="isControlInvalidDato(data[control.IdConfigDato].ControlName)"
+                                            [class.is-valid]="isControlValidDato(data[control.IdConfigDato].ControlName)">
+                                        <div class="invalid-feedback"
+                                            *ngIf="controlHasErrorDato('required', data[control.IdConfigDato].ControlName)">
+                                            {{ control.NombreDato }} son obligatorios.
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                    <div class="col-lg-6 m--margin-bottom-10"
+                                        *ngIf="control.TipoDatoRespuesta == controlsEnum.CHECK">
+                                        <label class="form-label">{{ control.NombreDato }}</label>
+                                        <span class="switch">
+                                            <label>
+                                                <input type="checkbox" name="{{data[control.IdConfigDato].ControlName}}"
+                                                    [(ngModel)]="data[control.IdConfigDato].value"
+                                                    formControlName="{{data[control.IdConfigDato].ControlName}}">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                </ng-container>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </ng-container>
+
+
+            <ng-container *ngIf="activeTabId === tabs.DOCUMENTOS_TAB">
+                <div class="mt-5">
+                    
+                    <div class="form-group row">
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <button type="button" class="btn btn-primary font-weight-bold mr-2"
+                                        (click)="createDocumento()"><i class="fa fa-plus-circle"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" [formGroup]="searchGroup">
+                            <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
+                                formControlName="searchTerm" (keyup)="search()" /><small
+                                class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+                        </div>
+                    </div>
+
+
+
+                    <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+                        <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+
+                            <ng-container matColumnDef="TipoDocumento">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>TIPO DOCUMENTO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.nombreTipoDocumento}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="NumeroDocumento">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>N° DOCUMENTO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.numeroDocumento}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="FechaPago">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>FECHA PAGO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.fechaPago | date : 'yyyy/MM/dd'}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ImportePago">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>IMPORTE PAGADO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.importePago}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="FechaInicioVigencia">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>F. INICIO VIGENCIA</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.fechaInicioVigencia | date : 'yyyy/MM/dd'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="FechaFinVigencia">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>F. FIN VIGENCIA</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.fechaFinVigencia | date : 'yyyy/MM/dd'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ProximoPago">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>PROX. PAGO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.proximoPago}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Activo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>ACTIVO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.activo}}</mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="Acciones">
+                                <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">
+                                    <a title="Editar Documento"
+                                        class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                                        (click)="editDocumento(lesson);">
+                                        <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                                            class="svg-icon svg-icon-md svg-icon-primary">
+                                        </span>
+                                    </a>
+                                    <a title="Eliminar Documento" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                        (click)="deleteDocumento(lesson)">
+                                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                                            class="svg-icon svg-icon-md svg-icon-danger">
+                                        </span>
+                                    </a>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="5">
+                                    Loading data...
+                                </mat-footer-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="5">
+                                    No se encontraron registros.
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+                        </mat-table>
+                    </div>
+
+                    <div class="mat-table__bottom">
+                        <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+                        <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    </div>
+                </div>
+            </ng-container>
+
+
+            <ng-container *ngIf="activeTabId === tabs.ALERTAS_TAB">
+                <div class="mt-5">
+                    <div class="form-group row">
+                        <div class="col-lg-12">
+
+                            <br>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-primary font-weight-bold mr-2"
+                                        (click)="addAlerta()"><i class="fa fa-plus-circle"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                            <th>TIPO MANTENIMIENTO</th>
+                            <th>CICLOS KM</th>
+                            <th>ALERTA KM</th>
+                            <th>ACTIVO</th>
+                            <th>OPERACIONES</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of array_vehiculoAlertas">
+                                <td>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true"
+                                        placeholder="Seleccione un tipo de Mantenimiento"
+                                        [formControl]="deta_formTipoMantenimiento[array_vehiculoAlertas.indexOf(item)]">
+                                        <ng-option *ngFor="let item2 of array_tipoAlertaMantenimiento"
+                                        [value]="item2.valor">
+                                        {{item2.nombre}}
+                                    </ng-option>
+                                    </ng-select>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control form-control-lg form-control-solid"
+                                        name="ciclosKM" placeholder="ciclosKM" autocomplete="off"
+                                        [formControl]="deta_formCiclosKM[array_vehiculoAlertas.indexOf(item)]" />
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control form-control-lg form-control-solid"
+                                        name="alertaKM" placeholder="alertaKM" autocomplete="off"
+                                        [formControl]="deta_formAlertaKM[array_vehiculoAlertas.indexOf(item)]" />
+                                </td>
+                                <td style="text-align: center;" align="center">
+                                    <span class="switch">
+                                        <label>
+                                            <input type="checkbox" name="Activo" 
+                                            [formControl]="deta_formActivo[array_vehiculoAlertas.indexOf(item)]"
+                                            >
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a title="Delete alerta" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                        (click)="deleteAlerta(item)">
+                                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                            class="svg-icon svg-icon-md svg-icon-danger">
+                                        </span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-container>
+
+
+            <ng-container *ngIf="activeTabId === tabs.NEUMATICOS_TAB">
+                <div class="mt-5">
+                    
+                    <div class="form-group row">
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <button type="button" class="btn btn-primary font-weight-bold mr-2"
+                                        (click)="createNeumatico()"><i class="fa fa-plus-circle"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" [formGroup]="searchGroup">
+                            <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
+                                formControlName="searchTerm2" (keyup)="search2()" /><small
+                                class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+                        </div>
+                    </div>
+
+
+
+                    <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+                        <mat-table class="lmat-elevation-z8" [dataSource]="listData2" matSort perfectScrollbar>
+
+                            <ng-container matColumnDef="Codigo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>CODIGO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.codigo}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Nombre">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRE</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.nombre}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Marca">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>MARCA</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.nombreMarca}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Tipo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>TIPO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.nombreTipo}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Posicion">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>POSICION</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.nombrePosicion}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Tamanio">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>TAMAÑO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.tamanio}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Traccion">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>TRACCION</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.traccion}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="SurcoInicial">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>SURCO INICIAL</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.surcoInicial}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="CostoUnitario">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>COSTO UNITARIO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.costoUnitario}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Activo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>ESTADO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">
+            
+                                    <span class="switch">
+                                        <label>
+                                            <input type="checkbox" name="Activo" [(ngModel)]="lesson.activo">
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Acciones">
+                                <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">
+                                    <a title="Editar neumatico"
+                                        class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                                        (click)="editNeumatico(lesson);">
+                                        <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                                            class="svg-icon svg-icon-md svg-icon-primary">
+                                        </span>
+                                    </a>
+                                    <a title="Eliminar neumatico" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                        (click)="deleteNeumatico(lesson)">
+                                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                                            class="svg-icon svg-icon-md svg-icon-danger">
+                                        </span>
+                                    </a>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="5">
+                                    Loading data...
+                                </mat-footer-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="5">
+                                    No se encontraron registros.
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
+
+                            <mat-row *matRowDef="let row; columns: displayedColumns2"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData2!=null}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide': !(listData2!=null && listData2.data.length==0)}"></mat-footer-row>
+                        </mat-table>
+                    </div>
+
+                    <div class="mat-table__bottom">
+                        <mat-spinner [diameter]="20" *ngIf="searchBan2"></mat-spinner>
+                        <mat-paginator #matPaginator2 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+
+
+        <div class="float-right">
+            <button type="button" class="btn btn-primary font-weight-bold mr-2" disabled
+                *ngIf="!hide_load">Registrando...</button>
+            <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="hide_load"
+                (click)="saveUpdateVehiculo()">Registrar Vehiculo</button>
+            <a class="btn btn-danger font-weight-bold mr-2" routerLink="/Operations/masters/vehiculos">Cancelar</a>
+        </div>
+    </div>
+</div>

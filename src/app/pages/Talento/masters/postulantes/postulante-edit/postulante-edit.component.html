@@ -1,0 +1,244 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Postulantes</h3>
+    </div>
+    <!-- <div class="card-toolbar">
+      <button type="button" class="btn btn-primary" (click)="create()">Nueva configuración</button>
+    </div> -->
+  </div>
+  <div class="card-body">
+    <ng-container>
+      <form action="#" class="form form-label-right" [formGroup]="formGroup">
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label>Codigo</label>
+            <input class="form-control from-control-lg form-control-solid" name="codigo" formControlName="Codigo" readonly type="text">
+          </div>
+          <div class="col-lg-3">
+            <label>Empresa</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Empresa" [class.is-invalid]="isControlInvalid('Empresa')"
+									[searchable]="true" placeholder="empresa" (change)="getPuestoTrabajo($event,null)">
+							<ng-option *ngFor="let empresa of this.array_empresas" [value]="empresa.idEmpresa">
+								{{ empresa.razonSocial }}
+							</ng-option>
+						</ng-select>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div>  
+          </div>
+          <div class="col-lg-3">
+            <label>Modalidad Contratación</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="ModalidadContratacion" [class.is-invalid]="isControlInvalid('ModalidadContratacion')"
+									[searchable]="true" placeholder="Modalidad Contratacion">
+							<ng-option *ngFor="let modalidad of this.array_modalidadContratacion" [value]="modalidad.Valor">
+								{{modalidad.Nombre}}
+							</ng-option>
+						</ng-select>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'ModalidadContratacion')"> Modalidad Contratacion es obligatorio. </div>  
+          </div>
+          <div class="col-lg-3">
+            <label>Puesto de Trabajo</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="PuestoTrabajo" [class.is-invalid]="isControlInvalid('PuestoTrabajo')"
+									[searchable]="true" placeholder="Puesto de Trabajo">
+							<ng-option *ngFor="let puestoTrabajo of this.array_puestoTrabajo" [value]="puestoTrabajo.PuestoTrabajo">
+								{{puestoTrabajo.NombrePuestoTrabajo}}
+							</ng-option>
+						</ng-select>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'PuestoTrabajo')"> Puesto Trabajo es obligatorio. </div>  
+          </div>
+        </div>  
+				
+				<div class="form-group row">
+					<div class="col-lg-3">
+						<label>País</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Pais" [class.is-invalid]="isControlInvalid('Pais')"
+									[searchable]="true" placeholder="Pais" (change)="getDepartamento(null, $event)">
+							<ng-option *ngFor="let pais of this.array_pais" [value]="pais.Pais">
+								{{pais.NombrePais}}
+							</ng-option>
+						</ng-select>
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'Pais')"> Pais es obligatorio. </div>  
+					</div>
+					<div class="col-lg-3">
+						<label>Departamento</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Departamento" [class.is-invalid]="isControlInvalid('Departamento')"
+									[searchable]="true" placeholder="Departamento" (change)="getProvincia(null, $event)">
+							<ng-option *ngFor="let departamento of this.array_departamento" [value]="departamento.Departamento">
+								{{departamento.NombreDepartamento}}
+							</ng-option>
+						</ng-select>
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'Departamento')"> Departamento es obligatorio. </div>  
+					</div>
+					<div class="col-lg-3">
+						<label>Provincia</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Provincia" [class.is-invalid]="isControlInvalid('Provincia')"
+									[searchable]="true" placeholder="provincia" (change)="getDistrito(null, $event)">
+							<ng-option *ngFor="let provincia of this.array_provincia" [value]="provincia.Provincia">
+								{{provincia.NombreProvincia}}
+							</ng-option>
+						</ng-select>
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'Provincia')"> Provincia es obligatorio. </div>  
+					</div>
+					<div class="col-lg-3">
+						<label>Distrito</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Distrito" [class.is-invalid]="isControlInvalid('Distrito')"
+									[searchable]="true" placeholder="Distrito">
+							<ng-option *ngFor="let distrito of this.array_distrito" [value]="distrito.Distrito">
+								{{distrito.NombreDistrito}}
+							</ng-option>
+						</ng-select>
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'Distrito')"> Distrito es obligatorio. </div>  
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-lg-6">
+						<label>Nombres</label>
+						<input class="form-control form-control-lg form-control-solid" name="nombres" formControlName="Nombres" [class.is-invalid]="isControlInvalid('Nombres')" type="text">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombres')"> Nombres es obligatorio. </div>  
+					</div>
+					<div class="col-lg-3">
+						<label>Ape. Pateno</label>
+						<input class="form-control form-control-lg form-control-solid" name="apePaterno" formControlName="ApePaterno" [class.is-invalid]="isControlInvalid('ApePaterno')" type="text">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'ApePaterno')"> Apellido Paterno es obligatorio. </div>  
+					</div>
+					<div class="col-lg-3">
+						<label>Ape. Materno</label>
+						<input class="form-control form-control-lg form-control-solid" name="apeMaterno" formControlName="ApeMaterno" [class.is-invalid]="isControlInvalid('ApeMaterno')" type="text">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'ApeMaterno')"> Apellido Materno es obligatorio. </div>  
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-lg-6">
+						<label for="">Direccion</label>
+						<input type="text" class="form-control form-control-lg form-control-solid" name="direccion" formControlName="Direccion" [class.is-invalid]="isControlInvalid('Direccion')">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'Direccion')"> Direccion es obligatorio. </div>  
+					</div>
+					<div class="col-lg-6">
+						<label for="">Referencias</label>
+						<input type="text" class="form-control form-control-lg form-control-solid" name="referencias" formControlName="Referencias" [class.is-invalid]="isControlInvalid('Referencias')">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'Referencias')"> Referencias es obligatorio. </div>  
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-lg-3">
+						<label>Tipo Doc. Identidad</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="TipoDocIdentidad" [class.is-invalid]="isControlInvalid('TipoDocIdentidad')"
+									[searchable]="true" placeholder="Tipo Doc. Identidad">
+							<ng-option *ngFor="let tipoDocIdentidad of this.array_tipoDocIdentidad" [value]="tipoDocIdentidad.ValorDocIdentidad">
+								{{tipoDocIdentidad.NombreDocIdentidad}}
+							</ng-option>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'TipoDocIdentidad')"> Tipo Documento es obligatorio. </div>  
+						</ng-select>
+					</div>
+					<div class="col-lg-3">
+						<label>Doc. Identidad</label>
+						<input type="number" class="form-control form-control-lg form-control-solid" name="docIdentidad" formControlName="DocIdentidad" [class.is-invalid]="isControlInvalid('DocIdentidad')">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'DocIdentidad')"> Documento	Identidad es obligatorio. </div>  
+					</div>
+					<div class="col-lg-3">
+						<label>F. Nacimiento</label>
+						<input type="date" class="form-control form-control-lg form-control-solid" name="fechaNacimiento" formControlName="FechaNacimiento" [class.is-invalid]="isControlInvalid('FechaNacimiento')" id="">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'FechaNacimiento')"> Fecha Nacimiento es obligatorio. </div>  
+					</div>
+					<div class="col-lg-3">
+						<label>Email</label>
+						<input type="email"class="form-control form-control-lg form-control-solid" name="email" formControlName="Email" [class.is-invalid]="isControlInvalid('Email')" id="">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'Email')"> Email es obligatorio. </div>  
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-lg-3">
+						<label>Telefono</label>
+						<input type="number" class="form-control form-control-lg form-control-solid" name="telefono" formControlName="Telefono" [class.is-invalid]="isControlInvalid('Telefono')" id="">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'Telefono')"> Telefono es obligatorio. </div>  
+					</div>
+					<div class="col-lg-3">
+						<label>Celular</label>
+						<input type="number" class="form-control form-control-lg form-control-solid" name="celular" formControlName="Celular" [class.is-invalid]="isControlInvalid('Celular')" id="">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'Celular')"> Celular es obligatorio. </div>  
+					</div>
+					<div class="col-lg-3">
+						<label>Celular Referencial</label>
+						<input type="number" class="form-control form-control-lg form-control-solid" name="celularReferencial" formControlName="CelularReferencial" [class.is-invalid]="isControlInvalid('CelularReferencial')" id="">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'CelularReferencial')"> Celular Referencial es obligatorio. </div>  
+					</div>
+					<div class="col-lg-3">
+						<label>Sexo</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Sexo" [class.is-invalid]="isControlInvalid('Sexo')"
+									[searchable]="true" placeholder="Sexo">
+							<ng-option *ngFor="let sexo of this.array_sexo" [value]="sexo.ValorSexo">
+								{{sexo.NombreSexo}}
+							</ng-option>
+						</ng-select>
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'Sexo')"> Sexo es obligatorio. </div>  
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-lg-3">
+						<label>RUC</label>
+						<input type="number" class="form-control form-control-lg form-control-solid" name="ruc" formControlName="Ruc" [class.is-invalid]="isControlInvalid('Ruc')" id="">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'Ruc')"> RUC es obligatorio. </div>  
+					</div>
+					<div class="col-lg-3">
+						<label>Estado Civil</label>
+						<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="EstadoCivil" [class.is-invalid]="isControlInvalid('EstadoCivil')"
+									[searchable]="true" placeholder="Estado Civil">
+							<ng-option *ngFor="let estadoCivil of this.array_estadoCivil" [value]="estadoCivil.ValorEstadoCivil">
+								{{estadoCivil.NombreEstadoCivil}}
+							</ng-option>
+						</ng-select>
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'EstadoCivil')"> Estado Civil es obligatorio. </div>  
+					</div>
+					<div class="col-lg-6">
+						<label>Nombre del cónyugue</label>
+						<input type="text" class="form-control form-control-lg form-control-solid" name="nombreConyugue" formControlName="NombreConyugue" [class.is-invalid]="isControlInvalid('NombreConyugue')" id="">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'NombreConyugue')"> Nombre del Conyugue es obligatorio. </div>  
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<div class="col-lg-3">
+						<label>Tiene hijos?</label>
+						<span class="switch">
+							<label>
+								<input type="checkbox" name="tieneHijos" formControlName="TieneHijos">
+								<span></span>
+							</label>
+						</span>
+					</div>
+					<div class="col-lg-3">
+						<label>¿Cuantos hijos?</label>
+						<input type="number" class="form-control form-control-lg form-control-solid" name="cantHijos" formControlName="CantHijos" [class.is-invalid]="isControlInvalid('CantHijos')" id="">
+						<div class="invalid-feedback" *ngIf="controlHasError('required', 'CantHijos')"> Nro Hijos es obligatorio. </div>  
+					</div>
+				</div>
+				<div class="float-right">
+					<a
+						class="btn btn-danger font-weight-bold mr-2"
+						routerLink="/Talento/masters/Postulante"
+						>Cancelar</a
+					>
+					<!-- <button
+						type="submit"
+						class="btn btn-primary font-weight-bold mr-2"
+						[disabled]="formGroup.invalid"
+					> -->
+					<button
+						type="submit"
+						class="btn btn-primary font-weight-bold mr-2"
+						(click)="saveUpdatePostulante()"
+					>
+						Enviar a trabajadores
+					</button>
+				</div>
+      </form>
+    </ng-container>
+  </div>
+</div>
+
+
+

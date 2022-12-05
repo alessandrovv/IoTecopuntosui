@@ -1,0 +1,109 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Caracter&iacute;sticas de los materiales</h3>
+        </div>
+        <div class="card-toolbar">
+            <button type="button" class="btn btn-primary" (click)="save(null)">Nueva Caracter&iacute;stica</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="form form-label-right">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-3 col-6 mb-5">
+                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Todos"
+                            (change)="searchByActividad($event)">
+                            <ng-option *ngFor="let act of array_actividad" [value]="act">
+                                {{act}}
+                            </ng-option>
+                        </ng-select>
+                        <small class="form-text text-muted"><b>Filtrar</b> por Actividad</small>
+                    </div>
+                    <div class="col-lg-4 col-6 mb-5 offset-lg-5">
+                        <div [formGroup]="searchGroup" class="fila-buscar">
+                            <input type="text" class="form-control" name="searchText" placeholder="Buscar" value=""
+                                formControlName="searchTerm" (keyup)="search()" />
+                            <small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+            <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+
+                <ng-container matColumnDef="Nro">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                    <mat-cell *matCellDef="let i = index;">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="OPCIONES">
+                    <mat-header-cell *matHeaderCellDef>OPCIONES</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">
+                        <a title="Editar Material" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                            (click)="update(lesson)">
+                            <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                                class="svg-icon svg-icon-md svg-icon-primary">
+                            </span>
+                        </a>
+                        <a title="Eliminar Material" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                            (click)="delete(lesson.idCaracteristicaMaterial)">
+                            <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                class="svg-icon svg-icon-md svg-icon-danger">
+                            </span>
+                        </a>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="ACTIVO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ACTIVO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">
+                        <span class="switch">
+                            <label>
+                                <input type="checkbox" name="Activo" [(ngModel)]="lesson.Activo"
+                                    (click)="enableDisable(lesson.idCaracteristicaMaterial, lesson.Activo)">
+                                <span></span>
+                            </label>
+                        </span>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="NOMBRE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRE</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.NombreCaracteristicaMaterial}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="DESCRIPCION">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>DESCRIPCI&Oacute;N</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.DescripcionCaracteristicaMaterial}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="loading">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        Loading data...
+                    </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        No se encontraron registros.
+                    </mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+            </mat-table>
+        </div>
+
+        <div class="mat-table__bottom">
+            <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+            <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+    </div>
+</div>

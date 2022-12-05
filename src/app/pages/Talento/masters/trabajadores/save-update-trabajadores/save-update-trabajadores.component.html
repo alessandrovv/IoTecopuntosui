@@ -1,0 +1,827 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label" *ngIf = "idTrabajador > 0">Editar Trabajador</h3>
+        <h3 class="card-label" *ngIf = "idTrabajador === 0">Nuevo Trabajador</h3>
+      </div>
+      <div class="card-toolbar">
+        <!-- <button type="button" class="btn btn-primary" (click)="addConfiguracion()">Nueva Configuración</button> -->
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form form-label-right">
+        
+
+
+        <div class="card-body">
+            <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+              <li class="nav-item cursor-pointer" (click)="changeTab(tabs.DATOS_TAB)">
+                <a class="nav-link" data-toggle="tab" role="tab" [attr.aria-selected]="activeTabId === tabs.DATOS_TAB" [class.active]="activeTabId === tabs.DATOS_TAB">Datos Personales</a>
+              </li>
+              <li class="nav-item cursor-pointer" (click)="changeTab(tabs.CERTIFICACIONES_TAB)" hidden>
+                <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.CERTIFICACIONES_TAB" [class.active]="activeTabId === tabs.CERTIFICACIONES_TAB">Certificaciones</a>
+              </li>  
+              <li class="nav-item cursor-pointer" (click)="changeTab(tabs.CONTRATOS_TAB)">
+                <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.CONTRATOS_TAB" [class.active]="activeTabId === tabs.CONTRATOS_TAB">Contratos</a>
+              </li>         
+              <li class="nav-item cursor-pointer" (click)="changeTab(tabs.ZONA_UNIDAD_TAB)">
+                <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabId === tabs.ZONA_UNIDAD_TAB" [class.active]="activeTabId === tabs.ZONA_UNIDAD_TAB">Zona y Línea de Negocio</a>
+              </li>     
+            </ul>
+        
+            <ng-container *ngIf="activeTabId === tabs.DATOS_TAB">
+              <div class="mt-5">
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                      <div [formGroup]="formDatosPersonales">
+                            <div class="row">
+                            <div class="col-lg-3">
+                                <label>Código</label>
+                                <input type="text" readonly class="form-control form-control-lg form-control-solid" name="Codigo" placeholder="Código" autocomplete="off"
+                                  formControlName="Codigo"/>
+                              </div>
+                              <div class="col-lg-3">
+                                <label>Empresa</label>
+                                <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Empresa" [class.is-invalid]="isControlInvalid('Empresa')" placeholder="Seleccione una Empresa" (change)="getClienteCertificacion($event)">
+                                    <ng-option *ngFor="let item of array_empresas" [value]="item.idEmpresa">
+                                        {{item.razonSocial}}
+                                    </ng-option>
+                                </ng-select>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'Empresa')"> Empresa es obligatorio. </div>  
+                              </div>                                                
+                            </div>
+                            <br>
+                            <div class="row">                            
+                                <div class="col-lg-6">
+                                    <label class="form-label">Nombres</label>
+                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Nombres" placeholder="Nombres" autocomplete="off" [class.is-invalid]="isControlInvalid('Nombres')" [class.is-valid]="isControlValid('Nombres')" formControlName="Nombres"/>             
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombres')"> Nombres son obligatorios. </div> 
+                                </div>
+                
+                                <div class="col-lg-3">
+                                    <label class="form-label">Apellido Paterno</label>
+                                    <input type="text" class="form-control form-control-lg form-control-solid" name="ApellidoPaterno" placeholder="Apellido Paterno" autocomplete="off" [class.is-invalid]="isControlInvalid('ApellidoPaterno')" [class.is-valid]="isControlValid('ApellidoPaterno')" formControlName="ApellidoPaterno"/>             
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'ApellidoPaterno')"> Apellido Paterno es obligatorio. </div>  
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label class="form-label">Apellido Materno</label>
+                                    <input type="text" class="form-control form-control-lg form-control-solid" name="ApellidoPaterno" placeholder="Nombres" autocomplete="off" [class.is-invalid]="isControlInvalid('ApellidoMaterno')" [class.is-valid]="isControlValid('ApellidoMaterno')" formControlName="ApellidoMaterno"/>             
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'ApellidoMaterno')"> Apellido Materno es obligatorio. </div> 
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">                            
+                                <div class="col-lg-3">
+                                    <label>País</label>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Pais" [class.is-invalid]="isControlInvalid('Pais')" [class.is-valid]="isControlValid('Pais')" placeholder="Seleccione un País" (change)="getListarDepartamento($event, null)">
+                                        <ng-option *ngFor="let item of array_pais" [value]="item.Pais">
+                                            {{item.NombrePais}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Pais')"> Pais es obligatorio. </div>  
+                                </div>
+                
+                                <div class="col-lg-3">
+                                    <label>Departamento</label>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Departamento" formControlName="Departamento" [class.is-invalid]="isControlInvalid('Departamento')" [class.is-valid]="isControlValid('Departamento')" (change)="getListarProvincia($event, null)">
+                                        <ng-option *ngFor="let item of array_departamento" [value]="item.Departamento">
+                                            {{item.NombreDepartamento}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Departamento')"> Departamento es obligatorio. </div>  
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label>Provincia</label>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Provincia" formControlName="Provincia" [class.is-invalid]="isControlInvalid('Provincia')" [class.is-valid]="isControlValid('Provincia')" (change)="getListarDistrito($event, null)">
+                                        <ng-option *ngFor="let item of array_provincia" [value]="item.Provincia">
+                                            {{item.NombreProvincia}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Provincia')"> Provincia es obligatorio. </div>  
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label>Distrito</label>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Distrito" formControlName="Distrito" [class.is-invalid]="isControlInvalid('Distrito')" [class.is-valid]="isControlValid('Distrito')">
+                                        <ng-option *ngFor="let item of array_distrito" [value]="item.Distrito">
+                                            {{item.NombreDistrito}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Distrito')"> Distrito es obligatorio. </div>  
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">                            
+                                <div class="col-lg-6">
+                                    <label class="form-label">Dirección</label>
+                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Direccion" placeholder="Direccion" autocomplete="off" [class.is-invalid]="isControlInvalid('Direccion')" [class.is-valid]="isControlValid('Direccion')" formControlName="Direccion"/>             
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Direccion')"> Direccion es obligatorio. </div> 
+                                </div>
+                
+                                <div class="col-lg-6">
+                                    <label class="form-label">Referencias</label>
+                                    <input type="text" class="form-control form-control-lg form-control-solid" name="Referencias" placeholder="Referencias" autocomplete="off" formControlName="Referencias"/>             
+                                </div>                              
+                            </div>
+                            <br>
+                            <div class="row">                            
+                                <div class="col-lg-3">
+                                    <label>Tipo Documento</label>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="TipoDocumento" [class.is-invalid]="isControlInvalid('TipoDocumento')" placeholder="Seleccione un Tipo Documento">
+                                        <ng-option *ngFor="let item of array_tipo_doc" [value]="item.ValorDocIdentidad">
+                                            {{item.NombreDocIdentidad}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'TipoDocumento')"> Tipo Documento es obligatorio. </div>  
+                                </div>
+                
+                                <div class="col-lg-3">
+                                    <label>Documento Identidad</label>
+                                    <input type="text" class="form-control form-control-lg form-control-solid" name="DocumentoIdentidad" placeholder="Documento Identidad" autocomplete="off" [class.is-invalid]="isControlInvalid('DocumentoIdentidad')" [class.is-valid]="isControlValid('DocumentoIdentidad')" formControlName="DocumentoIdentidad"/>             
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'DocumentoIdentidad')"> Documento Identidad es obligatorio. </div> 
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label>F. Nacimiento</label>
+                                    <input type="date" class="form-control form-control-lg form-control-solid" name="FechaNacimiento" placeholder="F. Nacimiento" autocomplete="off" [class.is-invalid]="isControlInvalid('FechaNacimiento')" [class.is-valid]="isControlValid('FechaNacimiento')" formControlName="FechaNacimiento"/>             
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'FechaNacimiento')"> F. Nacimiento es obligatorio. </div> 
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control form-control-lg form-control-solid" name="Email" placeholder="Email" autocomplete="off" [class.is-invalid]="isControlInvalid('Email')" [class.is-valid]="isControlValid('Email')" formControlName="Email"/>       
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Email')">Email es obligatorio.</div>
+                                    <div class="invalid-feedback" *ngIf="controlHasError('email', 'Email')">Email tiene un formato incorrecto.</div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">                                                                
+                                <div class="col-lg-3">
+                                    <label>Telefono</label>
+                                    <input type="number" class="form-control form-control-lg form-control-solid" name="Telefono" placeholder="Telefono" autocomplete="off" [class.is-invalid]="isControlInvalid('Telefono')" [class.is-valid]="isControlValid('Telefono')" formControlName="Telefono"/>             
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Telefono')"> Telefono es obligatorio. </div> 
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label>Celular</label>
+                                    <input type="number" class="form-control form-control-lg form-control-solid" name="Celular" placeholder="Celular" autocomplete="off" formControlName="Celular"/>             
+                                    <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Celular')"> Celular es obligatorio. </div>  -->
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label>Celular Referencia</label>
+                                    <input type="number" class="form-control form-control-lg form-control-solid" name="CelularReferencial" placeholder="Celular Refencial" autocomplete="off" formControlName="CelularReferencial"/>       
+                                    <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'CelularReferencial')">Celular Refencial es obligatorio.</div> -->
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label>Sexo</label>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Sexo" [class.is-invalid]="isControlInvalid('Sexo')" placeholder="Seleccione un Sexo">
+                                        <ng-option *ngFor="let item of array_sexo" [value]="item.ValorSexo">
+                                            {{item.NombreSexo}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'Sexo')"> Sexo es obligatorio. </div>  
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">                                                                
+                                <div class="col-lg-3">
+                                    <label>RUC</label>
+                                    <input type="number" class="form-control form-control-lg form-control-solid" name="RUC" placeholder="RUC" autocomplete="off" [class.is-invalid]="isControlInvalid('RUC')" [class.is-valid]="isControlValid('RUC')" formControlName="RUC"/>             
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'RUC')"> RUC es obligatorio. </div> 
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <label>Estado Civil</label>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="EstadoCivil" [class.is-invalid]="isControlInvalid('EstadoCivil')" placeholder="Seleccione un Estado Civil">
+                                        <ng-option *ngFor="let item of array_estado_civil" [value]="item.ValorEstadoCivil">
+                                            {{item.NombreEstadoCivil}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'EstadoCivil')"> Estado Civil es obligatorio. </div>  
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <label>Nombre Conyugue</label>
+                                    <input type="text" class="form-control form-control-lg form-control-solid" name="NombreConyugue" placeholder="Nombre Conyugue" autocomplete="off" formControlName="NombreConyugue"/>             
+                                    <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'NombreConyugue')"> Nombre Conyugue es obligatorio. </div>  -->
+                                </div>                            
+                            </div>
+                            <br>
+                            <div class="row">                                                                
+                                <div class="col-lg-3">
+                                    <label>Tiene hijos?</label>
+                                    <span class="switch">
+                                        <label>
+                                            <input type="checkbox" name="tieneHijos" formControlName="Hijos">
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </div>                                
+
+                                <div class="col-lg-3">
+                                    <label>N° Hijos</label>
+                                    <input type="number" class="form-control form-control-lg form-control-solid" name="NumeroHijos" placeholder="N° Hijos" autocomplete="off" formControlName="NumeroHijos"/>             
+                                    <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'NumeroHijos')"> Numero Hijos es obligatorio. </div>  -->
+                                </div>     
+                                
+                                <div class="col-lg-3">
+                                    <label>Banco</label>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Banco" placeholder="Seleccione un Banco">
+                                        <ng-option *ngFor="let item of array_banco" [value]="item.Banco">
+                                            {{item.NombreBanco}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Banco')"> Banco es obligatorio. </div>   -->
+                                </div>
+    
+                                <div class="col-lg-3">
+                                    <label>Tipo Cuenta</label>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="TipoCuenta" placeholder="Seleccione un Tipo Cuenta">
+                                        <ng-option *ngFor="let item of array_tipo_cuenta" [value]="item.ValorCuenta">
+                                            {{item.NombreCuenta}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'TipoCuenta')"> Tipo Cuenta es obligatorio. </div>   -->
+                                </div>                                
+                            </div>
+                            <br>
+                            <div class="row">      
+                                <div class="col-lg-3">
+                                    <label>Moneda</label>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Moneda" placeholder="Seleccione una Moneda">
+                                        <ng-option *ngFor="let item of array_moneda" [value]="item.ValorMoneda">
+                                            {{item.NombreMoneda}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'Moneda')"> Moneda es obligatorio. </div>   -->
+                                </div>
+
+                              
+                                <div class="col-lg-3">
+                                    <label>Numero Cuenta</label>
+                                    <input type="number" class="form-control form-control-lg form-control-solid" name="NumeroCuenta" placeholder="N° de Cuenta" autocomplete="off" formControlName="NumeroCuenta"/>             
+                                    <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'NumeroCuenta')"> Numero Cuenta es obligatorio. </div>  -->
+                                </div> 
+                                
+                                <div class="col-lg-3">
+                                    <label>N° CCI</label>
+                                    <input type="number" class="form-control form-control-lg form-control-solid" name="NumeroCCI" placeholder="N° CCI" autocomplete="off" formControlName="NumeroCCI"/>             
+                                    <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'NumeroCCI')"> Numero CCI es obligatorio. </div>  -->
+                                </div>
+                                
+                                <div class="col-lg-3">
+                                    <label>Activo</label>
+                                    <span class="switch">
+                                        <label>
+                                            <input type="checkbox" name="Activo" formControlName="Activo">
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </div>                                
+
+                                                         
+                            </div>
+                      </div>
+
+
+
+                    </div>  
+                </div>
+              </div>
+            </ng-container>
+        
+            <ng-container *ngIf="activeTabId === tabs.CERTIFICACIONES_TAB">
+                <div class="mt-5">
+                    <div class="form-group row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label><span style="font-weight: bold;">TRABAJADOR:</span> {{nombresTrabajador}}</label>                                    
+                                </div>                                                                            
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-primary font-weight-bold mr-2" (click)="addCertificaciones();">Agregar</button>                                 
+                                </div>                                                                            
+                            </div>
+                        </div>                                                
+                    </div>                                                
+
+                    <table class="table">
+                        <thead>
+                            <th>CLIENTE EXTERNO - CERTIFICADO</th>
+                            <!-- <th>NOMBRE</th> -->
+                            <th>INICIO DE VIGENCIA</th>
+                            <th>FIN DE VIGENCIA</th>
+                            <th>VIGENTE</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of array_certificaciones">
+                                <td>
+                                    <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Cliente Externo" [formControl]="deta_formClienteExterno[array_certificaciones.indexOf(item)]">
+                                        <ng-option *ngFor="let item2 of array_cliente_certificado" [value]="item2.idCertificado">
+                                            {{item2.NombreCliente}} - {{item2.Nombre}}
+                                        </ng-option>
+                                    </ng-select>
+                                </td>                                
+                                <td>
+                                    <input type="date" class="form-control form-control-lg form-control-solid" name="InicioVigencia" placeholder="Inicio de Vigencia" autocomplete="off" [formControl]="deta_formInicioVigencia[array_certificaciones.indexOf(item)]"/>
+                                </td>
+                                <td>
+                                    <input type="date" class="form-control form-control-lg form-control-solid" name="FinVigencia" placeholder="Fin de Vigencia" autocomplete="off" [min]="deta_formInicioVigencia[array_certificaciones.indexOf(item)].value" [formControl]="deta_formFinVigencia[array_certificaciones.indexOf(item)]" (change)="calculoVigente($event.target.valueAsDate, array_certificaciones.indexOf(item));"/>
+                                </td>
+                                <td style="text-align: center;" align="center">                                  
+                                    <span style="font-weight: bold;">{{item.Vigente}}</span>
+                                </td>
+                                <td>                                  
+                                    <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                        (click)="deleteCertificado(item)">
+                                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                        class="svg-icon svg-icon-md svg-icon-danger">
+                                        </span>
+                                    </a>          
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </div>
+            </ng-container>
+
+            <ng-container *ngIf="activeTabId === tabs.CONTRATOS_TAB">
+                <div class="mt-5">
+                    <div class="form-group row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label style="font-size: 15px;"><span style="font-weight: bold;">TRABAJADOR:</span> {{nombresTrabajador}}</label>                                    
+                                </div>   
+                                <div class="col-lg-6">
+                                    <label style="font-size: 15px;"><span style="font-weight: bold;">EMPRESA:</span> {{nombreEmpresa}}</label>                                    
+                                </div>                                                                            
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-primary font-weight-bold mr-2" (click)="addContrato();">Nuevo Contrato</button>                                 
+                                </div>                                                                            
+                            </div>
+                        </div>                                                
+                    </div> 
+                    <div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+                        <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>                                     
+                
+                            <ng-container matColumnDef="DesModalidad">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>MODALIDAD</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.DesModalidad}}</mat-cell>
+                            </ng-container>
+                
+                            <ng-container matColumnDef="DesPuestoTrabajo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>PUESTO TRABAJO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.DesPuestoTrabajo}}</mat-cell>
+                            </ng-container>
+                
+                            <ng-container matColumnDef="DesEsquema">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>ESQUEMA COMISIONES</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.DesEsquema}}</mat-cell>
+                            </ng-container>
+                
+                            <ng-container matColumnDef="InicioContrato">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>INICIO CONTRATO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.FechaInicioContrato | date : 'dd/MM/yyyy'}}</mat-cell>
+                            </ng-container>
+                
+                            <ng-container matColumnDef="FinContrato">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>FIN CONTRATO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.FechaFinContrato | date : 'dd/MM/yyyy'}}</mat-cell>
+                            </ng-container>
+                
+                            <!-- <ng-container matColumnDef="FormatoContrato">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>FORMATO CONTRATO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">
+                                    <a title="Descargar Formato Contrato" (click)="descargarFormatoContrato('prueba', 'https://firebasestorage.googleapis.com/v0/b/enjambre-7043d.appspot.com/o/FormatoContrato%2FWeb%20Enjambre%20(3).pdf?alt=media&token=ac984d09-a6c1-47aa-bcd2-448e08eec6d3');" class="btn btn-icon btn-light btn-hover-danger btn-sm mx-3">
+                                        <span [inlineSVG]="'./assets/media/svg/files/pdf.svg'"
+                                        class="svg-icon svg-icon-md svg-icon-primary">
+                                        </span>
+                                    </a>
+                                </mat-cell>
+                            </ng-container> -->
+                
+                            <ng-container matColumnDef="DescargarContrato">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>DESCARGAR CONTRATO</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">
+                                    <a title="Descargar Contrato" class="btn btn-icon btn-light btn-hover-light-primary btn-sm mx-3" (click)="descargarFormatoContrato(lesson, lesson.NombreArchivo, lesson.UrlArchivo);">
+                                        <span [inlineSVG]="'./assets/media/svg/icons/Files/Cloud-download.svg'"
+                                        class="svg-icon svg-icon-md svg-icon-primary">
+                                        </span>
+                                    </a>
+                                </mat-cell>
+                            </ng-container>
+                
+                            <ng-container matColumnDef="Vigente">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>VIGENTE</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">{{lesson.Vigencia}}</mat-cell>
+                            </ng-container>                                                                                                           
+                
+                            <ng-container matColumnDef="Acciones">
+                                <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
+                                <mat-cell *matCellDef="let lesson">                                                                                  
+                                    <a title="Editar Contrato" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3" (click)="editContrato(lesson, array_contratos.indexOf(lesson));">
+                                        <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                                        class="svg-icon svg-icon-md svg-icon-primary">
+                                        </span>
+                                    </a>            
+                                    <a title="Eliminar Contrato" class="btn btn-icon btn-light btn-hover-danger btn-sm" (click)="deleteContrato(lesson)">
+                                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                                        class="svg-icon svg-icon-md svg-icon-danger">
+                                        </span>
+                                    </a>                  
+                                </mat-cell>
+                            </ng-container>
+                
+                            <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="5">
+                                    Loading data...
+                                </mat-footer-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="5">
+                                    No se encontraron registros.
+                                </mat-footer-cell>
+                            </ng-container>
+                
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                
+                            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+                        </mat-table>
+                    </div>
+                
+                    <div class="mat-table__bottom">
+                        <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+                        <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    </div>
+                                
+                    <div class="form-group row" *ngIf="isNewContrato">
+                        <div class="col-lg-12">
+                            <div [formGroup]="formContrato">
+                                <br>
+                                <div class="row"> 
+                                    <div class="col-lg-8">
+                                        <label><span style="font-weight: bold; font-size: 15px;">CONTRATO:</span></label>     
+                                    </div>                                                                         
+                                    <div class="col-lg-4">   
+                                        <div class="float-right">
+                                            <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf = "idContratoEditar > 0 || idContratoEditar ===null" (click)="addContratoTrabajador();">Editar Contrato</button>
+                                            <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf = "idContratoEditar === 0" (click)="addContratoTrabajador();">Agregar Contrato</button>
+                                            <a type="button" class="btn btn-danger font-weight-bold mr-2" (click)="cancelContrato();">Cancelar</a>
+                                        </div>                                                                             
+                                    </div>                                    
+                                </div>
+                                <br>
+                                <div class="row">                            
+                                    <div class="col-lg-3">
+                                        <label>Modalidad Contratación</label>
+                                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Modalidad" [class.is-invalid]="isControlInvalidContrato('Modalidad')" placeholder="Seleccione una Modalidad" (change)="getExpedientesDatos($event, formContrato.controls.PuestoTrabajo.value)">
+                                            <ng-option *ngFor="let item of array_modalidad" [value]="item.Valor">
+                                                {{item.Nombre}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'Modalidad')"> Modalidad es obligatorio. </div>  
+                                    </div>
+                    
+                                    <div class="col-lg-3">
+                                        <label>Puesto Trabajo</label>
+                                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Puesto de Trabajo" formControlName="PuestoTrabajo" [class.is-invalid]="isControlInvalidContrato('PuestoTrabajo')" (change)="getExpedientesDatos(formContrato.controls.Modalidad.value, $event)">
+                                            <ng-option *ngFor="let item of array_puestos" [value]="item.PuestoTrabajo">
+                                                {{item.NombrePuestoTrabajo}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'PuestoTrabajo')"> Puesto de Trabajo es obligatorio. </div>  
+                                    </div>
+            
+                                    <div class="col-lg-3" hidden>
+                                        <label>Esquema Comisiones</label>
+                                        <ng-select class="custom" #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Esquema" formControlName="Esquema" [class.is-invalid]="isControlInvalidContrato('Esquema')">
+                                            <ng-option *ngFor="let item of array_esquema_comision" [value]="item.EsquemaComision">
+                                                {{item.NombreComision}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'Esquema')"> Esquema Comisiones es obligatorio. </div>  
+                                    </div>
+            
+                                    <div class="col-lg-3">
+                                        <label>Fondo Pensionario</label>
+                                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Fondo Pensionario" formControlName="FondoPensionario" [class.is-invalid]="isControlInvalidContrato('FondoPensionario')">
+                                            <ng-option *ngFor="let item of array_fondo_pension" [value]="item.FondoPension">
+                                                {{item.DescFondoPension}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'FondoPensionario')"> Fondo Pensionario es obligatorio. </div>  
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">                            
+                                    <div class="col-lg-3">
+                                        <label>F. Inicio Contrato</label>
+                                        <input type="date" class="form-control form-control-lg form-control-solid" name="FechaInicioContrato" placeholder="F. Inicio Contrato" autocomplete="off" [class.is-invalid]="isControlInvalidContrato('FechaInicioContrato')" [class.is-valid]="isControlValidContrato('FechaInicioContrato')" formControlName="FechaInicioContrato" (change)="calculoPeriodoPrueba(formContrato.controls.FechaInicioContrato.value)"/>             
+                                        <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'FechaInicioContrato')"> F. Inicio Contrato es obligatorio. </div> 
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label>F. Fin Periodo Prueba</label>
+                                        <input type="date" class="form-control form-control-lg form-control-solid" name="FechaFinPeriodo" [min]="formContrato.controls.FechaInicioContrato.value" placeholder="F. Fin Periodo Prueba" autocomplete="off" [class.is-invalid]="isControlInvalidContrato('FechaFinPeriodo')" [class.is-valid]="isControlValidContrato('FechaFinPeriodo')" formControlName="FechaFinPeriodo"/>             
+                                        <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'FechaFinPeriodo')"> F. Fin Periodo Prueba es obligatorio. </div> 
+                                    </div>
+            
+                                    <div class="col-lg-3">
+                                        <label>F. Fin Contratación</label>
+                                        <input type="date" class="form-control form-control-lg form-control-solid" name="FechaFinContrato" placeholder="F. Fin Contrato" [min]="formContrato.controls.FechaFinPeriodo.value" autocomplete="off" [class.is-invalid]="isControlInvalidContrato('FechaFinContrato')" [class.is-valid]="isControlValidContrato('FechaFinContrato')" formControlName="FechaFinContrato" (change)="calculoMeses(formContrato.controls.FechaInicioContrato.value, formContrato.controls.FechaFinContrato.value);"/>             
+                                        <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'FechaFinContrato')"> F. Fin Contrato es obligatorio. </div> 
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label>Duración de Contrato (meses)</label>
+                                        <input type="number" readonly class="form-control form-control-lg form-control-solid" name="DuracionContrato" placeholder="Duración Contrato" autocomplete="off" [class.is-invalid]="isControlInvalidContrato('DuracionContrato')" [class.is-valid]="isControlValidContrato('DuracionContrato')" formControlName="DuracionContrato"/>             
+                                        <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'DuracionContrato')"> Duración de Contrato (meses) es obligatorio. </div> 
+                                    </div>
+                                </div>                      
+                                <br>
+                                <div class="row">   
+
+                                    <div class="col-lg-3">
+                                        <label>Provincia</label>
+                                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Provincia" formControlName="Provincia" [class.is-invalid]="isControlInvalidContrato('Provincia')" [class.is-valid]="isControlValidContrato('Provincia')">
+                                            <ng-option *ngFor="let item of array_provincia_contrato" [value]="item.Provincia">
+                                                {{item.NombreProvincia}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'Provincia')"> Provincia es obligatorio. </div>  
+                                    </div>
+
+
+                                    <div class="col-lg-3">
+                                            <label>H. Inicio Labores</label>
+                                            <input type="time" class="form-control form-control-lg form-control-solid" name="HoraInicioLabores" placeholder="H. Inicio Labores" autocomplete="off" [class.is-invalid]="isControlInvalidContrato('HoraInicioLabores')" [class.is-valid]="isControlValidContrato('HoraInicioLabores')" formControlName="HoraInicioLabores" />             
+                                            <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'HoraInicioLabores')"> H. Inicio Labores es obligatorio. </div> 
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                            <label>H. Fin Labores</label>
+                                            <input type="time" class="form-control form-control-lg form-control-solid" name="HoraFinLabores" placeholder="F. Fin Contrato" [min]="formContrato.controls.HoraInicioLabores.value"  autocomplete="off" [class.is-invalid]="isControlInvalidContrato('HoraFinLabores')" [class.is-valid]="isControlValidContrato('HoraFinLabores')" formControlName="HoraFinLabores" />             
+                                            <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'HoraFinLabores')" > H. Fin Labores es obligatorio. </div> <div class="invalid-feedback" *ngIf="formHasError(formContrato, 'horarioInvalido')" > H. Fin Labores invalida </div> 
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label>Sueldo</label>
+                                        <input type="number" class="form-control form-control-lg form-control-solid" name="DuracionContrato" placeholder="Sueldo" autocomplete="off" [class.is-invalid]="isControlInvalidContrato('Sueldo')" [class.is-valid]="isControlValidContrato('Sueldo')" formControlName="Sueldo"/>             
+                                        <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'Sueldo')"> Sueldo es obligatorio. </div> 
+                                    </div>                                                                                                                               
+                                </div>
+                                
+                                
+                                <div class="row">  
+                                    <div class="col-lg-3">
+                                        <label>Motivo del Cese</label>
+                                        <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Motivo" [class.is-invalid]="isControlInvalidContrato('Motivo')" placeholder="Seleccione un Motivo">
+                                            <ng-option *ngFor="let item of array_motivo_cese" [value]="item.MotivoCese">
+                                                {{item.DescMotivoCese}}
+                                            </ng-option>
+                                        </ng-select>
+                                        <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'Motivo')"> Motivo es obligatorio. </div>  
+                                    </div>
+                                              
+                                    <div class="col-lg-9">
+                                        <label>Descripción</label>
+                                        <textarea type="text" class="form-control form-control-lg form-control-solid" name="Descripcion" placeholder="Descripción" [class.is-invalid]="isControlInvalidContrato('Descripcion')" [class.is-valid]="isControlValidContrato('Descripcion')" formControlName="Descripcion"></textarea>            
+                                        <div class="invalid-feedback" *ngIf="controlHasErrorContrato('required', 'Descripcion')"> Descripción es obligatorio. </div> 
+                                    </div>             
+                                </div>                                    
+                            </div>                                    
+                        </div>  
+                    </div>
+
+                    <div class="card-body" *ngIf="isNewContrato" style="margin-top: -30px !important;">
+                        <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+                          <li class="nav-item cursor-pointer" (click)="changeTabContrato(tabs_contrato.EXPEDIENTE_TAB)">
+                            <a class="nav-link" data-toggle="tab" role="tab" [attr.aria-selected]="activeTabIdContrato === tabs_contrato.EXPEDIENTE_TAB" [class.active]="activeTabIdContrato === tabs_contrato.EXPEDIENTE_TAB">Expediente</a>
+                          </li>
+                          <li class="nav-item cursor-pointer" (click)="changeTabContrato(tabs_contrato.DATOS_TAB)">
+                            <a class="nav-link" data-toggle="tab" role="button" [attr.aria-selected]="activeTabIdContrato === tabs_contrato.DATOS_TAB" [class.active]="activeTabIdContrato === tabs_contrato.DATOS_TAB">Datos</a>
+                          </li>                                 
+                        </ul>
+                    
+                        <ng-container *ngIf="activeTabIdContrato === tabs_contrato.EXPEDIENTE_TAB">
+                          <div class="mt-5">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <span style="font-size: 12px;">- Estos documentos son obligatorios por recomendación. De igual manera se pueden editar</span>        
+                                </div>  
+                                <!-- <div class="col-lg-3">                                    
+                                    <button type="button" (click)="descargarArchivosMasivo()" class="btn btn-default font-weight-bold mr-2"><span [inlineSVG]="'./assets/media/svg/files/zip.svg'"
+                                        class="svg-icon svg-icon-md svg-icon-primary">
+                                        </span>Descargar Expedientes</button>
+                                </div>   -->
+                            </div>      
+                            
+                            
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table class="table">
+                                        <thead>
+                                            <th>DOCUMENTO</th>
+                                            <th>OBLIGATORIO</th>
+                                            <th>CARGAR</th>
+                                            <th>DESCARGAR</th>
+                                            <th>ESTADO</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of metadataExpedientes">
+                                                <td>
+                                                    {{item.NombreDocumento}}                                                    
+                                                </td>                                
+                                                <td>
+                                                    <span class="switch" *ngIf="item.ObligatorioValor">
+                                                        <label>
+                                                            <input type="checkbox" name="Activo" disabled [(ngModel)]="item.Obligatorio">
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+
+                                                    <span class="switch" *ngIf="!item.ObligatorioValor">
+                                                        <label>
+                                                            <input type="checkbox" name="Activo" [(ngModel)]="item.Obligatorio">
+                                                            <span></span>
+                                                        </label>
+                                                    </span>
+                                                    <!-- {{item.DesObligatorio}} -->
+                                                </td>
+                                                <td>
+                                                    <input style="display: none;" type="file" class="form-control form-control-lg form-control-solid" (change)="getFileDATA($event, metadataExpedientes.indexOf(item))" id="File{{metadataExpedientes.indexOf(item)}}" [formControl]="deta_formFileExpediente[metadataExpedientes.indexOf(item)]"/> 
+                                                    <a title="Cargar {{item.NombreDocumento}}" class="btn btn-icon btn-light btn-hover-light-primary btn-sm mx-3" (click)="chargeFile(metadataExpedientes.indexOf(item))">
+                                                        <span [inlineSVG]="'./assets/media/svg/icons/Files/Cloud-upload.svg'"
+                                                        class="svg-icon svg-icon-md svg-icon-primary">
+                                                        </span>
+                                                    </a>
+                                                </td>
+                                                <td>     
+                                                    <a *ngIf="item.urlExpediente === null" class="btn btn-icon btn-light btn-hover-light-danger btn-sm mx-3" disabled>
+                                                        <span [inlineSVG]="'./assets/media/svg/icons/Files/Cloud-download.svg'"
+                                                        class="svg-icon svg-icon-md svg-icon-danger">
+                                                        </span>
+                                                    </a>
+                                                                                 
+                                                    <a *ngIf="item.urlExpediente !== null" title="Descargar {{item.NombreDocumento}}" class="btn btn-icon btn-light btn-hover-light-primary btn-sm mx-3" (click)="descargarArchivo(item.nombreArchivo, item.urlExpediente)">
+                                                        <span [inlineSVG]="'./assets/media/svg/icons/Files/Cloud-download.svg'"
+                                                        class="svg-icon svg-icon-md svg-icon-primary">
+                                                        </span>
+                                                    </a>
+                                                </td>
+                                                <td>                                  
+                                                     <ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" placeholder="Seleccione un Estado" [formControl]="deta_formEstadoExpediente[metadataExpedientes.indexOf(item)]">
+                                                        <ng-option *ngFor="let item2 of array_estado_expediente" [value]="item2.EstadoExpediente">
+                                                            {{item2.DescEstadoExpediente}}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>  
+                                 
+                            </div>      
+
+
+
+                          </div>
+                        </ng-container>
+                    
+                        <ng-container *ngIf="activeTabIdContrato === tabs_contrato.DATOS_TAB">
+                            <div class="mt-5">
+                                <!-- <app-dynamic-form #dynamicFormDataEspecifica *ngIf="!loadingMetadataEspecifica" [metadata]="metadataEspecifica" [respuestas]="respuestasEspecificas" (dataLoaded)="dataEspecificaLoaded($event)">
+                                </app-dynamic-form> -->
+
+                                <form [formGroup]="form" class="row">
+                                    <ng-container *ngFor="let control of metadata">                                
+                                        <div class="col-lg-6 m--margin-bottom-10" *ngIf="control.TipoDatoRespuesta == controlsEnum.TEXT">        
+                                            <label class="form-label">{{ control.NombreDato }}</label>
+                                            <input type="text" class="form-control form-control-lg form-control-solid" [(ngModel)]="data[control.ConfigDatoContrato].value" name="{{data[control.ConfigDatoContrato].ControlName}}" [required]="isRequired(control)" placeholder="{{control.NombreDato}}" autocomplete="off" formControlName="{{data[control.ConfigDatoContrato].ControlName}}"
+                                            [class.is-invalid]="isControlInvalidDato(data[control.ConfigDatoContrato].ControlName)" [class.is-valid]="isControlValidDato(data[control.ConfigDatoContrato].ControlName)"/>             
+                                            <div class="invalid-feedback" *ngIf="controlHasErrorDato('required', data[control.ConfigDatoContrato].ControlName)"> {{ control.NombreDato }} son obligatorios. </div>
+                                            <br>
+                                
+                                        </div>  
+                                                                                
+                                        <div class="col-lg-3 m--margin-bottom-10" *ngIf="control.TipoDatoRespuesta == controlsEnum.NUMBER">
+                                            <label class="form-label">{{ control.NombreDato }}</label>
+                                            <input type="number" class="form-control form-control-lg form-control-solid" [(ngModel)]="data[control.ConfigDatoContrato].value" name="{{data[control.ConfigDatoContrato].ControlName}}" [required]="isRequired(control)" placeholder="{{control.NombreDato}}" autocomplete="off" formControlName="{{data[control.ConfigDatoContrato].ControlName}}"
+                                            [class.is-invalid]="isControlInvalidDato(data[control.ConfigDatoContrato].ControlName)" [class.is-valid]="isControlValidDato(data[control.ConfigDatoContrato].ControlName)"/>             
+                                            <div class="invalid-feedback" *ngIf="controlHasErrorDato('required', data[control.ConfigDatoContrato].ControlName)"> {{ control.NombreDato }} son obligatorios. </div>
+                                            <br>
+                                        </div>
+                                                                
+                                        <div class="col-lg-3 m--margin-bottom-10" *ngIf="control.TipoDatoRespuesta == controlsEnum.DATE">
+                                            <label class="form-label">{{ control.NombreDato }}</label>
+                                            <input type="date" class="form-control form-control-lg form-control-solid" [(ngModel)]="data[control.ConfigDatoContrato].value" name="{{data[control.ConfigDatoContrato].ControlName}}" [required]="isRequired(control)" placeholder="{{control.NombreDato}}" autocomplete="off" formControlName="{{data[control.ConfigDatoContrato].ControlName}}"
+                                            [class.is-invalid]="isControlInvalidDato(data[control.ConfigDatoContrato].ControlName)" [class.is-valid]="isControlValidDato(data[control.ConfigDatoContrato].ControlName)"/>             
+                                            <div class="invalid-feedback" *ngIf="controlHasErrorDato('required', data[control.ConfigDatoContrato].ControlName)"> {{ control.NombreDato }} son obligatorios. </div>
+                                            <br>
+                                        </div>
+                                                                       
+                                        <div class="col-lg-3 m--margin-bottom-10" *ngIf="control.TipoDatoRespuesta == controlsEnum.CHECK">
+                                            <label class="form-label">{{ control.NombreDato }}</label>
+                                            <span class="switch">
+                                                <label>
+                                                    <input type="checkbox" name="{{data[control.ConfigDatoContrato].ControlName}}" [(ngModel)]="data[control.ConfigDatoContrato].value" formControlName="{{data[control.ConfigDatoContrato].ControlName}}">
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                        </div>                                                                    
+                                    </ng-container>
+                                </form>
+
+                                
+
+
+
+
+                            </div>
+                        </ng-container>
+            
+                      
+                      </div>
+                  </div>
+            </ng-container>
+
+						<ng-container *ngIf="activeTabId === tabs.ZONA_UNIDAD_TAB">
+							<div class="mt-5">
+								<div class="form-group row">
+									<div class="col-lg-12">
+										<div class="row">
+											<div class="col-lg-6">
+												<label style="font-size: 15px;"><span style="font-weight: bold;">TRABAJADOR:</span>
+													{{nombresTrabajador}}</label>
+											</div>
+											<div class="col-lg-6">
+												<label style="font-size: 15px;"><span style="font-weight: bold;">EMPRESA:</span> {{nombreEmpresa}}</label>
+											</div>
+										</div>
+										<br>
+										<div class="row">
+											<div class="col-sm-12 col-lg-12">
+												<label style="font-size: 15px;"><span style="font-weight: bold;">Empresas:</span></label>
+												<div *ngFor="let item of array_empresas_trabajador" style="margin-bottom: 5px; margin-top: 10px;">
+													<label class="checkbox checkbox-lg checkbox-inline" style="font-size: 12px;">
+															<input type="checkbox" [checked]="item.activo" (change)="this.statusChkHandler($event, item); this.filtrarElementos(item);"/>
+															<span></span>&nbsp;&nbsp;{{item.razonSocial }}
+													</label>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12 col-lg-6" *ngIf="array_zonas.length>0">
+												<label style="font-size: 15px;"><span style="font-weight: bold;">Zonas:</span></label>
+												<div *ngFor="let item of array_zonas" style="margin-bottom: 5px; margin-top: 10px;">
+													<label *ngIf="empresasActivas.has(item.idEmpresa)" class="checkbox checkbox-lg checkbox-inline" style="font-size: 12px;">
+															<input type="checkbox" [checked]="item.activo" (change)="this.statusChkHandler($event, item)"/>
+															<span></span>&nbsp;&nbsp;{{item.nombreZona }}
+													</label>
+												</div>
+											</div>
+											<div class="col-sm-12 col-lg-6" *ngIf="array_unidades.length>0">
+												<label style="font-size: 15px;"><span style="font-weight: bold;">Líneas de Negocio:</span></label>
+												<div *ngFor="let item of array_unidades" style="margin-bottom: 5px; margin-top: 10px;">
+													<label *ngIf="empresasActivas.has(item.idEmpresa)" class="checkbox checkbox-lg checkbox-inline" style="font-size: 12px;">
+															<input type="checkbox" [checked]="item.activo" (change)="this.statusChkHandler($event, item)"/>
+															<span></span>&nbsp;&nbsp;{{item.nombreUnidad }}
+													</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</ng-container>
+                    
+          </div>
+
+          <div class="float-right">            
+            <button type="button" class="btn btn-primary font-weight-bold mr-2" disabled *ngIf="!hide_load">Registrando...</button>
+            <button type="button" class="btn btn-primary font-weight-bold mr-2" *ngIf="hide_load" (click)="saveUpdateTrabajadores()">Registrar Trabajador</button>
+            <a class="btn btn-danger font-weight-bold mr-2" routerLink="/Talento/masters/Trabajador">Cancelar</a>
+          </div>
+
+      </div>
+  
+     
+    </div>
+  </div>

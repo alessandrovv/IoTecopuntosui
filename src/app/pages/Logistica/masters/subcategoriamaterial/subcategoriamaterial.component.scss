@@ -1,0 +1,62 @@
+.mat-row {
+    width: 100%;
+    min-width: 1040px;
+}
+
+.mat-header-row {
+    width: 100%;
+    min-width: 1040px;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+}
+
+.mat-column-Nro {
+    min-width: 50px;
+    white-space: pre-wrap;
+    width: 100%;
+    flex: 0 0 50px;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-actions {
+    min-width: 120px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-Activo {
+    min-width: 100px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-column-NombreSubcategoria {
+    min-width: 260px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+}
+
+.mat-column-Categoria {
+    min-width: 260px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+}
+
+.mat-column-Descripcion {
+    min-width: 250px;
+    white-space: pre-wrap;
+    width: 100%;
+    justify-content: left;
+    text-align: left;
+}

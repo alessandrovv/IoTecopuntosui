@@ -1,0 +1,21 @@
+.mat-column-Nro,
+.mat-column-Empresa,
+.mat-column-Codigo,
+.mat-column-Nombre,
+.mat-column-Cliente,
+.mat-column-Estado {
+    font-size: 11.5px;    
+}
+.mat-column-Nro {
+	min-width: 80px;
+	width: 100%;
+	flex: 0 0 80px;
+	// justify-content: left;
+}
+.mat-column-Estado,
+.mat-column-actions{
+	min-width: 120px;
+	width: 100%;
+	flex: 0 0 120px;
+}
+

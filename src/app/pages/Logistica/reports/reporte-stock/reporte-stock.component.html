@@ -1,0 +1,223 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label">REPORTE DE STOCK DE PRODUCTO</h3>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                <div class="form form-label-right">
+                    <div class="form-group">
+                        <div class="row" [formGroup]="filterGroup">
+                            <div class="col-lg-4">
+                                <ng-select #agreeSelect [clearSearchOnAdd] = "false" formControlName = "Categoria" 
+                                [searchable]="true" placeholder="Categoria" (change)="getSubcategorias($event)">
+                                <ng-option *ngFor="let cat of arrayCategorias" [value]="cat.Categoria">
+                                    {{cat.NombreCategoria}}
+                                </ng-option>
+                            </ng-select>
+                                  <small class="form-text text-muted"><b>Filtrar</b> por Categoria</small>
+                            </div>
+                            <div class="col-lg-4">
+                                  <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Subcategoria"
+                                      [searchable]="true" placeholder="Sucategoria" (change)="searchSubCategoria($event);">
+                                      <ng-option *ngFor="let item of array_subcategorias" [value]="item.Subcategoria">
+                                          {{item.NombreSubcategoria}}
+                                      </ng-option>
+                                  </ng-select>
+                                  <small class="form-text text-muted"><b>Filtrar</b> por Subcategoria</small>
+                            </div>
+                            <div class="col-lg-4">
+                                <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="ClaseMaterial"
+                                    [searchable]="true" placeholder="Clase">
+                                    <ng-option *ngFor="let item of arrayClasesMateriales" [value]="item.Material">
+                                        {{item.NombreMaterial}}
+                                    </ng-option>
+                                </ng-select>
+                                <small class="form-text text-muted"><b>Filtrar</b> por Clase</small>
+                          </div>
+              
+                          </div>     
+                    </div>
+                </div>
+            </div>        
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                <div class="form form-label-right">
+                    <div class="form-group">
+                        <div class="row" [formGroup]="filterGroup">
+                            <div class="col-lg-4">
+                                <ng-select #agreeSelect [clearSearchOnAdd] = "false" formControlName = "Establecimiento"
+                                [searchable]="true" placeholder="Categoria" (change)="getSubcategorias($event); searchCategoria()">
+                                <ng-option *ngFor="let est of arrayEstablecimientos" [value]="est.idEstablecimiento">
+                                    {{est.nombre}}
+                                </ng-option>
+                            </ng-select>
+                                  <small class="form-text text-muted"><b>Filtrar</b> por Establecimiento</small>
+                            </div>
+                            <div class="col-lg-4">
+                                  <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Indicador"
+                                      [searchable]="true" placeholder="Sucategoria" (change)="searchSubCategoria($event);">
+                                      <ng-option *ngFor="let item of array_indicadores" [value]="item.value">
+                                          {{item.descripcion}}
+                                      </ng-option>
+                                  </ng-select>
+                                  <small class="form-text text-muted"><b>Filtrar</b> por Indicador</small>
+                            </div>
+                            <div class="col-lg-4">
+                                <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Stock"
+                                    [searchable]="true" placeholder="Clase">
+                                    <ng-option *ngFor="let item of array_stock" [value]="item.value">
+                                        {{item.descripcion}}
+                                    </ng-option>
+                                </ng-select>
+                                <small class="form-text text-muted"><b>Filtrar</b> por Stock</small>
+                          </div>
+              
+                          </div>     
+                    </div>
+                </div>
+            </div>        
+        </div>
+    </div>
+
+
+<p></p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="container">
+            <div class="form form-label-right">
+                <div class="form-group">
+                    <div class="row justify-content-center align-items-center" [formGroup]="filterGroup">
+                        <div class="col-lg-3 col-sm-4 d-flex 
+                        flex-column 
+                        justify-content-center " style = "padding-bottom: 2px;">
+                            <button type="button" class="btn btn-primary" (click)="generarReporte()"><i class="fas fa-sync"></i>Generar Reporte</button>
+                        </div>
+                        <div class = "col-lg-3 col-sm-4 d-flex 
+                        flex-column 
+                        justify-content-center " style = "padding-bottom: 2px;">
+                            <button type="button" class="btn btn-success" (click)="descargarReporte()" ><i class="fas fa-download"></i>Descargar Excel</button>
+                        </div>        
+                    </div>     
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+
+    <div class="row justify-content-center align-content-center">
+        
+      <!-- end: Filtration form -->
+
+    </div>
+
+
+     <div class="card-body ">
+        <div class="table-responsive angular-bootstrap-table mat-table__wrapper " style="overflow: auto">
+            <mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort  perfectScrollbar >
+    
+                <ng-container class="columna" matColumnDef="Nro">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+                    <mat-cell *matCellDef="let i = index;">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}</mat-cell>
+                </ng-container>
+    
+                <ng-container  matColumnDef="CODIGO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CODIGO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.codigoMaterial}}</mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="MATERIAL">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>PRODUCTO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.material}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="ESTABLECIMIENTO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ESTABLECIMIENTO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.establecimiento}}</mat-cell>
+                </ng-container>
+    
+                <ng-container matColumnDef="UNIDAD DE MEDIDA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>UNIDAD DE MEDIDA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.unidadMedida}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="STOCK MINIMO">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Stock MINIMO </mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.stockMinimo}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="STOCK ACTUAL">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Stock ACTUAL</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.stockActual}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="STOCK DISPONIBLE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Stock DISPONIBLE</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.stockDisponible}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="INDICADOR">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>INDICADOR</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson"> 
+                        <div class="{{lesson.colorIndicador}}">
+                            {{lesson.indicador}}
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="RESERVADO VENTAS">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>RESER. VENTAS</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.stockReservadoPV}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="STOCK POR RECIBIR">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Stock x RECIBIR</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.stockPorRecibir}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="CATEGORIA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CATEGORIA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.categoriaMaterial}}</mat-cell>
+                </ng-container> 
+
+                <ng-container matColumnDef="SUBCATEGORIA">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>SUBCATEGORIA</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.subcategoriaMaterial}}</mat-cell>
+                </ng-container> 
+                <ng-container matColumnDef="CLASE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CLASE</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.claseMaterial}}</mat-cell>
+                </ng-container> 
+                <ng-container matColumnDef="loading">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        Loading data...
+                    </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                       <app-spinner></app-spinner>
+                    </mat-footer-cell>
+                </ng-container>
+    
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+                </mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+            </mat-table> 
+    
+        </div>
+    
+            <div class="mat-table__bottom">
+                <mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+                <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            </div>      
+        </div> 
+  </div>
+

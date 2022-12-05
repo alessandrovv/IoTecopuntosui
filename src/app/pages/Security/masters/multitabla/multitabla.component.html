@@ -1,0 +1,101 @@
+<div class="card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title d-flex flex-grow-1">
+			<h3 class="card-label mr-3">
+				Multitabla
+			</h3>
+			<div [formGroup]="searchGroup" class="flex-grow-1">
+				<input type="text" class="form-control w-100" name="searchText" placeholder="Buscar" value="" (keyup)="search()"
+					formControlName="searchTerm" />
+					<!-- <small class="form-text text-muted"><b>Buscar</b> en todos los campos</small> -->
+			</div>
+		</div>
+		<div class="card-toolbar">
+			<button type="button" class="btn btn-primary" (click)="create(null)">Nueva Multitabla</button>
+		</div>
+	</div>
+	<div class="card-body">
+		<!-- begin: Filtration form -->
+		<!-- end: Filtration form -->
+
+		<div class="table-responsive angular-bootstrap-table mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8" [dataSource]="listData" matSort perfectScrollbar>
+
+					<ng-container matColumnDef="Nro">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">1</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="Tabla">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>TABLA</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.valor}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="Nombre">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRE</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.nombre}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="Descripcion">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>DESCRIPCION</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.descripcion}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="actions">
+							<mat-header-cell *matHeaderCellDef>OPERACIONES</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">                              
+
+									<a title="Editar Multitabla" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+											(click)="edit(lesson.idMultitabla)">
+											<span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+											class="svg-icon svg-icon-md svg-icon-primary">
+											</span>
+									</a>
+
+									<a title="Borrar Multitabla" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+											(click)="delete(lesson.idEsquemaComision)">
+											<span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+											class="svg-icon svg-icon-md svg-icon-danger">
+											</span>
+									</a>
+
+									<!-- <button mat-icon-button style="color: #00A09D !important" type="button" 
+									[routerLink]="['/Ventas/Configuracion/Banco/edit']" [queryParams]="{id: lesson.Banco}" matTooltip="Editar Banco">
+										<mat-icon>create</mat-icon>
+									</button>
+
+									<button mat-icon-button style="color: #b7343d !important" type="button" 
+									(click)="eliminarActivar(lesson.Banco, false)" matTooltip="Eliminar Banco">
+											<mat-icon>delete</mat-icon>
+									</button> -->
+
+							</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="loading">
+							<mat-footer-cell *matFooterCellDef colspan="5">
+									Loading data...
+							</mat-footer-cell>
+					</ng-container>
+					<ng-container matColumnDef="noData">
+							<mat-footer-cell *matFooterCellDef colspan="5">
+									No se encontraron registros.
+							</mat-footer-cell>
+					</ng-container>
+
+					<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+					<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+					<mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listData!=null}">
+					</mat-footer-row>
+					<mat-footer-row *matFooterRowDef="['noData']"
+							[ngClass]="{'hide': !(listData!=null && listData.data.length==0)}"></mat-footer-row>
+			</mat-table>
+		</div>
+
+	<div class="mat-table__bottom">
+			<mat-spinner [diameter]="20" *ngIf="searchBan"></mat-spinner>
+			<mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+	</div>      
+	</div>
+</div>
