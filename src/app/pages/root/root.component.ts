@@ -18,10 +18,11 @@ export class RootComponent implements OnInit {
 
   ngOnInit(): void {
 
-		this.opciones=((this.pvas.get()).SubNavegacion).map(e=>e.SubNavegacion).reduce((acc, cuV)=> acc.concat(cuV));
-		let rutas = this.opciones.map(e=>e.Url)
-		console.log(rutas)
-		this.router.navigate([rutas[0]]);
+		//this.opciones=((this.pvas.get()).SubNavegacion).map(e=>e.SubNavegacion).reduce((acc, cuV)=> acc.concat(cuV));
+		//let rutas = this.opciones.map(e=>e.Url)
+		//console.log(rutas)
+		console.log('hola');
+		//this.router.navigate([rutas[0]]);
 	
   }
 

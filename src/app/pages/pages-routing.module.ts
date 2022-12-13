@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './_layout/layout.component';
 import { LoggedInGuardService } from '../Security/guards/logged-in-guard.service';
+import { NoLoggedInGuardService } from '../Security/guards/no-logged-in-guard.service';
 import { RootComponent } from './root/root.component';
 import { DashboardComprasComponent } from './dashboard/dashboard-compras/dashboard-compras.component';
 
@@ -11,7 +12,7 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    canActivate: [LoggedInGuardService],
+    canActivate: [NoLoggedInGuardService],
     children: [
       {
         path: 'dashboard',
@@ -118,7 +119,19 @@ const routes: Routes = [
 							import('./Sales/report/report.module').then(m => m.ReportModule)
 					}
 				]
-			},	
+			},
+      {
+        path:'estudiantes',
+        loadChildren:()=> import('./estudiantes/estudiantes.module').then(m=>m.EstudiantesModule)
+      },
+      {
+        path:'recompensas',
+        loadChildren:()=>import('./recompensas/recompensas.module').then(m=>m.RecompensasModule)
+      },
+      {
+        path:'basureros',
+        loadChildren:()=>import('./basureros/basureros.module').then(m=>m.BasurerosModule)
+      },	
 			{
 				path: 'Finanzas',
 				children: [
@@ -248,7 +261,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        canActivate: [LoggedInGuardService],
+        //canActivate: [LoggedInGuardService],
         component: RootComponent
       },
       {

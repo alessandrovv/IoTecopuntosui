@@ -19,6 +19,7 @@ export const routes: Routes = [
   },
   {
     path: '',
+    //canActivate:[NoLoggedInGuardService],
     loadChildren: () =>
       import('./pages/layout.module').then((m) => m.LayoutModule),
   },

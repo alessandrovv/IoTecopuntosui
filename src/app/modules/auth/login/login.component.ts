@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.returnUrl =
         this.route.snapshot.queryParams['returnUrl'.toString()] || '/';
 
-    this.openModalConfirm(1);
+    //this.openModalConfirm(1);
     }
 
     
@@ -101,22 +101,22 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService.login(model)
 			.subscribe(response => {
 				if (response.Ok) {
-          if(response.IpInvalid){
-            const body = {
-              To: `whatsapp:+51${response.Telefono.replace(' ','')}`,
-              From: "whatsapp:+14155238886",
-              Body: `Alguien está intentando ingresar a tu cuenta. \nSi eres tú, ingresa el siguiente código: ${response.Code}`
-            }
-            this.authService.sendTwilioMessage(body).subscribe((data:any) =>{
-              console.log(data);
-              this.openModalConfirm(response.IdUsuario);
-            },error=>{
-              console.log(error);
-            });
-            
-          }else{
+          //if(response.IpInvalid){
+          //  const body = {
+          //    To: `whatsapp:+51${response.Telefono.replace(' ','')}`,
+          //    From: "whatsapp:+14155238886",
+          //    Body: `Alguien está intentando ingresar a tu cuenta. \nSi eres tú, ingresa el siguiente código: ${response.Code}`
+          //  }
+          //  this.authService.sendTwilioMessage(body).subscribe((data:any) =>{
+          //    console.log(data);
+          //    this.openModalConfirm(response.IdUsuario);
+          //  },error=>{
+          //    console.log(error);
+          //  });
+          //  
+          //}else{
             this.authService.redirectToMain();
-          }
+          //}
 				  
 				} else {
 					this.hasError = true;

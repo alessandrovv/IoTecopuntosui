@@ -25,6 +25,9 @@ import { ToastrModule } from 'ng6-toastr-notifications';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireStorage } from '@angular/fire/storage';
 import {DatePipe} from '@angular/common';
+import { EstudiantesModule } from './pages/estudiantes/estudiantes.module';
+import { RecompensasModule } from './pages/recompensas/recompensas.module';
+import { BasurerosModule } from './pages/basureros/basureros.module';
 
 
 
@@ -62,6 +65,9 @@ function appInitializer(authService: AuthService) {
     AngularFireModule.initializeApp(environment.firebaseConfig),
     ToastrModule.forRoot(),
     NgbModule,
+    EstudiantesModule,
+    RecompensasModule,
+    BasurerosModule,
   ],
   providers: [
     LayoutConfigStorageService,

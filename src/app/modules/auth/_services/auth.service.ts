@@ -108,9 +108,9 @@ export class AuthService implements OnDestroy {
       tap((response: any) => {            
           if (response.Ok) {
               this.storageService.set(StorageKeyEnum.JWT_AUTHORIZATION, response.JWT);
-              if(!response.IpInvalid){
+              //if(!response.IpInvalid){
                 this.jwtService.load(response.JWT);
-              } 
+              //} 
           }
       }),
       catchError((err) => {

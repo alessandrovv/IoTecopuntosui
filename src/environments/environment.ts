@@ -79,6 +79,18 @@ export const environment = {
 		},
 	},
 
+	ecoApi: {
+		estudiantes:{
+			url:'http://localhost:8000/api/estudiantes'
+		},
+		recompensas:{
+			url:'http://localhost:8000/api/recompensas'
+		},
+		basureros:{
+			url:'http://localhost:8000/api/basureros'
+		}
+	},
+
 	// QAS
 	// api: {
 	// 	WS_IT: {
